@@ -1,0 +1,49 @@
+nohup: ignoring input
+🚀 Server running on port 5000
+📱 Frontend URL: http://localhost:3000
+🌍 Environment: development
+🔗 API Base URL: http://localhost:5000/api
+✅ MongoDB Connected: localhost
+[0mGET /api/wards [32m200[0m 234.595 ms - 2428[0m
+Create ward error: MongoServerError: E11000 duplicate key error collection: nurse-scheduling.wards index: name_1 dup key: { name: "OPD" }
+    at InsertOneOperation.handleOk (C:\Users\Hp\Downloads\Shift Scheduling Algorithm Project (1)\backend\node_modules\mongodb\lib\operations\insert.js:51:19)
+    at tryOperation (C:\Users\Hp\Downloads\Shift Scheduling Algorithm Project (1)\backend\node_modules\mongodb\lib\operations\execute_operation.js:214:34)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async executeOperation (C:\Users\Hp\Downloads\Shift Scheduling Algorithm Project (1)\backend\node_modules\mongodb\lib\operations\execute_operation.js:78:16)
+    at async Collection.insertOne (C:\Users\Hp\Downloads\Shift Scheduling Algorithm Project (1)\backend\node_modules\mongodb\lib\collection.js:154:16) {
+  errorLabelSet: Set(0) {},
+  errorResponse: {
+    index: 0,
+    code: 11000,
+    errmsg: 'E11000 duplicate key error collection: nurse-scheduling.wards index: name_1 dup key: { name: "OPD" }',
+    keyPattern: { name: 1 },
+    keyValue: { name: 'OPD' }
+  },
+  index: 0,
+  code: 11000,
+  keyPattern: { name: 1 },
+  keyValue: { name: 'OPD' }
+}
+[0mPOST /api/wards [33m409[0m 127.813 ms - 73[0m
+[0mPOST /api/wards [33m400[0m 1.166 ms - 129[0m
+Create ward error: MongoServerError: E11000 duplicate key error collection: nurse-scheduling.wards index: name_1 dup key: { name: "OPD" }
+    at InsertOneOperation.handleOk (C:\Users\Hp\Downloads\Shift Scheduling Algorithm Project (1)\backend\node_modules\mongodb\lib\operations\insert.js:51:19)
+    at tryOperation (C:\Users\Hp\Downloads\Shift Scheduling Algorithm Project (1)\backend\node_modules\mongodb\lib\operations\execute_operation.js:214:34)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async executeOperation (C:\Users\Hp\Downloads\Shift Scheduling Algorithm Project (1)\backend\node_modules\mongodb\lib\operations\execute_operation.js:78:16)
+    at async Collection.insertOne (C:\Users\Hp\Downloads\Shift Scheduling Algorithm Project (1)\backend\node_modules\mongodb\lib\collection.js:154:16) {
+  errorLabelSet: Set(0) {},
+  errorResponse: {
+    index: 0,
+    code: 11000,
+    errmsg: 'E11000 duplicate key error collection: nurse-scheduling.wards index: name_1 dup key: { name: "OPD" }',
+    keyPattern: { name: 1 },
+    keyValue: { name: 'OPD' }
+  },
+  index: 0,
+  code: 11000,
+  keyPattern: { name: 1 },
+  keyValue: { name: 'OPD' }
+}
+[0mPOST /api/wards [33m409[0m 9.411 ms - 73[0m
+[0mGET /api/wards?isActive=true [32m200[0m 185.304 ms - 661[0m
