@@ -77,6 +77,180 @@ const nurseSchema = new mongoose.Schema({
     type: Boolean,
     default: true
   },
+  // ENHANCED SCHEDULING CONSTRAINTS AND PREFERENCES
+  workingConstraints: {
+    // Maximum consecutive night shifts (GROUND RULE)
+    maxConsecutiveNights: {
+      type: Number,
+      default: 2,
+      min: [1, 'Must allow at least 1 consecutive night'],
+      max: [4, 'Cannot exceed 4 consecutive nights for safety']
+    },
+    
+    // Maximum weekly working hours (GROUND RULE)
+    maxWeeklyHours: {
+      type: Number,
+      default: 40,
+      min: [20, 'Minimum 20 hours per week'],
+      max: [60, 'Maximum 60 hours per week for safety']
+    },
+    
+    // Maximum overtime hours per week
+    maxOvertimeHours: {
+      type: Number,
+      default: 8,
+      min: [0, 'Overtime cannot be negative'],
+      max: [20, 'Maximum 20 overtime hours per week']
+    },
+    
+    // Minimum rest hours between shifts (GROUND RULE)
+    minRestHours: {
+      type: Number,
+      default: 11,
+      min: [8, 'Minimum 8 hours rest required'],
+      max: [24, 'Maximum 24 hours rest']
+    },
+    
+    // Maximum consecutive working days
+    maxConsecutiveDays: {
+      type: Number,
+      default: 5,
+      min: [3, 'Minimum 3 consecutive days'],
+      max: [7, 'Maximum 7 consecutive days']
+    },
+    
+    // Minimum days off per week
+    minDaysOffPerWeek: {
+      type: Number,
+      default: 2,
+      min: [1, 'Minimum 1 day off per week'],
+      max: [4, 'Maximum 4 days off per week']
+    }
+  },
+  
+  // Detailed weekly availability - What shifts and days nurse is available
+  availability: {
+    monday: {
+      available: { type: Boolean, default: true },
+      preferredShifts: [{
+        type: String,
+        enum: ['day', 'evening', 'night']
+      }],
+      unavailableShifts: [{
+        type: String,
+        enum: ['day', 'evening', 'night']
+      }],
+      notes: { type: String, maxlength: 200 }
+    },
+    tuesday: {
+      available: { type: Boolean, default: true },
+      preferredShifts: [{
+        type: String,
+        enum: ['day', 'evening', 'night']
+      }],
+      unavailableShifts: [{
+        type: String,
+        enum: ['day', 'evening', 'night']
+      }],
+      notes: { type: String, maxlength: 200 }
+    },
+    wednesday: {
+      available: { type: Boolean, default: true },
+      preferredShifts: [{
+        type: String,
+        enum: ['day', 'evening', 'night']
+      }],
+      unavailableShifts: [{
+        type: String,
+        enum: ['day', 'evening', 'night']
+      }],
+      notes: { type: String, maxlength: 200 }
+    },
+    thursday: {
+      available: { type: Boolean, default: true },
+      preferredShifts: [{
+        type: String,
+        enum: ['day', 'evening', 'night']
+      }],
+      unavailableShifts: [{
+        type: String,
+        enum: ['day', 'evening', 'night']
+      }],
+      notes: { type: String, maxlength: 200 }
+    },
+    friday: {
+      available: { type: Boolean, default: true },
+      preferredShifts: [{
+        type: String,
+        enum: ['day', 'evening', 'night']
+      }],
+      unavailableShifts: [{
+        type: String,
+        enum: ['day', 'evening', 'night']
+      }],
+      notes: { type: String, maxlength: 200 }
+    },
+    saturday: {
+      available: { type: Boolean, default: true },
+      preferredShifts: [{
+        type: String,
+        enum: ['day', 'evening', 'night']
+      }],
+      unavailableShifts: [{
+        type: String,
+        enum: ['day', 'evening', 'night']
+      }],
+      notes: { type: String, maxlength: 200 }
+    },
+    sunday: {
+      available: { type: Boolean, default: true },
+      preferredShifts: [{
+        type: String,
+        enum: ['day', 'evening', 'night']
+      }],
+      unavailableShifts: [{
+        type: String,
+        enum: ['day', 'evening', 'night']
+      }],
+      notes: { type: String, maxlength: 200 }
+    }
+  },
+  
+  // Specific unavailable dates with reasons
+  unavailableDates: [{
+    date: { type: Date, required: true },
+    shifts: [{
+      type: String,
+      enum: ['day', 'evening', 'night', 'all'],
+      default: 'all'
+    }],
+    reason: { type: String, maxlength: 200 },
+    approved: { type: Boolean, default: false },
+    requestedAt: { type: Date, default: Date.now }
+  }],
+  
+  // General shift preferences
+  shiftPreferences: {
+    preferredShiftTypes: [{
+      type: String,
+      enum: ['day', 'evening', 'night']
+    }],
+    avoidShiftTypes: [{
+      type: String,
+      enum: ['day', 'evening', 'night']
+    }],
+    weekendPreference: {
+      type: String,
+      enum: ['prefer', 'neutral', 'avoid'],
+      default: 'neutral'
+    },
+    nightShiftPreference: {
+      type: String,
+      enum: ['prefer', 'neutral', 'avoid'],
+      default: 'neutral'
+    }
+  },
+
   preferences: {
     preferredShifts: [{
       type: String,
@@ -202,6 +376,103 @@ nurseSchema.methods.activate = function() {
 
 nurseSchema.methods.canAccessWard = function(wardName) {
   return this.wardAccess.includes('all') || this.wardAccess.includes(wardName);
+};
+
+// SCHEDULING-SPECIFIC METHODS
+nurseSchema.methods.isAvailableOnDay = function(dayOfWeek, shiftType) {
+  const dayAvailability = this.availability[dayOfWeek.toLowerCase()];
+  if (!dayAvailability || !dayAvailability.available) {
+    return false;
+  }
+  
+  // Check if shift type is explicitly unavailable
+  if (dayAvailability.unavailableShifts && dayAvailability.unavailableShifts.includes(shiftType)) {
+    return false;
+  }
+  
+  return true;
+};
+
+nurseSchema.methods.getPreferenceScore = function(dayOfWeek, shiftType) {
+  const dayAvailability = this.availability[dayOfWeek.toLowerCase()];
+  let score = 0;
+  
+  // Base availability score
+  if (dayAvailability?.available) {
+    score += 1;
+  }
+  
+  // Preferred shift bonus
+  if (dayAvailability?.preferredShifts?.includes(shiftType)) {
+    score += 2;
+  }
+  
+  // General shift preference
+  if (this.shiftPreferences?.preferredShiftTypes?.includes(shiftType)) {
+    score += 1;
+  }
+  
+  // Avoid shift penalty
+  if (this.shiftPreferences?.avoidShiftTypes?.includes(shiftType)) {
+    score -= 2;
+  }
+  
+  // Weekend preference
+  const isWeekend = ['saturday', 'sunday'].includes(dayOfWeek.toLowerCase());
+  if (isWeekend) {
+    if (this.shiftPreferences?.weekendPreference === 'prefer') {
+      score += 1;
+    } else if (this.shiftPreferences?.weekendPreference === 'avoid') {
+      score -= 1;
+    }
+  }
+  
+  // Night shift preference
+  if (shiftType === 'night') {
+    if (this.shiftPreferences?.nightShiftPreference === 'prefer') {
+      score += 1;
+    } else if (this.shiftPreferences?.nightShiftPreference === 'avoid') {
+      score -= 1;
+    }
+  }
+  
+  return score;
+};
+
+nurseSchema.methods.canWorkConsecutiveNights = function(currentConsecutiveNights) {
+  return currentConsecutiveNights < this.workingConstraints.maxConsecutiveNights;
+};
+
+nurseSchema.methods.canWorkMoreHours = function(currentWeeklyHours, additionalHours) {
+  return (currentWeeklyHours + additionalHours) <= this.workingConstraints.maxWeeklyHours;
+};
+
+nurseSchema.methods.hasRestTimeBetweenShifts = function(lastShiftEnd, nextShiftStart) {
+  if (!lastShiftEnd) return true;
+  
+  const hoursBetween = (nextShiftStart - lastShiftEnd) / (1000 * 60 * 60);
+  return hoursBetween >= this.workingConstraints.minRestHours;
+};
+
+nurseSchema.methods.isUnavailableOnDate = function(date, shiftType = 'all') {
+  const targetDate = new Date(date);
+  targetDate.setHours(0, 0, 0, 0);
+  
+  return this.unavailableDates.some(unavailable => {
+    const unavailableDate = new Date(unavailable.date);
+    unavailableDate.setHours(0, 0, 0, 0);
+    
+    if (unavailableDate.getTime() !== targetDate.getTime()) {
+      return false;
+    }
+    
+    // If checking for specific shift type
+    if (shiftType !== 'all') {
+      return unavailable.shifts.includes(shiftType) || unavailable.shifts.includes('all');
+    }
+    
+    return true;
+  });
 };
 
 // Static methods

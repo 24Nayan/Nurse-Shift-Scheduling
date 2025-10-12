@@ -6,7 +6,7 @@ import { Badge } from './ui/badge';
 import { Users, Calendar, Building2, AlertCircle, Clock, UserCheck } from 'lucide-react';
 import { NurseManagement } from './NurseManagement';
 import { ScheduleGenerator } from './ScheduleGenerator';
-import { ScheduleViewer } from './ScheduleViewer';
+import ScheduleViewer from './ScheduleViewer';
 import WardManagement from './WardManagement';
 import { projectId } from '../utils/supabase/info';
 
@@ -38,6 +38,9 @@ export function AdminDashboard({ user }: AdminDashboardProps) {
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [nurses, setNurses] = useState<any[]>([]);
+  const [wards, setWards] = useState<any[]>([]);
+  const [currentWeekSchedule, setCurrentWeekSchedule] = useState<any[]>([]);
 
   useEffect(() => {
     loadDashboardData();
@@ -60,6 +63,14 @@ export function AdminDashboard({ user }: AdminDashboardProps) {
   const loadDashboardData = async () => {
     try {
       setLoading(true);
+      console.log('Skipping Supabase data loading - using local backend');
+      
+      // Temporarily disable Supabase calls to prevent CORS issues
+      setNurses([]);
+      setWards([]);
+      setCurrentWeekSchedule([]);
+      setLoading(false);
+      return;
       
       // Load nurses
       const nursesResponse = await fetch(`https://${projectId}.supabase.co/functions/v1/make-server-c76fcf04/nurses`, {
@@ -307,11 +318,14 @@ export function AdminDashboard({ user }: AdminDashboardProps) {
         </TabsContent>
 
         <TabsContent value="generate">
-          <ScheduleGenerator user={user} onScheduleGenerated={loadDashboardData} />
+          <ScheduleGenerator user={user} onScheduleGenerated={() => {
+            console.log('Schedule generated successfully!');
+            // Don't navigate away or reload data - just stay on the generator tab
+          }} />
         </TabsContent>
 
         <TabsContent value="schedule">
-          <ScheduleViewer user={user} />
+          <ScheduleViewer />
         </TabsContent>
       </Tabs>
     </div>

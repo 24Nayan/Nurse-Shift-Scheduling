@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Schedule Generator Test</title>
+</head>
+<body>
+    <h1>Testing Schedule Generation API</h1>
+    <button id="testBtn">Test Generate Schedule</button>
+    <pre id="result"></pre>
+
+    <script>
+        document.getElementById('testBtn').addEventListener('click', async () => {
+            const resultDiv = document.getElementById('result');
+            resultDiv.textContent = 'Testing...';
+            
+            try {
+                const response = await fetch('http://localhost:5000/api/schedules/generate', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        wardId: "68e4be02f47d09f3cd37c829",
+                        startDate: "2025-10-05",
+                        endDate: "2025-10-11"
+                    })
+                });
+                
+                const data = await response.json();
+                resultDiv.textContent = JSON.stringify(data, null, 2);
+            } catch (error) {
+                resultDiv.textContent = 'Error: ' + error.message;
+            }
+        });
+    </script>
+</body>
+</html>

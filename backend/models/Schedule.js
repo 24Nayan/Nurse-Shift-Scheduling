@@ -1,11 +1,16 @@
 import mongoose from 'mongoose';
 
 const scheduleSchema = new mongoose.Schema({
-  name: {
+  // Basic Schedule Information
+  ward: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Ward',
+    required: [true, 'Ward is required']
+  },
+  wardName: {
     type: String,
-    required: [true, 'Schedule name is required'],
-    trim: true,
-    maxlength: [100, 'Schedule name cannot exceed 100 characters']
+    required: [true, 'Ward name is required'],
+    trim: true
   },
   startDate: {
     type: Date,
@@ -13,180 +18,322 @@ const scheduleSchema = new mongoose.Schema({
   },
   endDate: {
     type: Date,
-    required: [true, 'End date is required'],
-    validate: {
-      validator: function(v) {
-        return v > this.startDate;
-      },
-      message: 'End date must be after start date'
-    }
+    required: [true, 'End date is required']
   },
-  ward: {
-    type: String,
-    required: [true, 'Ward is required'],
-    trim: true
-  },
-  status: {
-    type: String,
-    enum: {
-      values: ['draft', 'published', 'active', 'completed', 'archived'],
-      message: 'Status must be draft, published, active, completed, or archived'
-    },
-    default: 'draft'
-  },
-  assignments: [{
-    date: {
-      type: Date,
-      required: true
-    },
-    shift: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Shift',
-      required: true
-    },
-    nurse: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Nurse',
-      required: true
-    },
-    role: {
-      type: String,
-      enum: ['admin', 'charge_nurse', 'staff_nurse'],
-      required: true
-    },
-    isConfirmed: {
-      type: Boolean,
-      default: false
-    },
-    notes: {
-      type: String,
-      maxlength: [200, 'Notes cannot exceed 200 characters']
-    }
-  }],
-  metadata: {
-    totalShifts: {
-      type: Number,
-      default: 0
-    },
-    totalHours: {
-      type: Number,
-      default: 0
-    },
-    algorithmsUsed: [{
-      name: String,
-      version: String,
-      parameters: mongoose.Schema.Types.Mixed
-    }],
-    constraints: {
-      maxConsecutiveDays: {
-        type: Number,
-        default: 5
+  
+  // Schedule Data - Core structure for daily assignments
+  scheduleData: {
+    // Key: date string (YYYY-MM-DD), Value: daily schedule
+    type: Map,
+    of: {
+      shifts: {
+        DAY: {
+          nurses: [{
+            nurseId: { type: mongoose.Schema.Types.ObjectId, ref: 'Nurse', required: true },
+            nurseName: { type: String, required: true },
+            hours: { type: Number, min: 1, max: 12, default: 8 },
+            specialization: String,
+            isFloating: { type: Boolean, default: false },
+            overtime: { type: Boolean, default: false },
+            preference: {
+              type: String,
+              enum: ['PREFERRED', 'AVAILABLE', 'UNAVAILABLE'],
+              default: 'AVAILABLE'
+            }
+          }],
+          requiredNurses: { type: Number, min: 1, default: 1 },
+          actualNurses: { type: Number, default: 0 },
+          coverage: { type: Number, min: 0, max: 100, default: 0 }
+        },
+        EVENING: {
+          nurses: [{
+            nurseId: { type: mongoose.Schema.Types.ObjectId, ref: 'Nurse', required: true },
+            nurseName: { type: String, required: true },
+            hours: { type: Number, min: 1, max: 12, default: 8 },
+            specialization: String,
+            isFloating: { type: Boolean, default: false },
+            overtime: { type: Boolean, default: false },
+            preference: {
+              type: String,
+              enum: ['PREFERRED', 'AVAILABLE', 'UNAVAILABLE'],
+              default: 'AVAILABLE'
+            }
+          }],
+          requiredNurses: { type: Number, min: 1, default: 1 },
+          actualNurses: { type: Number, default: 0 },
+          coverage: { type: Number, min: 0, max: 100, default: 0 }
+        },
+        NIGHT: {
+          nurses: [{
+            nurseId: { type: mongoose.Schema.Types.ObjectId, ref: 'Nurse', required: true },
+            nurseName: { type: String, required: true },
+            hours: { type: Number, min: 1, max: 12, default: 12 },
+            specialization: String,
+            isFloating: { type: Boolean, default: false },
+            overtime: { type: Boolean, default: false },
+            preference: {
+              type: String,
+              enum: ['PREFERRED', 'AVAILABLE', 'UNAVAILABLE'],
+              default: 'AVAILABLE'
+            }
+          }],
+          requiredNurses: { type: Number, min: 1, default: 1 },
+          actualNurses: { type: Number, default: 0 },
+          coverage: { type: Number, min: 0, max: 100, default: 0 }
+        }
       },
-      minRestHours: {
-        type: Number,
-        default: 12
-      },
-      maxWeeklyHours: {
-        type: Number,
-        default: 40
+      dailyStats: {
+        totalNurses: { type: Number, default: 0 },
+        totalHours: { type: Number, default: 0 },
+        averageCoverage: { type: Number, default: 0 },
+        constraintViolations: [{
+          type: {
+            type: String,
+            enum: ['MAX_CONSECUTIVE_NIGHTS', 'MAX_WEEKLY_HOURS', 'MIN_REST_HOURS', 'UNAVAILABLE_ASSIGNMENT']
+          },
+          nurseId: { type: mongoose.Schema.Types.ObjectId, ref: 'Nurse' },
+          nurseName: String,
+          description: String,
+          severity: {
+            type: String,
+            enum: ['LOW', 'MEDIUM', 'HIGH', 'CRITICAL'],
+            default: 'MEDIUM'
+          }
+        }]
       }
     }
   },
-  createdBy: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Nurse'
+  
+  // Nurse Statistics for the schedule period
+  nurseStats: {
+    type: Map,
+    of: {
+      nurseId: { type: mongoose.Schema.Types.ObjectId, ref: 'Nurse' },
+      nurseName: String,
+      totalHours: { type: Number, default: 0 },
+      totalShifts: { type: Number, default: 0 },
+      shiftDistribution: {
+        DAY: { type: Number, default: 0 },
+        EVENING: { type: Number, default: 0 },
+        NIGHT: { type: Number, default: 0 }
+      },
+      consecutiveNights: { type: Number, default: 0 },
+      maxConsecutiveNights: { type: Number, default: 0 },
+      weeklyHours: { type: Number, default: 0 },
+      overtimeHours: { type: Number, default: 0 },
+      preferenceSatisfaction: { type: Number, min: 0, max: 100, default: 0 },
+      constraintViolations: { type: Number, default: 0 }
+    }
   },
-  approvedBy: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Nurse'
+  
+  // Schedule Status and Management
+  status: {
+    type: String,
+    enum: ['DRAFT', 'PENDING_APPROVAL', 'APPROVED', 'ACTIVE', 'COMPLETED', 'ARCHIVED'],
+    default: 'DRAFT'
   },
-  approvedAt: {
-    type: Date
-  }
+  generatedAt: {
+    type: Date,
+    default: Date.now
+  },
+  generatedBy: {
+    type: String,
+    required: [true, 'Generated by is required'],
+    default: 'system'
+  },
+  
+  // Algorithm Configuration and Settings
+  generationSettings: {
+    algorithm: {
+      type: String,
+      enum: ['GENETIC', 'CONSTRAINT_SATISFACTION', 'HEURISTIC'],
+      default: 'GENETIC'
+    },
+    parameters: {
+      populationSize: { type: Number, default: 100 },
+      generations: { type: Number, default: 500 },
+      mutationRate: { type: Number, default: 0.1 },
+      crossoverRate: { type: Number, default: 0.8 },
+      elitismRate: { type: Number, default: 0.1 }
+    },
+    constraints: {
+      maxConsecutiveNights: { type: Number, default: 3 },
+      maxWeeklyHours: { type: Number, default: 48 },
+      minRestHours: { type: Number, default: 11 },
+      enforceAvailability: { type: Boolean, default: true },
+      allowOvertime: { type: Boolean, default: false },
+      preferenceWeight: { type: Number, default: 0.3 }
+    },
+    objectives: {
+      coverageWeight: { type: Number, default: 0.4 },
+      fairnessWeight: { type: Number, default: 0.3 },
+      preferencesWeight: { type: Number, default: 0.2 },
+      constraintsWeight: { type: Number, default: 0.1 }
+    }
+  },
+  
+  // Quality Metrics and Performance
+  qualityMetrics: {
+    overallScore: { type: Number, min: 0, max: 100, default: 0 },
+    coverageScore: { type: Number, min: 0, max: 100, default: 0 },
+    fairnessScore: { type: Number, min: 0, max: 100, default: 0 },
+    preferenceScore: { type: Number, min: 0, max: 100, default: 0 },
+    constraintScore: { type: Number, min: 0, max: 100, default: 0 },
+    
+    statistics: {
+      totalShifts: { type: Number, default: 0 },
+      totalHours: { type: Number, default: 0 },
+      averageShiftsPerNurse: { type: Number, default: 0 },
+      averageHoursPerNurse: { type: Number, default: 0 },
+      totalConstraintViolations: { type: Number, default: 0 },
+      averageCoverage: { type: Number, default: 0 }
+    },
+    
+    generationTime: { type: Number, default: 0 }, // milliseconds
+    algorithmIterations: { type: Number, default: 0 }
+  },
+  
+  // Version Control and History
+  version: {
+    type: Number,
+    default: 1
+  },
+  publishedAt: Date,
+  publishedBy: String,
+  approvedBy: String,
+  approvedAt: Date,
+  
+  // Comments and Notes
+  notes: {
+    type: String,
+    maxlength: [1000, 'Notes cannot exceed 1000 characters'],
+    trim: true
+  },
+  
+  // Feedback and Issues
+  feedback: [{
+    nurseId: { type: mongoose.Schema.Types.ObjectId, ref: 'Nurse' },
+    nurseName: String,
+    comment: String,
+    rating: { 
+      type: Number, 
+      min: 1, 
+      max: 5 
+    },
+    submittedAt: { type: Date, default: Date.now },
+    resolved: { type: Boolean, default: false }
+  }],
+  
+  issues: [{
+    type: {
+      type: String,
+      enum: ['UNDERSTAFFED', 'OVERSTAFFED', 'CONSTRAINT_VIOLATION', 'PREFERENCE_CONFLICT', 'OTHER']
+    },
+    description: String,
+    severity: {
+      type: String,
+      enum: ['LOW', 'MEDIUM', 'HIGH', 'CRITICAL'],
+      default: 'MEDIUM'
+    },
+    date: String, // Date string for the affected date
+    shift: {
+      type: String,
+      enum: ['DAY', 'EVENING', 'NIGHT']
+    },
+    resolved: { type: Boolean, default: false },
+    reportedAt: { type: Date, default: Date.now }
+  }]
 }, {
   timestamps: true,
-  toJSON: { virtuals: true },
-  toObject: { virtuals: true }
+  collection: 'schedules'
 });
 
-// Virtual for schedule duration in days
-scheduleSchema.virtual('durationDays').get(function() {
-  return Math.ceil((this.endDate - this.startDate) / (1000 * 60 * 60 * 24));
-});
+// Compound indexes for better query performance
+scheduleSchema.index({ ward: 1, startDate: 1, endDate: 1 });
+scheduleSchema.index({ status: 1, createdAt: -1 });
+scheduleSchema.index({ wardName: 1, status: 1 });
+scheduleSchema.index({ generatedAt: -1 });
 
-// Virtual for completion percentage
-scheduleSchema.virtual('completionPercentage').get(function() {
-  if (this.assignments.length === 0) return 0;
-  const confirmedAssignments = this.assignments.filter(a => a.isConfirmed).length;
-  return Math.round((confirmedAssignments / this.assignments.length) * 100);
-});
-
-// Pre-save middleware to update metadata
-scheduleSchema.pre('save', function(next) {
-  if (this.isModified('assignments')) {
-    this.metadata.totalShifts = this.assignments.length;
-    // Note: totalHours would need shift duration data to calculate accurately
+// Instance Methods
+scheduleSchema.methods.toSafeObject = function() {
+  // Convert Map to plain object for scheduleData
+  let scheduleDataObj = {};
+  if (this.scheduleData instanceof Map) {
+    for (let [key, value] of this.scheduleData.entries()) {
+      scheduleDataObj[key] = value;
+    }
+  } else if (this.scheduleData && typeof this.scheduleData === 'object') {
+    scheduleDataObj = this.scheduleData;
   }
-  next();
-});
+  
+  // Convert Map to plain object for nurseStats if it exists
+  let nurseStatsObj = {};
+  if (this.nurseStats instanceof Map) {
+    for (let [key, value] of this.nurseStats.entries()) {
+      nurseStatsObj[key] = value;
+    }
+  } else if (this.nurseStats && typeof this.nurseStats === 'object') {
+    nurseStatsObj = this.nurseStats;
+  }
 
-// Indexes for better performance
-scheduleSchema.index({ ward: 1, status: 1 });
-scheduleSchema.index({ startDate: 1, endDate: 1 });
-scheduleSchema.index({ 'assignments.date': 1, 'assignments.nurse': 1 });
+  return {
+    _id: this._id,
+    ward: this.ward,
+    wardName: this.wardName,
+    startDate: this.startDate,
+    endDate: this.endDate,
+    scheduleData: scheduleDataObj,
+    nurseStats: nurseStatsObj,
+    status: this.status,
+    generatedAt: this.generatedAt,
+    generatedBy: this.generatedBy,
+    generationSettings: this.generationSettings,
+    qualityMetrics: this.qualityMetrics,
+    version: this.version,
+    publishedAt: this.publishedAt,
+    publishedBy: this.publishedBy,
+    approvedBy: this.approvedBy,
+    approvedAt: this.approvedAt,
+    notes: this.notes,
+    feedback: this.feedback,
+    issues: this.issues,
+    createdAt: this.createdAt,
+    updatedAt: this.updatedAt
+  };
+};
 
-// Instance methods
-scheduleSchema.methods.publish = function() {
-  this.status = 'published';
+scheduleSchema.methods.approve = function(approvedBy) {
+  this.status = 'APPROVED';
+  this.approvedBy = approvedBy;
+  this.approvedAt = new Date();
   return this.save();
 };
 
-scheduleSchema.methods.activate = function() {
-  this.status = 'active';
-  return this.save();
-};
-
-scheduleSchema.methods.complete = function() {
-  this.status = 'completed';
+scheduleSchema.methods.publish = function(publishedBy) {
+  this.status = 'ACTIVE';
+  this.publishedBy = publishedBy;
+  this.publishedAt = new Date();
   return this.save();
 };
 
 scheduleSchema.methods.archive = function() {
-  this.status = 'archived';
+  this.status = 'ARCHIVED';
   return this.save();
 };
 
-scheduleSchema.methods.getAssignmentsForNurse = function(nurseId) {
-  return this.assignments.filter(assignment => 
-    assignment.nurse.toString() === nurseId.toString()
-  );
+// Static Methods
+scheduleSchema.statics.findActiveSchedules = function(wardId) {
+  return this.find({ 
+    ward: wardId, 
+    status: 'ACTIVE' 
+  }).sort({ startDate: -1 });
 };
 
-scheduleSchema.methods.getAssignmentsForDate = function(date) {
-  const targetDate = new Date(date);
-  return this.assignments.filter(assignment => {
-    const assignmentDate = new Date(assignment.date);
-    return assignmentDate.toDateString() === targetDate.toDateString();
-  });
-};
-
-// Static methods
-scheduleSchema.statics.findByWard = function(wardName) {
-  return this.find({ ward: wardName });
-};
-
-scheduleSchema.statics.findActive = function() {
-  return this.find({ status: 'active' });
-};
-
-scheduleSchema.statics.findByDateRange = function(startDate, endDate) {
-  return this.find({
-    $or: [
-      { startDate: { $gte: startDate, $lte: endDate } },
-      { endDate: { $gte: startDate, $lte: endDate } },
-      { startDate: { $lte: startDate }, endDate: { $gte: endDate } }
-    ]
-  });
+scheduleSchema.statics.findByWard = function(wardId, limit = 10) {
+  return this.find({ ward: wardId })
+    .populate('ward', 'name department')
+    .sort({ startDate: -1 })
+    .limit(limit);
 };
 
 export default mongoose.model('Schedule', scheduleSchema);

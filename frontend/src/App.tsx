@@ -37,6 +37,10 @@ export default function App() {
 
   const initializeDemoData = async () => {
     try {
+      console.log('Skipping Supabase demo data initialization - using local backend');
+      // Temporarily disable Supabase initialization
+      return;
+      
       console.log('Initializing demo data...');
       const response = await fetch(`https://${projectId}.supabase.co/functions/v1/make-server-c76fcf04/init-demo`, {
         method: 'POST',

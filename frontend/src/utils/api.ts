@@ -384,6 +384,35 @@ class ApiService {
     });
   }
 
+  // Generate Schedule using Genetic Algorithm
+  async generateSchedule(scheduleData: {
+    wardId: string;
+    startDate: string;
+    endDate: string;
+    settings?: {
+      populationSize?: number;
+      generations?: number;
+      mutationRate?: number;
+      crossoverRate?: number;
+      elitismRate?: number;
+      maxConsecutiveNights?: number;
+      maxWeeklyHours?: number;
+      minRestHours?: number;
+      enforceAvailability?: boolean;
+      allowOvertime?: boolean;
+      preferenceWeight?: number;
+      coverageWeight?: number;
+      fairnessWeight?: number;
+      preferencesWeight?: number;
+      constraintsWeight?: number;
+    };
+  }) {
+    return this.request('/schedules/generate', {
+      method: 'POST',
+      body: JSON.stringify(scheduleData),
+    });
+  }
+
   // Health check
   async healthCheck() {
     return this.request('/health');
