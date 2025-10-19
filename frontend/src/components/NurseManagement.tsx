@@ -4,7 +4,17 @@ import { Button } from './ui/button';
 import { Badge } from './ui/badge';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from './ui/table';
 import { Dialog, DialogContent } from './ui/dialog';
-import { Users, UserPlus, Edit, Shield, Award } from 'lucide-react';
+import { 
+  AlertDialog, 
+  AlertDialogAction, 
+  AlertDialogCancel, 
+  AlertDialogContent, 
+  AlertDialogDescription, 
+  AlertDialogFooter, 
+  AlertDialogHeader, 
+  AlertDialogTitle 
+} from './ui/alert-dialog';
+import { Users, UserPlus, Edit, Shield, Award, Trash2 } from 'lucide-react';
 import { apiService, type Nurse } from '../utils/api';
 
 interface User {
@@ -39,9 +49,12 @@ export function NurseManagement({ user: _user }: NurseManagementProps) {
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [showSimpleModal, setShowSimpleModal] = useState(false);
+  const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
+  const [nurseToDelete, setNurseToDelete] = useState<Nurse | null>(null);
+  const [deleteLoading, setDeleteLoading] = useState(false);
   
   // Debug dialog state
-  console.log('🔍 Dialog states - Add:', isAddDialogOpen, 'Edit:', isEditDialogOpen, 'Simple:', showSimpleModal);
+  console.log('🔍 Dialog states - Add:', isAddDialogOpen, 'Edit:', isEditDialogOpen, 'Simple:', showSimpleModal, 'Delete:', deleteConfirmOpen);
 
   // Monitor state changes
   useEffect(() => {
@@ -188,6 +201,44 @@ export function NurseManagement({ user: _user }: NurseManagementProps) {
       yearsOfExperience: nurse.yearsOfExperience
     });
     setIsEditDialogOpen(true);
+  };
+
+  const handleDeleteNurse = (nurse: Nurse) => {
+    console.log('🗑️ Delete button clicked for nurse:', nurse.name);
+    setNurseToDelete(nurse);
+    setDeleteConfirmOpen(true);
+    console.log('🗑️ Delete dialog should be open now');
+  };
+
+  const confirmDeleteNurse = async () => {
+    if (!nurseToDelete) return;
+
+    try {
+      setDeleteLoading(true);
+      setError('');
+
+      const response = await apiService.deleteNurse(nurseToDelete.id);
+      
+      if (response.success) {
+        // Remove nurse from local state
+        setNurses(prev => prev.filter(n => n.id !== nurseToDelete.id));
+        setDeleteConfirmOpen(false);
+        setNurseToDelete(null);
+        console.log('Nurse deleted successfully:', nurseToDelete.name);
+      } else {
+        throw new Error(response.message || 'Failed to delete nurse');
+      }
+    } catch (error) {
+      console.error('Delete nurse error:', error);
+      setError(`Failed to delete nurse: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    } finally {
+      setDeleteLoading(false);
+    }
+  };
+
+  const cancelDeleteNurse = () => {
+    setDeleteConfirmOpen(false);
+    setNurseToDelete(null);
   };
 
 
@@ -346,13 +397,23 @@ export function NurseManagement({ user: _user }: NurseManagementProps) {
                         </div>
                       </TableCell>
                       <TableCell>
-                        <Button 
-                          variant="ghost" 
-                          size="sm" 
-                          onClick={() => handleEditNurse(nurse)}
-                        >
-                          <Edit className="h-4 w-4" />
-                        </Button>
+                        <div className="flex items-center space-x-1">
+                          <Button 
+                            variant="ghost" 
+                            size="sm" 
+                            onClick={() => handleEditNurse(nurse)}
+                          >
+                            <Edit className="h-4 w-4" />
+                          </Button>
+                          <Button 
+                            variant="ghost" 
+                            size="sm" 
+                            onClick={() => handleDeleteNurse(nurse)}
+                            className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        </div>
                       </TableCell>
                     </TableRow>
                   ))}
@@ -1014,6 +1075,105 @@ export function NurseManagement({ user: _user }: NurseManagementProps) {
           </div>
         </div>
       )}
+
+      {/* Delete Confirmation Dialog */}
+      {deleteConfirmOpen && (
+        <div style={{ 
+          position: 'fixed', 
+          top: 0, 
+          left: 0, 
+          right: 0, 
+          bottom: 0, 
+          backgroundColor: 'rgba(0,0,0,0.5)', 
+          zIndex: 9999,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center'
+        }}>
+          <div style={{
+            backgroundColor: 'white',
+            padding: '2rem',
+            borderRadius: '8px',
+            maxWidth: '500px',
+            width: '90%'
+          }}>
+            <h2 style={{ fontSize: '1.25rem', fontWeight: 'bold', marginBottom: '1rem' }}>Delete Nurse</h2>
+            <p style={{ marginBottom: '1.5rem' }}>
+              Are you sure you want to delete <strong>{nurseToDelete?.name}</strong>? 
+              This action cannot be undone. The nurse will be permanently removed from the system.
+            </p>
+            <div style={{ display: 'flex', gap: '1rem', justifyContent: 'flex-end' }}>
+              <button 
+                onClick={cancelDeleteNurse} 
+                disabled={deleteLoading}
+                style={{
+                  padding: '0.5rem 1rem',
+                  border: '1px solid #ccc',
+                  borderRadius: '4px',
+                  backgroundColor: 'white',
+                  cursor: 'pointer'
+                }}
+              >
+                Cancel
+              </button>
+              <button 
+                onClick={confirmDeleteNurse} 
+                disabled={deleteLoading}
+                style={{
+                  padding: '0.5rem 1rem',
+                  border: 'none',
+                  borderRadius: '4px',
+                  backgroundColor: '#dc2626',
+                  color: 'white',
+                  cursor: 'pointer'
+                }}
+              >
+                {deleteLoading ? 'Deleting...' : 'Delete'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+      
+      {/* Radix AlertDialog - keeping as backup */}
+      <AlertDialog 
+        key={nurseToDelete?.id || 'delete-dialog'}
+        open={false} 
+        onOpenChange={(open) => {
+          if (!open && !deleteLoading) {
+            cancelDeleteNurse();
+          }
+        }}
+      >
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Delete Nurse</AlertDialogTitle>
+            <AlertDialogDescription>
+              Are you sure you want to delete <strong>{nurseToDelete?.name}</strong>? 
+              This action cannot be undone. The nurse will be permanently removed from the system.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel onClick={cancelDeleteNurse} disabled={deleteLoading}>
+              Cancel
+            </AlertDialogCancel>
+            <AlertDialogAction 
+              onClick={confirmDeleteNurse} 
+              disabled={deleteLoading}
+              className="bg-red-600 hover:bg-red-700 focus:ring-red-500"
+            >
+              {deleteLoading ? (
+                <div className="flex items-center space-x-2">
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                  <span>Deleting...</span>
+                </div>
+              ) : (
+                'Delete'
+              )}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }

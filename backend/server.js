@@ -11,6 +11,7 @@ import nurseRoutes from './routes/nurses.js';
 import shiftRoutes from './routes/shifts.js';
 import scheduleRoutes from './routes/schedules.js';
 import wardRoutes from './routes/wards.js';
+import debugRoutes from './routes/debug.js';
 
 // Load environment variables
 dotenv.config();
@@ -91,6 +92,7 @@ app.use('/api/nurses', nurseRoutes);
 app.use('/api/shifts', shiftRoutes);
 app.use('/api/schedules', scheduleRoutes);
 app.use('/api/wards', wardRoutes);
+app.use('/api/debug', debugRoutes);
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {
