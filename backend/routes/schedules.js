@@ -82,20 +82,103 @@ const getQualifiedNursesForWards = async (wards) => {
 
 // Helper function to filter eligible nurses from a given list for a specific ward
 const filterEligibleNurses = (nurses, ward) => {
-  return nurses.filter(nurse => {
-    // Check if nurse has access to this ward
-    const hasWardAccess = nurse.wardAccess && nurse.wardAccess.includes(ward.name);
-    
-    // Check if nurse meets minimum hierarchy level
-    const meetsHierarchy = (nurse.hierarchyLevel || 1) >= (ward.minHierarchyLevel || 1);
-    
-    // Check if nurse has required qualifications
-    const hasQualifications = ward.qualifications && ward.qualifications.length > 0 
-      ? ward.qualifications.some(qual => nurse.qualifications && nurse.qualifications.includes(qual))
-      : true; // If no qualifications required, any nurse is eligible
-    
-    return hasWardAccess && meetsHierarchy && hasQualifications;
+  console.log(`🔍 === FILTERING NURSES FOR WARD: ${ward.name} ===`);
+  console.log(`🔍 Ward details:`, {
+    name: ward.name,
+    qualifications: ward.qualifications,
+    patientTypes: ward.patientTypes,
+    minHierarchyLevel: ward.minHierarchyLevel
   });
+  
+  const eligible = nurses.filter(nurse => {
+    console.log(`\n🔍 Checking nurse: ${nurse.name}`);
+    console.log(`👤 Nurse details:`, {
+      wardAccess: nurse.wardAccess,
+      qualifications: nurse.qualifications, 
+      hierarchyLevel: nurse.hierarchyLevel
+    });
+    
+    // Step 1: Check ward access
+    let hasWardAccess = false;
+    
+    if (!nurse.wardAccess || nurse.wardAccess.length === 0) {
+      console.log(`✅ Ward Access: No restrictions (can work anywhere)`);
+      hasWardAccess = true;
+    } else if (nurse.wardAccess.includes(ward.name)) {
+      console.log(`✅ Ward Access: Direct access to ${ward.name}`);
+      hasWardAccess = true;
+    } else {
+      // Check for compatible patient types
+      const patientTypes = ward.patientTypes || [];
+      console.log(`🔍 Checking patient type compatibility: ward types ${JSON.stringify(patientTypes)} vs nurse access ${JSON.stringify(nurse.wardAccess)}`);
+      
+      for (const patientType of patientTypes) {
+        if (patientType === "pediatric" && (nurse.wardAccess.includes("pediatric") || nurse.wardAccess.includes("general"))) {
+          console.log(`✅ Ward Access: Compatible via pediatric/general access`);
+          hasWardAccess = true;
+          break;
+        }
+        if (patientType === "general" && nurse.wardAccess.includes("general")) {
+          console.log(`✅ Ward Access: Compatible via general access`);
+          hasWardAccess = true;
+          break;
+        }
+        if (patientType === "trauma" && nurse.wardAccess.includes("Trauma")) {
+          console.log(`✅ Ward Access: Compatible via trauma access`);
+          hasWardAccess = true;
+          break;
+        }
+      }
+      
+      if (!hasWardAccess) {
+        console.log(`❌ Ward Access: No compatible access found`);
+      }
+    }
+    
+    // Step 2: Check hierarchy level
+    const nurseLevel = nurse.hierarchyLevel || 1;
+    const requiredLevel = ward.minHierarchyLevel || 1;
+    const meetsHierarchy = nurseLevel >= requiredLevel;
+    console.log(`🏢 Hierarchy: ${nurseLevel} >= ${requiredLevel} = ${meetsHierarchy}`);
+    
+    // Step 3: Check qualifications
+    let hasQualifications = true;
+    if (ward.qualifications && ward.qualifications.length > 0) {
+      hasQualifications = ward.qualifications.some(qual => 
+        nurse.qualifications && nurse.qualifications.includes(qual)
+      );
+      const matchingQuals = ward.qualifications.filter(qual => 
+        nurse.qualifications && nurse.qualifications.includes(qual)
+      );
+      console.log(`🎓 Qualifications: Has ${matchingQuals.length}/${ward.qualifications.length} required (${JSON.stringify(matchingQuals)}) = ${hasQualifications}`);
+    } else {
+      console.log(`🎓 Qualifications: No requirements = ${hasQualifications}`);
+    }
+    
+    const isEligible = hasWardAccess && meetsHierarchy && hasQualifications;
+    console.log(`🏆 FINAL RESULT: ${isEligible} (Access: ${hasWardAccess}, Hierarchy: ${meetsHierarchy}, Qualifications: ${hasQualifications})`);
+    
+    return isEligible;
+  });
+  
+  console.log(`\n🔍 === SUMMARY: Found ${eligible.length} eligible nurses out of ${nurses.length} total ===`);
+  
+  if (eligible.length === 0) {
+    console.log('⚠️ No eligible nurses found! Using fallback logic...');
+    
+    // More lenient fallback - just check qualifications
+    const fallbackEligible = nurses.filter(nurse => {
+      if (!ward.qualifications || ward.qualifications.length === 0) return true;
+      return ward.qualifications.some(qual => 
+        nurse.qualifications && nurse.qualifications.includes(qual)
+      );
+    }).slice(0, 10); // Limit to 10 nurses
+    
+    console.log(`🔄 Fallback: Using ${fallbackEligible.length} nurses with matching qualifications`);
+    return fallbackEligible;
+  }
+  
+  return eligible;
 };
 
 // POST /api/schedules/generate - Generate a new schedule using genetic algorithm
@@ -243,6 +326,12 @@ router.post('/generate', async (req, res) => {
           
           // Filter nurses eligible for this ward first
           const eligibleNurses = filterEligibleNurses(nurses, primaryWard);
+          console.log(`🔍 For ${shiftType} shift: ${eligibleNurses.length} eligible nurses found`);
+          
+          if (eligibleNurses.length === 0) {
+            console.log('❌ No eligible nurses found for this ward!');
+            return [];
+          }
           
           eligibleNurses.forEach(nurse => {
             const assignment = nurseAssignments.get(nurse._id.toString());

@@ -1,0 +1,3250 @@
+🚀 Server running on port 5000
+📱 Frontend URL: http://localhost:3000
+🌍 Environment: development
+🔗 API Base URL: http://localhost:5000/api
+✅ MongoDB Connected: localhost
+📥 Received schedule generation request
+🔍 DEBUG: Starting schedule generation process
+🔍 DEBUG: Setting useGeneticAlgorithm to false
+🔍 DEBUG: useGeneticAlgorithm = false
+[0mPOST /api/schedules/generate [33m400[0m 36.755 ms - 64[0m
+📥 Received schedule generation request
+🔍 DEBUG: Starting schedule generation process
+🔍 DEBUG: Setting useGeneticAlgorithm to false
+🔍 DEBUG: useGeneticAlgorithm = false
+[0mPOST /api/schedules/generate [33m400[0m 3.568 ms - 64[0m
+📥 Received schedule generation request
+🔍 DEBUG: Starting schedule generation process
+🔍 DEBUG: Setting useGeneticAlgorithm to false
+🔍 DEBUG: useGeneticAlgorithm = false
+🧬 Starting Basic schedule generation for 1 ward(s) from 2025-10-19 to 2025-10-20
+🔍 Finding qualified nurses for wards: [ 'okm' ]
+📋 Checking nurses for ward: okm
+📋 Required qualifications: BLS,NREMT,CCRN,CNS
+📋 Min hierarchy level: 1
+✅ Found 0 qualified nurses for okm ward
+⚠️ No perfectly qualified nurses found, trying fallback approaches...
+🔄 Fallback: Found 0 nurses with ward access for okm
+⚠️ Still no nurses found, trying qualification overlap approach...
+🔄 Found 39 nurses with overlapping qualifications
+📋 Found 39 nurses for schedule generation
+👩‍⚕️ Nurse details: [
+  {
+    id: new ObjectId('68ef95ea1c95f3ffde8738dd'),
+    name: 'nurse14',
+    role: 'charge_nurse',
+    qualifications: [ 'RN', 'BLS', 'NREMT' ]
+  },
+  {
+    id: new ObjectId('68ef96231c95f3ffde8738e6'),
+    name: 'nurse15',
+    role: 'charge_nurse',
+    qualifications: [ 'RN', 'BLS', 'NREMT' ]
+  },
+  {
+    id: new ObjectId('68ef964f1c95f3ffde8738eb'),
+    name: 'nurse16',
+    role: 'charge_nurse',
+    qualifications: [ 'RN', 'BLS', 'NREMT' ]
+  },
+  {
+    id: new ObjectId('68ef96811c95f3ffde8738f0'),
+    name: 'nurse17',
+    role: 'charge_nurse',
+    qualifications: [ 'RN', 'BLS', 'NREMT' ]
+  },
+  {
+    id: new ObjectId('68ef96a91c95f3ffde8738f5'),
+    name: 'nurse18',
+    role: 'charge_nurse',
+    qualifications: [ 'RN', 'BLS', 'NREMT' ]
+  },
+  {
+    id: new ObjectId('68ef96c61c95f3ffde8738fa'),
+    name: 'nurse19',
+    role: 'charge_nurse',
+    qualifications: [ 'RN', 'BLS', 'NREMT' ]
+  },
+  {
+    id: new ObjectId('68ef96f21c95f3ffde8738ff'),
+    name: 'nurse20',
+    role: 'charge_nurse',
+    qualifications: [ 'RN', 'BLS', 'NREMT' ]
+  },
+  {
+    id: new ObjectId('68ef97131c95f3ffde873904'),
+    name: 'nurse21',
+    role: 'charge_nurse',
+    qualifications: [ 'RN', 'BLS', 'NREMT' ]
+  },
+  {
+    id: new ObjectId('68ef972f1c95f3ffde873909'),
+    name: 'nurse22',
+    role: 'charge_nurse',
+    qualifications: [ 'RN', 'BLS', 'NREMT' ]
+  },
+  {
+    id: new ObjectId('68ef974d1c95f3ffde87390e'),
+    name: 'nurse23',
+    role: 'charge_nurse',
+    qualifications: [ 'RN', 'BLS', 'NREMT' ]
+  },
+  {
+    id: new ObjectId('68ef97771c95f3ffde873913'),
+    name: 'nurse24',
+    role: 'charge_nurse',
+    qualifications: [ 'RN', 'BLS', 'NREMT' ]
+  },
+  {
+    id: new ObjectId('68ef97981c95f3ffde873918'),
+    name: 'nurse25',
+    role: 'charge_nurse',
+    qualifications: [ 'RN', 'BLS', 'NREMT' ]
+  },
+  {
+    id: new ObjectId('68ef97c31c95f3ffde873920'),
+    name: 'nurse26',
+    role: 'staff_nurse',
+    qualifications: [ 'RN', 'BLS', 'NREMT' ]
+  },
+  {
+    id: new ObjectId('68ef97e41c95f3ffde873925'),
+    name: 'nurse27',
+    role: 'staff_nurse',
+    qualifications: [ 'RN', 'BLS', 'NREMT' ]
+  },
+  {
+    id: new ObjectId('68ef98001c95f3ffde87392a'),
+    name: 'nurse28',
+    role: 'staff_nurse',
+    qualifications: [ 'RN', 'BLS', 'NREMT' ]
+  },
+  {
+    id: new ObjectId('68ef98181c95f3ffde87392f'),
+    name: 'nurse29',
+    role: 'staff_nurse',
+    qualifications: [ 'RN', 'BLS', 'NREMT' ]
+  },
+  {
+    id: new ObjectId('68ef98301c95f3ffde873934'),
+    name: 'nurse30',
+    role: 'staff_nurse',
+    qualifications: [ 'RN', 'BLS', 'NREMT' ]
+  },
+  {
+    id: new ObjectId('68ef98451c95f3ffde873939'),
+    name: 'nurse31',
+    role: 'staff_nurse',
+    qualifications: [ 'RN', 'BLS', 'NREMT' ]
+  },
+  {
+    id: new ObjectId('68ef985f1c95f3ffde87393e'),
+    name: 'nurse32',
+    role: 'staff_nurse',
+    qualifications: [ 'RN', 'BLS', 'NREMT' ]
+  },
+  {
+    id: new ObjectId('68ef987c1c95f3ffde873943'),
+    name: 'nurse33',
+    role: 'staff_nurse',
+    qualifications: [ 'RN', 'BLS', 'NREMT' ]
+  },
+  {
+    id: new ObjectId('68ef98991c95f3ffde873948'),
+    name: 'nurse34',
+    role: 'staff_nurse',
+    qualifications: [ 'RN', 'BLS', 'NREMT' ]
+  },
+  {
+    id: new ObjectId('68f67624cce5186a1040e170'),
+    name: 'nurse35',
+    role: 'staff_nurse',
+    qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ]
+  },
+  {
+    id: new ObjectId('68f6764ccce5186a1040e175'),
+    name: 'nurse36',
+    role: 'staff_nurse',
+    qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ]
+  },
+  {
+    id: new ObjectId('68f6766dcce5186a1040e17a'),
+    name: 'nurse37',
+    role: 'staff_nurse',
+    qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ]
+  },
+  {
+    id: new ObjectId('68f676d6cce5186a1040e17f'),
+    name: 'nurse38',
+    role: 'staff_nurse',
+    qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ]
+  },
+  {
+    id: new ObjectId('68f676f7cce5186a1040e184'),
+    name: 'nurse39',
+    role: 'staff_nurse',
+    qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ]
+  },
+  {
+    id: new ObjectId('68f67717cce5186a1040e189'),
+    name: 'nurse40',
+    role: 'staff_nurse',
+    qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ]
+  },
+  {
+    id: new ObjectId('68f67744cce5186a1040e18e'),
+    name: 'nurse41',
+    role: 'staff_nurse',
+    qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ]
+  },
+  {
+    id: new ObjectId('68f67773cce5186a1040e193'),
+    name: 'nurse42',
+    role: 'staff_nurse',
+    qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ]
+  },
+  {
+    id: new ObjectId('68f6779acce5186a1040e198'),
+    name: 'nurse43',
+    role: 'staff_nurse',
+    qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ]
+  },
+  {
+    id: new ObjectId('68f677bccce5186a1040e19d'),
+    name: 'nurse44',
+    role: 'charge_nurse',
+    qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ]
+  },
+  {
+    id: new ObjectId('68f677eacce5186a1040e1a2'),
+    name: 'nurse45',
+    role: 'charge_nurse',
+    qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ]
+  },
+  {
+    id: new ObjectId('68f67869cce5186a1040e1a7'),
+    name: 'nurse46',
+    role: 'charge_nurse',
+    qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ]
+  },
+  {
+    id: new ObjectId('68f678a5cce5186a1040e1ac'),
+    name: 'nurse47',
+    role: 'charge_nurse',
+    qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ]
+  },
+  {
+    id: new ObjectId('68f678f2cce5186a1040e1b1'),
+    name: 'nurse48',
+    role: 'charge_nurse',
+    qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ]
+  },
+  {
+    id: new ObjectId('68f67936cce5186a1040e1b6'),
+    name: 'nurse49',
+    role: 'charge_nurse',
+    qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ]
+  },
+  {
+    id: new ObjectId('68f67977cce5186a1040e1bb'),
+    name: 'nurse50',
+    role: 'charge_nurse',
+    qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ]
+  },
+  {
+    id: new ObjectId('68f679aacce5186a1040e1c1'),
+    name: 'nurse51',
+    role: 'charge_nurse',
+    qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ]
+  },
+  {
+    id: new ObjectId('68f679d3cce5186a1040e1c6'),
+    name: 'nurse52',
+    role: 'charge_nurse',
+    qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ]
+  }
+]
+🔍 DEBUG: About to check algorithm condition - useGeneticAlgorithm: false nurses.length: 39
+📊 Using Basic Constraint-Based Algorithm...
+🔍 DEBUG: Entering basic algorithm branch
+🔍 === FILTERING NURSES FOR WARD: okm ===
+🔍 Ward details: {
+  name: 'okm',
+  qualifications: [ 'BLS', 'NREMT', 'CCRN', 'CNS' ],
+  patientTypes: [ 'pediatric', 'general' ],
+  minHierarchyLevel: 1
+}
+
+🔍 Checking nurse: nurse14
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse15
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse16
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse17
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse18
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse19
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse20
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse21
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse22
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse23
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse24
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse25
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse26
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 1
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 1 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse27
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 1
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 1 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse28
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 1
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 1 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse29
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 1
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 1 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse30
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 1
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 1 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse31
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 1
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 1 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse32
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 1
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 1 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse33
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 1
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 1 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse34
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 1
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 1 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse35
+👤 Nurse details: {
+  wardAccess: [ 'general', 'pediatric' ],
+  qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ],
+  hierarchyLevel: 1
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["general","pediatric"]
+✅ Ward Access: Compatible via pediatric/general access
+🏢 Hierarchy: 1 >= 1 = true
+🎓 Qualifications: Has 4/4 required (["BLS","NREMT","CCRN","CNS"]) = true
+🏆 FINAL RESULT: true (Access: true, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse36
+👤 Nurse details: {
+  wardAccess: [ 'general', 'pediatric' ],
+  qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ],
+  hierarchyLevel: 1
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["general","pediatric"]
+✅ Ward Access: Compatible via pediatric/general access
+🏢 Hierarchy: 1 >= 1 = true
+🎓 Qualifications: Has 4/4 required (["BLS","NREMT","CCRN","CNS"]) = true
+🏆 FINAL RESULT: true (Access: true, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse37
+👤 Nurse details: {
+  wardAccess: [ 'general', 'pediatric' ],
+  qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ],
+  hierarchyLevel: 1
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["general","pediatric"]
+✅ Ward Access: Compatible via pediatric/general access
+🏢 Hierarchy: 1 >= 1 = true
+🎓 Qualifications: Has 4/4 required (["BLS","NREMT","CCRN","CNS"]) = true
+🏆 FINAL RESULT: true (Access: true, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse38
+👤 Nurse details: {
+  wardAccess: [ 'general', 'pediatric' ],
+  qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ],
+  hierarchyLevel: 1
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["general","pediatric"]
+✅ Ward Access: Compatible via pediatric/general access
+🏢 Hierarchy: 1 >= 1 = true
+🎓 Qualifications: Has 4/4 required (["BLS","NREMT","CCRN","CNS"]) = true
+🏆 FINAL RESULT: true (Access: true, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse39
+👤 Nurse details: {
+  wardAccess: [ 'general', 'pediatric' ],
+  qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ],
+  hierarchyLevel: 1
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["general","pediatric"]
+✅ Ward Access: Compatible via pediatric/general access
+🏢 Hierarchy: 1 >= 1 = true
+🎓 Qualifications: Has 4/4 required (["BLS","NREMT","CCRN","CNS"]) = true
+🏆 FINAL RESULT: true (Access: true, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse40
+👤 Nurse details: {
+  wardAccess: [ 'general', 'pediatric' ],
+  qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ],
+  hierarchyLevel: 1
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["general","pediatric"]
+✅ Ward Access: Compatible via pediatric/general access
+🏢 Hierarchy: 1 >= 1 = true
+🎓 Qualifications: Has 4/4 required (["BLS","NREMT","CCRN","CNS"]) = true
+🏆 FINAL RESULT: true (Access: true, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse41
+👤 Nurse details: {
+  wardAccess: [ 'general', 'pediatric' ],
+  qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ],
+  hierarchyLevel: 1
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["general","pediatric"]
+✅ Ward Access: Compatible via pediatric/general access
+🏢 Hierarchy: 1 >= 1 = true
+🎓 Qualifications: Has 4/4 required (["BLS","NREMT","CCRN","CNS"]) = true
+🏆 FINAL RESULT: true (Access: true, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse42
+👤 Nurse details: {
+  wardAccess: [ 'general', 'pediatric' ],
+  qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ],
+  hierarchyLevel: 1
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["general","pediatric"]
+✅ Ward Access: Compatible via pediatric/general access
+🏢 Hierarchy: 1 >= 1 = true
+🎓 Qualifications: Has 4/4 required (["BLS","NREMT","CCRN","CNS"]) = true
+🏆 FINAL RESULT: true (Access: true, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse43
+👤 Nurse details: {
+  wardAccess: [ 'general', 'pediatric' ],
+  qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ],
+  hierarchyLevel: 1
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["general","pediatric"]
+✅ Ward Access: Compatible via pediatric/general access
+🏢 Hierarchy: 1 >= 1 = true
+🎓 Qualifications: Has 4/4 required (["BLS","NREMT","CCRN","CNS"]) = true
+🏆 FINAL RESULT: true (Access: true, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse44
+👤 Nurse details: {
+  wardAccess: [ 'general', 'pediatric' ],
+  qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["general","pediatric"]
+✅ Ward Access: Compatible via pediatric/general access
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 4/4 required (["BLS","NREMT","CCRN","CNS"]) = true
+🏆 FINAL RESULT: true (Access: true, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse45
+👤 Nurse details: {
+  wardAccess: [ 'general', 'pediatric' ],
+  qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["general","pediatric"]
+✅ Ward Access: Compatible via pediatric/general access
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 4/4 required (["BLS","NREMT","CCRN","CNS"]) = true
+🏆 FINAL RESULT: true (Access: true, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse46
+👤 Nurse details: {
+  wardAccess: [ 'general', 'pediatric' ],
+  qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["general","pediatric"]
+✅ Ward Access: Compatible via pediatric/general access
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 4/4 required (["BLS","NREMT","CCRN","CNS"]) = true
+🏆 FINAL RESULT: true (Access: true, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse47
+👤 Nurse details: {
+  wardAccess: [ 'general', 'pediatric' ],
+  qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["general","pediatric"]
+✅ Ward Access: Compatible via pediatric/general access
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 4/4 required (["BLS","NREMT","CCRN","CNS"]) = true
+🏆 FINAL RESULT: true (Access: true, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse48
+👤 Nurse details: {
+  wardAccess: [ 'general', 'pediatric' ],
+  qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["general","pediatric"]
+✅ Ward Access: Compatible via pediatric/general access
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 4/4 required (["BLS","NREMT","CCRN","CNS"]) = true
+🏆 FINAL RESULT: true (Access: true, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse49
+👤 Nurse details: {
+  wardAccess: [ 'general', 'pediatric' ],
+  qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["general","pediatric"]
+✅ Ward Access: Compatible via pediatric/general access
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 4/4 required (["BLS","NREMT","CCRN","CNS"]) = true
+🏆 FINAL RESULT: true (Access: true, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse50
+👤 Nurse details: {
+  wardAccess: [ 'general', 'pediatric' ],
+  qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["general","pediatric"]
+✅ Ward Access: Compatible via pediatric/general access
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 4/4 required (["BLS","NREMT","CCRN","CNS"]) = true
+🏆 FINAL RESULT: true (Access: true, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse51
+👤 Nurse details: {
+  wardAccess: [ 'general', 'pediatric' ],
+  qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["general","pediatric"]
+✅ Ward Access: Compatible via pediatric/general access
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 4/4 required (["BLS","NREMT","CCRN","CNS"]) = true
+🏆 FINAL RESULT: true (Access: true, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse52
+👤 Nurse details: {
+  wardAccess: [ 'general', 'pediatric' ],
+  qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["general","pediatric"]
+✅ Ward Access: Compatible via pediatric/general access
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 4/4 required (["BLS","NREMT","CCRN","CNS"]) = true
+🏆 FINAL RESULT: true (Access: true, Hierarchy: true, Qualifications: true)
+
+🔍 === SUMMARY: Found 18 eligible nurses out of 39 total ===
+🔍 For DAY shift: 18 eligible nurses found
+🔍 === FILTERING NURSES FOR WARD: okm ===
+🔍 Ward details: {
+  name: 'okm',
+  qualifications: [ 'BLS', 'NREMT', 'CCRN', 'CNS' ],
+  patientTypes: [ 'pediatric', 'general' ],
+  minHierarchyLevel: 1
+}
+
+🔍 Checking nurse: nurse14
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse15
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse16
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse17
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse18
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse19
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse20
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse21
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse22
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse23
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse24
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse25
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse26
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 1
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 1 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse27
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 1
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 1 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse28
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 1
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 1 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse29
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 1
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 1 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse30
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 1
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 1 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse31
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 1
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 1 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse32
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 1
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 1 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse33
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 1
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 1 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse34
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 1
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 1 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse35
+👤 Nurse details: {
+  wardAccess: [ 'general', 'pediatric' ],
+  qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ],
+  hierarchyLevel: 1
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["general","pediatric"]
+✅ Ward Access: Compatible via pediatric/general access
+🏢 Hierarchy: 1 >= 1 = true
+🎓 Qualifications: Has 4/4 required (["BLS","NREMT","CCRN","CNS"]) = true
+🏆 FINAL RESULT: true (Access: true, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse36
+👤 Nurse details: {
+  wardAccess: [ 'general', 'pediatric' ],
+  qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ],
+  hierarchyLevel: 1
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["general","pediatric"]
+✅ Ward Access: Compatible via pediatric/general access
+🏢 Hierarchy: 1 >= 1 = true
+🎓 Qualifications: Has 4/4 required (["BLS","NREMT","CCRN","CNS"]) = true
+🏆 FINAL RESULT: true (Access: true, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse37
+👤 Nurse details: {
+  wardAccess: [ 'general', 'pediatric' ],
+  qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ],
+  hierarchyLevel: 1
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["general","pediatric"]
+✅ Ward Access: Compatible via pediatric/general access
+🏢 Hierarchy: 1 >= 1 = true
+🎓 Qualifications: Has 4/4 required (["BLS","NREMT","CCRN","CNS"]) = true
+🏆 FINAL RESULT: true (Access: true, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse38
+👤 Nurse details: {
+  wardAccess: [ 'general', 'pediatric' ],
+  qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ],
+  hierarchyLevel: 1
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["general","pediatric"]
+✅ Ward Access: Compatible via pediatric/general access
+🏢 Hierarchy: 1 >= 1 = true
+🎓 Qualifications: Has 4/4 required (["BLS","NREMT","CCRN","CNS"]) = true
+🏆 FINAL RESULT: true (Access: true, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse39
+👤 Nurse details: {
+  wardAccess: [ 'general', 'pediatric' ],
+  qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ],
+  hierarchyLevel: 1
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["general","pediatric"]
+✅ Ward Access: Compatible via pediatric/general access
+🏢 Hierarchy: 1 >= 1 = true
+🎓 Qualifications: Has 4/4 required (["BLS","NREMT","CCRN","CNS"]) = true
+🏆 FINAL RESULT: true (Access: true, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse40
+👤 Nurse details: {
+  wardAccess: [ 'general', 'pediatric' ],
+  qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ],
+  hierarchyLevel: 1
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["general","pediatric"]
+✅ Ward Access: Compatible via pediatric/general access
+🏢 Hierarchy: 1 >= 1 = true
+🎓 Qualifications: Has 4/4 required (["BLS","NREMT","CCRN","CNS"]) = true
+🏆 FINAL RESULT: true (Access: true, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse41
+👤 Nurse details: {
+  wardAccess: [ 'general', 'pediatric' ],
+  qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ],
+  hierarchyLevel: 1
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["general","pediatric"]
+✅ Ward Access: Compatible via pediatric/general access
+🏢 Hierarchy: 1 >= 1 = true
+🎓 Qualifications: Has 4/4 required (["BLS","NREMT","CCRN","CNS"]) = true
+🏆 FINAL RESULT: true (Access: true, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse42
+👤 Nurse details: {
+  wardAccess: [ 'general', 'pediatric' ],
+  qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ],
+  hierarchyLevel: 1
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["general","pediatric"]
+✅ Ward Access: Compatible via pediatric/general access
+🏢 Hierarchy: 1 >= 1 = true
+🎓 Qualifications: Has 4/4 required (["BLS","NREMT","CCRN","CNS"]) = true
+🏆 FINAL RESULT: true (Access: true, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse43
+👤 Nurse details: {
+  wardAccess: [ 'general', 'pediatric' ],
+  qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ],
+  hierarchyLevel: 1
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["general","pediatric"]
+✅ Ward Access: Compatible via pediatric/general access
+🏢 Hierarchy: 1 >= 1 = true
+🎓 Qualifications: Has 4/4 required (["BLS","NREMT","CCRN","CNS"]) = true
+🏆 FINAL RESULT: true (Access: true, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse44
+👤 Nurse details: {
+  wardAccess: [ 'general', 'pediatric' ],
+  qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["general","pediatric"]
+✅ Ward Access: Compatible via pediatric/general access
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 4/4 required (["BLS","NREMT","CCRN","CNS"]) = true
+🏆 FINAL RESULT: true (Access: true, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse45
+👤 Nurse details: {
+  wardAccess: [ 'general', 'pediatric' ],
+  qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["general","pediatric"]
+✅ Ward Access: Compatible via pediatric/general access
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 4/4 required (["BLS","NREMT","CCRN","CNS"]) = true
+🏆 FINAL RESULT: true (Access: true, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse46
+👤 Nurse details: {
+  wardAccess: [ 'general', 'pediatric' ],
+  qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["general","pediatric"]
+✅ Ward Access: Compatible via pediatric/general access
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 4/4 required (["BLS","NREMT","CCRN","CNS"]) = true
+🏆 FINAL RESULT: true (Access: true, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse47
+👤 Nurse details: {
+  wardAccess: [ 'general', 'pediatric' ],
+  qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["general","pediatric"]
+✅ Ward Access: Compatible via pediatric/general access
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 4/4 required (["BLS","NREMT","CCRN","CNS"]) = true
+🏆 FINAL RESULT: true (Access: true, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse48
+👤 Nurse details: {
+  wardAccess: [ 'general', 'pediatric' ],
+  qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["general","pediatric"]
+✅ Ward Access: Compatible via pediatric/general access
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 4/4 required (["BLS","NREMT","CCRN","CNS"]) = true
+🏆 FINAL RESULT: true (Access: true, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse49
+👤 Nurse details: {
+  wardAccess: [ 'general', 'pediatric' ],
+  qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["general","pediatric"]
+✅ Ward Access: Compatible via pediatric/general access
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 4/4 required (["BLS","NREMT","CCRN","CNS"]) = true
+🏆 FINAL RESULT: true (Access: true, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse50
+👤 Nurse details: {
+  wardAccess: [ 'general', 'pediatric' ],
+  qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["general","pediatric"]
+✅ Ward Access: Compatible via pediatric/general access
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 4/4 required (["BLS","NREMT","CCRN","CNS"]) = true
+🏆 FINAL RESULT: true (Access: true, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse51
+👤 Nurse details: {
+  wardAccess: [ 'general', 'pediatric' ],
+  qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["general","pediatric"]
+✅ Ward Access: Compatible via pediatric/general access
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 4/4 required (["BLS","NREMT","CCRN","CNS"]) = true
+🏆 FINAL RESULT: true (Access: true, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse52
+👤 Nurse details: {
+  wardAccess: [ 'general', 'pediatric' ],
+  qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["general","pediatric"]
+✅ Ward Access: Compatible via pediatric/general access
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 4/4 required (["BLS","NREMT","CCRN","CNS"]) = true
+🏆 FINAL RESULT: true (Access: true, Hierarchy: true, Qualifications: true)
+
+🔍 === SUMMARY: Found 18 eligible nurses out of 39 total ===
+🔍 For EVENING shift: 18 eligible nurses found
+🔍 === FILTERING NURSES FOR WARD: okm ===
+🔍 Ward details: {
+  name: 'okm',
+  qualifications: [ 'BLS', 'NREMT', 'CCRN', 'CNS' ],
+  patientTypes: [ 'pediatric', 'general' ],
+  minHierarchyLevel: 1
+}
+
+🔍 Checking nurse: nurse14
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse15
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse16
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse17
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse18
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse19
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse20
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse21
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse22
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse23
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse24
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse25
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse26
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 1
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 1 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse27
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 1
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 1 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse28
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 1
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 1 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse29
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 1
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 1 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse30
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 1
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 1 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse31
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 1
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 1 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse32
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 1
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 1 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse33
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 1
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 1 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse34
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 1
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 1 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse35
+👤 Nurse details: {
+  wardAccess: [ 'general', 'pediatric' ],
+  qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ],
+  hierarchyLevel: 1
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["general","pediatric"]
+✅ Ward Access: Compatible via pediatric/general access
+🏢 Hierarchy: 1 >= 1 = true
+🎓 Qualifications: Has 4/4 required (["BLS","NREMT","CCRN","CNS"]) = true
+🏆 FINAL RESULT: true (Access: true, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse36
+👤 Nurse details: {
+  wardAccess: [ 'general', 'pediatric' ],
+  qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ],
+  hierarchyLevel: 1
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["general","pediatric"]
+✅ Ward Access: Compatible via pediatric/general access
+🏢 Hierarchy: 1 >= 1 = true
+🎓 Qualifications: Has 4/4 required (["BLS","NREMT","CCRN","CNS"]) = true
+🏆 FINAL RESULT: true (Access: true, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse37
+👤 Nurse details: {
+  wardAccess: [ 'general', 'pediatric' ],
+  qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ],
+  hierarchyLevel: 1
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["general","pediatric"]
+✅ Ward Access: Compatible via pediatric/general access
+🏢 Hierarchy: 1 >= 1 = true
+🎓 Qualifications: Has 4/4 required (["BLS","NREMT","CCRN","CNS"]) = true
+🏆 FINAL RESULT: true (Access: true, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse38
+👤 Nurse details: {
+  wardAccess: [ 'general', 'pediatric' ],
+  qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ],
+  hierarchyLevel: 1
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["general","pediatric"]
+✅ Ward Access: Compatible via pediatric/general access
+🏢 Hierarchy: 1 >= 1 = true
+🎓 Qualifications: Has 4/4 required (["BLS","NREMT","CCRN","CNS"]) = true
+🏆 FINAL RESULT: true (Access: true, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse39
+👤 Nurse details: {
+  wardAccess: [ 'general', 'pediatric' ],
+  qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ],
+  hierarchyLevel: 1
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["general","pediatric"]
+✅ Ward Access: Compatible via pediatric/general access
+🏢 Hierarchy: 1 >= 1 = true
+🎓 Qualifications: Has 4/4 required (["BLS","NREMT","CCRN","CNS"]) = true
+🏆 FINAL RESULT: true (Access: true, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse40
+👤 Nurse details: {
+  wardAccess: [ 'general', 'pediatric' ],
+  qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ],
+  hierarchyLevel: 1
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["general","pediatric"]
+✅ Ward Access: Compatible via pediatric/general access
+🏢 Hierarchy: 1 >= 1 = true
+🎓 Qualifications: Has 4/4 required (["BLS","NREMT","CCRN","CNS"]) = true
+🏆 FINAL RESULT: true (Access: true, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse41
+👤 Nurse details: {
+  wardAccess: [ 'general', 'pediatric' ],
+  qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ],
+  hierarchyLevel: 1
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["general","pediatric"]
+✅ Ward Access: Compatible via pediatric/general access
+🏢 Hierarchy: 1 >= 1 = true
+🎓 Qualifications: Has 4/4 required (["BLS","NREMT","CCRN","CNS"]) = true
+🏆 FINAL RESULT: true (Access: true, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse42
+👤 Nurse details: {
+  wardAccess: [ 'general', 'pediatric' ],
+  qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ],
+  hierarchyLevel: 1
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["general","pediatric"]
+✅ Ward Access: Compatible via pediatric/general access
+🏢 Hierarchy: 1 >= 1 = true
+🎓 Qualifications: Has 4/4 required (["BLS","NREMT","CCRN","CNS"]) = true
+🏆 FINAL RESULT: true (Access: true, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse43
+👤 Nurse details: {
+  wardAccess: [ 'general', 'pediatric' ],
+  qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ],
+  hierarchyLevel: 1
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["general","pediatric"]
+✅ Ward Access: Compatible via pediatric/general access
+🏢 Hierarchy: 1 >= 1 = true
+🎓 Qualifications: Has 4/4 required (["BLS","NREMT","CCRN","CNS"]) = true
+🏆 FINAL RESULT: true (Access: true, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse44
+👤 Nurse details: {
+  wardAccess: [ 'general', 'pediatric' ],
+  qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["general","pediatric"]
+✅ Ward Access: Compatible via pediatric/general access
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 4/4 required (["BLS","NREMT","CCRN","CNS"]) = true
+🏆 FINAL RESULT: true (Access: true, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse45
+👤 Nurse details: {
+  wardAccess: [ 'general', 'pediatric' ],
+  qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["general","pediatric"]
+✅ Ward Access: Compatible via pediatric/general access
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 4/4 required (["BLS","NREMT","CCRN","CNS"]) = true
+🏆 FINAL RESULT: true (Access: true, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse46
+👤 Nurse details: {
+  wardAccess: [ 'general', 'pediatric' ],
+  qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["general","pediatric"]
+✅ Ward Access: Compatible via pediatric/general access
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 4/4 required (["BLS","NREMT","CCRN","CNS"]) = true
+🏆 FINAL RESULT: true (Access: true, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse47
+👤 Nurse details: {
+  wardAccess: [ 'general', 'pediatric' ],
+  qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["general","pediatric"]
+✅ Ward Access: Compatible via pediatric/general access
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 4/4 required (["BLS","NREMT","CCRN","CNS"]) = true
+🏆 FINAL RESULT: true (Access: true, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse48
+👤 Nurse details: {
+  wardAccess: [ 'general', 'pediatric' ],
+  qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["general","pediatric"]
+✅ Ward Access: Compatible via pediatric/general access
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 4/4 required (["BLS","NREMT","CCRN","CNS"]) = true
+🏆 FINAL RESULT: true (Access: true, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse49
+👤 Nurse details: {
+  wardAccess: [ 'general', 'pediatric' ],
+  qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["general","pediatric"]
+✅ Ward Access: Compatible via pediatric/general access
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 4/4 required (["BLS","NREMT","CCRN","CNS"]) = true
+🏆 FINAL RESULT: true (Access: true, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse50
+👤 Nurse details: {
+  wardAccess: [ 'general', 'pediatric' ],
+  qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["general","pediatric"]
+✅ Ward Access: Compatible via pediatric/general access
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 4/4 required (["BLS","NREMT","CCRN","CNS"]) = true
+🏆 FINAL RESULT: true (Access: true, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse51
+👤 Nurse details: {
+  wardAccess: [ 'general', 'pediatric' ],
+  qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["general","pediatric"]
+✅ Ward Access: Compatible via pediatric/general access
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 4/4 required (["BLS","NREMT","CCRN","CNS"]) = true
+🏆 FINAL RESULT: true (Access: true, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse52
+👤 Nurse details: {
+  wardAccess: [ 'general', 'pediatric' ],
+  qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["general","pediatric"]
+✅ Ward Access: Compatible via pediatric/general access
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 4/4 required (["BLS","NREMT","CCRN","CNS"]) = true
+🏆 FINAL RESULT: true (Access: true, Hierarchy: true, Qualifications: true)
+
+🔍 === SUMMARY: Found 18 eligible nurses out of 39 total ===
+🔍 For NIGHT shift: 18 eligible nurses found
+🔍 === FILTERING NURSES FOR WARD: okm ===
+🔍 Ward details: {
+  name: 'okm',
+  qualifications: [ 'BLS', 'NREMT', 'CCRN', 'CNS' ],
+  patientTypes: [ 'pediatric', 'general' ],
+  minHierarchyLevel: 1
+}
+
+🔍 Checking nurse: nurse14
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse15
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse16
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse17
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse18
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse19
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse20
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse21
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse22
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse23
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse24
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse25
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse26
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 1
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 1 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse27
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 1
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 1 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse28
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 1
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 1 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse29
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 1
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 1 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse30
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 1
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 1 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse31
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 1
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 1 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse32
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 1
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 1 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse33
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 1
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 1 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse34
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 1
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 1 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse35
+👤 Nurse details: {
+  wardAccess: [ 'general', 'pediatric' ],
+  qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ],
+  hierarchyLevel: 1
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["general","pediatric"]
+✅ Ward Access: Compatible via pediatric/general access
+🏢 Hierarchy: 1 >= 1 = true
+🎓 Qualifications: Has 4/4 required (["BLS","NREMT","CCRN","CNS"]) = true
+🏆 FINAL RESULT: true (Access: true, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse36
+👤 Nurse details: {
+  wardAccess: [ 'general', 'pediatric' ],
+  qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ],
+  hierarchyLevel: 1
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["general","pediatric"]
+✅ Ward Access: Compatible via pediatric/general access
+🏢 Hierarchy: 1 >= 1 = true
+🎓 Qualifications: Has 4/4 required (["BLS","NREMT","CCRN","CNS"]) = true
+🏆 FINAL RESULT: true (Access: true, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse37
+👤 Nurse details: {
+  wardAccess: [ 'general', 'pediatric' ],
+  qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ],
+  hierarchyLevel: 1
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["general","pediatric"]
+✅ Ward Access: Compatible via pediatric/general access
+🏢 Hierarchy: 1 >= 1 = true
+🎓 Qualifications: Has 4/4 required (["BLS","NREMT","CCRN","CNS"]) = true
+🏆 FINAL RESULT: true (Access: true, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse38
+👤 Nurse details: {
+  wardAccess: [ 'general', 'pediatric' ],
+  qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ],
+  hierarchyLevel: 1
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["general","pediatric"]
+✅ Ward Access: Compatible via pediatric/general access
+🏢 Hierarchy: 1 >= 1 = true
+🎓 Qualifications: Has 4/4 required (["BLS","NREMT","CCRN","CNS"]) = true
+🏆 FINAL RESULT: true (Access: true, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse39
+👤 Nurse details: {
+  wardAccess: [ 'general', 'pediatric' ],
+  qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ],
+  hierarchyLevel: 1
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["general","pediatric"]
+✅ Ward Access: Compatible via pediatric/general access
+🏢 Hierarchy: 1 >= 1 = true
+🎓 Qualifications: Has 4/4 required (["BLS","NREMT","CCRN","CNS"]) = true
+🏆 FINAL RESULT: true (Access: true, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse40
+👤 Nurse details: {
+  wardAccess: [ 'general', 'pediatric' ],
+  qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ],
+  hierarchyLevel: 1
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["general","pediatric"]
+✅ Ward Access: Compatible via pediatric/general access
+🏢 Hierarchy: 1 >= 1 = true
+🎓 Qualifications: Has 4/4 required (["BLS","NREMT","CCRN","CNS"]) = true
+🏆 FINAL RESULT: true (Access: true, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse41
+👤 Nurse details: {
+  wardAccess: [ 'general', 'pediatric' ],
+  qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ],
+  hierarchyLevel: 1
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["general","pediatric"]
+✅ Ward Access: Compatible via pediatric/general access
+🏢 Hierarchy: 1 >= 1 = true
+🎓 Qualifications: Has 4/4 required (["BLS","NREMT","CCRN","CNS"]) = true
+🏆 FINAL RESULT: true (Access: true, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse42
+👤 Nurse details: {
+  wardAccess: [ 'general', 'pediatric' ],
+  qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ],
+  hierarchyLevel: 1
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["general","pediatric"]
+✅ Ward Access: Compatible via pediatric/general access
+🏢 Hierarchy: 1 >= 1 = true
+🎓 Qualifications: Has 4/4 required (["BLS","NREMT","CCRN","CNS"]) = true
+🏆 FINAL RESULT: true (Access: true, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse43
+👤 Nurse details: {
+  wardAccess: [ 'general', 'pediatric' ],
+  qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ],
+  hierarchyLevel: 1
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["general","pediatric"]
+✅ Ward Access: Compatible via pediatric/general access
+🏢 Hierarchy: 1 >= 1 = true
+🎓 Qualifications: Has 4/4 required (["BLS","NREMT","CCRN","CNS"]) = true
+🏆 FINAL RESULT: true (Access: true, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse44
+👤 Nurse details: {
+  wardAccess: [ 'general', 'pediatric' ],
+  qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["general","pediatric"]
+✅ Ward Access: Compatible via pediatric/general access
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 4/4 required (["BLS","NREMT","CCRN","CNS"]) = true
+🏆 FINAL RESULT: true (Access: true, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse45
+👤 Nurse details: {
+  wardAccess: [ 'general', 'pediatric' ],
+  qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["general","pediatric"]
+✅ Ward Access: Compatible via pediatric/general access
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 4/4 required (["BLS","NREMT","CCRN","CNS"]) = true
+🏆 FINAL RESULT: true (Access: true, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse46
+👤 Nurse details: {
+  wardAccess: [ 'general', 'pediatric' ],
+  qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["general","pediatric"]
+✅ Ward Access: Compatible via pediatric/general access
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 4/4 required (["BLS","NREMT","CCRN","CNS"]) = true
+🏆 FINAL RESULT: true (Access: true, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse47
+👤 Nurse details: {
+  wardAccess: [ 'general', 'pediatric' ],
+  qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["general","pediatric"]
+✅ Ward Access: Compatible via pediatric/general access
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 4/4 required (["BLS","NREMT","CCRN","CNS"]) = true
+🏆 FINAL RESULT: true (Access: true, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse48
+👤 Nurse details: {
+  wardAccess: [ 'general', 'pediatric' ],
+  qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["general","pediatric"]
+✅ Ward Access: Compatible via pediatric/general access
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 4/4 required (["BLS","NREMT","CCRN","CNS"]) = true
+🏆 FINAL RESULT: true (Access: true, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse49
+👤 Nurse details: {
+  wardAccess: [ 'general', 'pediatric' ],
+  qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["general","pediatric"]
+✅ Ward Access: Compatible via pediatric/general access
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 4/4 required (["BLS","NREMT","CCRN","CNS"]) = true
+🏆 FINAL RESULT: true (Access: true, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse50
+👤 Nurse details: {
+  wardAccess: [ 'general', 'pediatric' ],
+  qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["general","pediatric"]
+✅ Ward Access: Compatible via pediatric/general access
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 4/4 required (["BLS","NREMT","CCRN","CNS"]) = true
+🏆 FINAL RESULT: true (Access: true, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse51
+👤 Nurse details: {
+  wardAccess: [ 'general', 'pediatric' ],
+  qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["general","pediatric"]
+✅ Ward Access: Compatible via pediatric/general access
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 4/4 required (["BLS","NREMT","CCRN","CNS"]) = true
+🏆 FINAL RESULT: true (Access: true, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse52
+👤 Nurse details: {
+  wardAccess: [ 'general', 'pediatric' ],
+  qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["general","pediatric"]
+✅ Ward Access: Compatible via pediatric/general access
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 4/4 required (["BLS","NREMT","CCRN","CNS"]) = true
+🏆 FINAL RESULT: true (Access: true, Hierarchy: true, Qualifications: true)
+
+🔍 === SUMMARY: Found 18 eligible nurses out of 39 total ===
+🔍 For DAY shift: 18 eligible nurses found
+🔍 === FILTERING NURSES FOR WARD: okm ===
+🔍 Ward details: {
+  name: 'okm',
+  qualifications: [ 'BLS', 'NREMT', 'CCRN', 'CNS' ],
+  patientTypes: [ 'pediatric', 'general' ],
+  minHierarchyLevel: 1
+}
+
+🔍 Checking nurse: nurse14
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse15
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse16
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse17
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse18
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse19
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse20
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse21
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse22
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse23
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse24
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse25
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse26
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 1
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 1 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse27
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 1
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 1 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse28
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 1
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 1 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse29
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 1
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 1 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse30
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 1
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 1 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse31
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 1
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 1 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse32
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 1
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 1 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse33
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 1
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 1 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse34
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 1
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 1 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse35
+👤 Nurse details: {
+  wardAccess: [ 'general', 'pediatric' ],
+  qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ],
+  hierarchyLevel: 1
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["general","pediatric"]
+✅ Ward Access: Compatible via pediatric/general access
+🏢 Hierarchy: 1 >= 1 = true
+🎓 Qualifications: Has 4/4 required (["BLS","NREMT","CCRN","CNS"]) = true
+🏆 FINAL RESULT: true (Access: true, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse36
+👤 Nurse details: {
+  wardAccess: [ 'general', 'pediatric' ],
+  qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ],
+  hierarchyLevel: 1
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["general","pediatric"]
+✅ Ward Access: Compatible via pediatric/general access
+🏢 Hierarchy: 1 >= 1 = true
+🎓 Qualifications: Has 4/4 required (["BLS","NREMT","CCRN","CNS"]) = true
+🏆 FINAL RESULT: true (Access: true, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse37
+👤 Nurse details: {
+  wardAccess: [ 'general', 'pediatric' ],
+  qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ],
+  hierarchyLevel: 1
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["general","pediatric"]
+✅ Ward Access: Compatible via pediatric/general access
+🏢 Hierarchy: 1 >= 1 = true
+🎓 Qualifications: Has 4/4 required (["BLS","NREMT","CCRN","CNS"]) = true
+🏆 FINAL RESULT: true (Access: true, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse38
+👤 Nurse details: {
+  wardAccess: [ 'general', 'pediatric' ],
+  qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ],
+  hierarchyLevel: 1
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["general","pediatric"]
+✅ Ward Access: Compatible via pediatric/general access
+🏢 Hierarchy: 1 >= 1 = true
+🎓 Qualifications: Has 4/4 required (["BLS","NREMT","CCRN","CNS"]) = true
+🏆 FINAL RESULT: true (Access: true, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse39
+👤 Nurse details: {
+  wardAccess: [ 'general', 'pediatric' ],
+  qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ],
+  hierarchyLevel: 1
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["general","pediatric"]
+✅ Ward Access: Compatible via pediatric/general access
+🏢 Hierarchy: 1 >= 1 = true
+🎓 Qualifications: Has 4/4 required (["BLS","NREMT","CCRN","CNS"]) = true
+🏆 FINAL RESULT: true (Access: true, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse40
+👤 Nurse details: {
+  wardAccess: [ 'general', 'pediatric' ],
+  qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ],
+  hierarchyLevel: 1
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["general","pediatric"]
+✅ Ward Access: Compatible via pediatric/general access
+🏢 Hierarchy: 1 >= 1 = true
+🎓 Qualifications: Has 4/4 required (["BLS","NREMT","CCRN","CNS"]) = true
+🏆 FINAL RESULT: true (Access: true, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse41
+👤 Nurse details: {
+  wardAccess: [ 'general', 'pediatric' ],
+  qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ],
+  hierarchyLevel: 1
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["general","pediatric"]
+✅ Ward Access: Compatible via pediatric/general access
+🏢 Hierarchy: 1 >= 1 = true
+🎓 Qualifications: Has 4/4 required (["BLS","NREMT","CCRN","CNS"]) = true
+🏆 FINAL RESULT: true (Access: true, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse42
+👤 Nurse details: {
+  wardAccess: [ 'general', 'pediatric' ],
+  qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ],
+  hierarchyLevel: 1
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["general","pediatric"]
+✅ Ward Access: Compatible via pediatric/general access
+🏢 Hierarchy: 1 >= 1 = true
+🎓 Qualifications: Has 4/4 required (["BLS","NREMT","CCRN","CNS"]) = true
+🏆 FINAL RESULT: true (Access: true, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse43
+👤 Nurse details: {
+  wardAccess: [ 'general', 'pediatric' ],
+  qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ],
+  hierarchyLevel: 1
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["general","pediatric"]
+✅ Ward Access: Compatible via pediatric/general access
+🏢 Hierarchy: 1 >= 1 = true
+🎓 Qualifications: Has 4/4 required (["BLS","NREMT","CCRN","CNS"]) = true
+🏆 FINAL RESULT: true (Access: true, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse44
+👤 Nurse details: {
+  wardAccess: [ 'general', 'pediatric' ],
+  qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["general","pediatric"]
+✅ Ward Access: Compatible via pediatric/general access
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 4/4 required (["BLS","NREMT","CCRN","CNS"]) = true
+🏆 FINAL RESULT: true (Access: true, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse45
+👤 Nurse details: {
+  wardAccess: [ 'general', 'pediatric' ],
+  qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["general","pediatric"]
+✅ Ward Access: Compatible via pediatric/general access
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 4/4 required (["BLS","NREMT","CCRN","CNS"]) = true
+🏆 FINAL RESULT: true (Access: true, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse46
+👤 Nurse details: {
+  wardAccess: [ 'general', 'pediatric' ],
+  qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["general","pediatric"]
+✅ Ward Access: Compatible via pediatric/general access
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 4/4 required (["BLS","NREMT","CCRN","CNS"]) = true
+🏆 FINAL RESULT: true (Access: true, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse47
+👤 Nurse details: {
+  wardAccess: [ 'general', 'pediatric' ],
+  qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["general","pediatric"]
+✅ Ward Access: Compatible via pediatric/general access
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 4/4 required (["BLS","NREMT","CCRN","CNS"]) = true
+🏆 FINAL RESULT: true (Access: true, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse48
+👤 Nurse details: {
+  wardAccess: [ 'general', 'pediatric' ],
+  qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["general","pediatric"]
+✅ Ward Access: Compatible via pediatric/general access
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 4/4 required (["BLS","NREMT","CCRN","CNS"]) = true
+🏆 FINAL RESULT: true (Access: true, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse49
+👤 Nurse details: {
+  wardAccess: [ 'general', 'pediatric' ],
+  qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["general","pediatric"]
+✅ Ward Access: Compatible via pediatric/general access
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 4/4 required (["BLS","NREMT","CCRN","CNS"]) = true
+🏆 FINAL RESULT: true (Access: true, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse50
+👤 Nurse details: {
+  wardAccess: [ 'general', 'pediatric' ],
+  qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["general","pediatric"]
+✅ Ward Access: Compatible via pediatric/general access
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 4/4 required (["BLS","NREMT","CCRN","CNS"]) = true
+🏆 FINAL RESULT: true (Access: true, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse51
+👤 Nurse details: {
+  wardAccess: [ 'general', 'pediatric' ],
+  qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["general","pediatric"]
+✅ Ward Access: Compatible via pediatric/general access
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 4/4 required (["BLS","NREMT","CCRN","CNS"]) = true
+🏆 FINAL RESULT: true (Access: true, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse52
+👤 Nurse details: {
+  wardAccess: [ 'general', 'pediatric' ],
+  qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["general","pediatric"]
+✅ Ward Access: Compatible via pediatric/general access
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 4/4 required (["BLS","NREMT","CCRN","CNS"]) = true
+🏆 FINAL RESULT: true (Access: true, Hierarchy: true, Qualifications: true)
+
+🔍 === SUMMARY: Found 18 eligible nurses out of 39 total ===
+🔍 For EVENING shift: 18 eligible nurses found
+🔍 === FILTERING NURSES FOR WARD: okm ===
+🔍 Ward details: {
+  name: 'okm',
+  qualifications: [ 'BLS', 'NREMT', 'CCRN', 'CNS' ],
+  patientTypes: [ 'pediatric', 'general' ],
+  minHierarchyLevel: 1
+}
+
+🔍 Checking nurse: nurse14
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse15
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse16
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse17
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse18
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse19
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse20
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse21
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse22
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse23
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse24
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse25
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse26
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 1
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 1 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse27
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 1
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 1 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse28
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 1
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 1 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse29
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 1
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 1 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse30
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 1
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 1 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse31
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 1
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 1 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse32
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 1
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 1 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse33
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 1
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 1 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse34
+👤 Nurse details: {
+  wardAccess: [ 'Trauma' ],
+  qualifications: [ 'RN', 'BLS', 'NREMT' ],
+  hierarchyLevel: 1
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["Trauma"]
+❌ Ward Access: No compatible access found
+🏢 Hierarchy: 1 >= 1 = true
+🎓 Qualifications: Has 2/4 required (["BLS","NREMT"]) = true
+🏆 FINAL RESULT: false (Access: false, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse35
+👤 Nurse details: {
+  wardAccess: [ 'general', 'pediatric' ],
+  qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ],
+  hierarchyLevel: 1
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["general","pediatric"]
+✅ Ward Access: Compatible via pediatric/general access
+🏢 Hierarchy: 1 >= 1 = true
+🎓 Qualifications: Has 4/4 required (["BLS","NREMT","CCRN","CNS"]) = true
+🏆 FINAL RESULT: true (Access: true, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse36
+👤 Nurse details: {
+  wardAccess: [ 'general', 'pediatric' ],
+  qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ],
+  hierarchyLevel: 1
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["general","pediatric"]
+✅ Ward Access: Compatible via pediatric/general access
+🏢 Hierarchy: 1 >= 1 = true
+🎓 Qualifications: Has 4/4 required (["BLS","NREMT","CCRN","CNS"]) = true
+🏆 FINAL RESULT: true (Access: true, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse37
+👤 Nurse details: {
+  wardAccess: [ 'general', 'pediatric' ],
+  qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ],
+  hierarchyLevel: 1
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["general","pediatric"]
+✅ Ward Access: Compatible via pediatric/general access
+🏢 Hierarchy: 1 >= 1 = true
+🎓 Qualifications: Has 4/4 required (["BLS","NREMT","CCRN","CNS"]) = true
+🏆 FINAL RESULT: true (Access: true, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse38
+👤 Nurse details: {
+  wardAccess: [ 'general', 'pediatric' ],
+  qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ],
+  hierarchyLevel: 1
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["general","pediatric"]
+✅ Ward Access: Compatible via pediatric/general access
+🏢 Hierarchy: 1 >= 1 = true
+🎓 Qualifications: Has 4/4 required (["BLS","NREMT","CCRN","CNS"]) = true
+🏆 FINAL RESULT: true (Access: true, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse39
+👤 Nurse details: {
+  wardAccess: [ 'general', 'pediatric' ],
+  qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ],
+  hierarchyLevel: 1
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["general","pediatric"]
+✅ Ward Access: Compatible via pediatric/general access
+🏢 Hierarchy: 1 >= 1 = true
+🎓 Qualifications: Has 4/4 required (["BLS","NREMT","CCRN","CNS"]) = true
+🏆 FINAL RESULT: true (Access: true, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse40
+👤 Nurse details: {
+  wardAccess: [ 'general', 'pediatric' ],
+  qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ],
+  hierarchyLevel: 1
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["general","pediatric"]
+✅ Ward Access: Compatible via pediatric/general access
+🏢 Hierarchy: 1 >= 1 = true
+🎓 Qualifications: Has 4/4 required (["BLS","NREMT","CCRN","CNS"]) = true
+🏆 FINAL RESULT: true (Access: true, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse41
+👤 Nurse details: {
+  wardAccess: [ 'general', 'pediatric' ],
+  qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ],
+  hierarchyLevel: 1
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["general","pediatric"]
+✅ Ward Access: Compatible via pediatric/general access
+🏢 Hierarchy: 1 >= 1 = true
+🎓 Qualifications: Has 4/4 required (["BLS","NREMT","CCRN","CNS"]) = true
+🏆 FINAL RESULT: true (Access: true, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse42
+👤 Nurse details: {
+  wardAccess: [ 'general', 'pediatric' ],
+  qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ],
+  hierarchyLevel: 1
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["general","pediatric"]
+✅ Ward Access: Compatible via pediatric/general access
+🏢 Hierarchy: 1 >= 1 = true
+🎓 Qualifications: Has 4/4 required (["BLS","NREMT","CCRN","CNS"]) = true
+🏆 FINAL RESULT: true (Access: true, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse43
+👤 Nurse details: {
+  wardAccess: [ 'general', 'pediatric' ],
+  qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ],
+  hierarchyLevel: 1
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["general","pediatric"]
+✅ Ward Access: Compatible via pediatric/general access
+🏢 Hierarchy: 1 >= 1 = true
+🎓 Qualifications: Has 4/4 required (["BLS","NREMT","CCRN","CNS"]) = true
+🏆 FINAL RESULT: true (Access: true, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse44
+👤 Nurse details: {
+  wardAccess: [ 'general', 'pediatric' ],
+  qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["general","pediatric"]
+✅ Ward Access: Compatible via pediatric/general access
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 4/4 required (["BLS","NREMT","CCRN","CNS"]) = true
+🏆 FINAL RESULT: true (Access: true, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse45
+👤 Nurse details: {
+  wardAccess: [ 'general', 'pediatric' ],
+  qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["general","pediatric"]
+✅ Ward Access: Compatible via pediatric/general access
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 4/4 required (["BLS","NREMT","CCRN","CNS"]) = true
+🏆 FINAL RESULT: true (Access: true, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse46
+👤 Nurse details: {
+  wardAccess: [ 'general', 'pediatric' ],
+  qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["general","pediatric"]
+✅ Ward Access: Compatible via pediatric/general access
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 4/4 required (["BLS","NREMT","CCRN","CNS"]) = true
+🏆 FINAL RESULT: true (Access: true, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse47
+👤 Nurse details: {
+  wardAccess: [ 'general', 'pediatric' ],
+  qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["general","pediatric"]
+✅ Ward Access: Compatible via pediatric/general access
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 4/4 required (["BLS","NREMT","CCRN","CNS"]) = true
+🏆 FINAL RESULT: true (Access: true, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse48
+👤 Nurse details: {
+  wardAccess: [ 'general', 'pediatric' ],
+  qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["general","pediatric"]
+✅ Ward Access: Compatible via pediatric/general access
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 4/4 required (["BLS","NREMT","CCRN","CNS"]) = true
+🏆 FINAL RESULT: true (Access: true, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse49
+👤 Nurse details: {
+  wardAccess: [ 'general', 'pediatric' ],
+  qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["general","pediatric"]
+✅ Ward Access: Compatible via pediatric/general access
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 4/4 required (["BLS","NREMT","CCRN","CNS"]) = true
+🏆 FINAL RESULT: true (Access: true, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse50
+👤 Nurse details: {
+  wardAccess: [ 'general', 'pediatric' ],
+  qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["general","pediatric"]
+✅ Ward Access: Compatible via pediatric/general access
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 4/4 required (["BLS","NREMT","CCRN","CNS"]) = true
+🏆 FINAL RESULT: true (Access: true, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse51
+👤 Nurse details: {
+  wardAccess: [ 'general', 'pediatric' ],
+  qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["general","pediatric"]
+✅ Ward Access: Compatible via pediatric/general access
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 4/4 required (["BLS","NREMT","CCRN","CNS"]) = true
+🏆 FINAL RESULT: true (Access: true, Hierarchy: true, Qualifications: true)
+
+🔍 Checking nurse: nurse52
+👤 Nurse details: {
+  wardAccess: [ 'general', 'pediatric' ],
+  qualifications: [ 'BLS', 'CCRN', 'NREMT', 'CNS' ],
+  hierarchyLevel: 2
+}
+🔍 Checking patient type compatibility: ward types ["pediatric","general"] vs nurse access ["general","pediatric"]
+✅ Ward Access: Compatible via pediatric/general access
+🏢 Hierarchy: 2 >= 1 = true
+🎓 Qualifications: Has 4/4 required (["BLS","NREMT","CCRN","CNS"]) = true
+🏆 FINAL RESULT: true (Access: true, Hierarchy: true, Qualifications: true)
+
+🔍 === SUMMARY: Found 18 eligible nurses out of 39 total ===
+🔍 For NIGHT shift: 18 eligible nurses found
+📊 Basic Algorithm completed successfully
+✅ Basic Algorithm schedule generated successfully
+📊 Sample day data: {
+  "date": "2025-10-19",
+  "dayOfWeek": "Sunday",
+  "shifts": {
+    "day": {
+      "assignedNurses": [
+        {
+          "nurseId": "68f67624cce5186a1040e170",
+          "nurseName": "nurse35",
+          "hours": 8,
+          "specialization": "staff_nurse",
+          "isFloating": false,
+          "overtime": false,
+          "preference": "AVAILABLE"
+        },
+        {
+          "nurseId": "68f6764ccce5186a1040e175",
+          "nurseName": "nurse36",
+          "hours": 8,
+          "specialization": "staff_nurse",
+          "isFloating": false,
+          "overtime": false,
+          "preference": "AVAILABLE"
+        },
+        {
+          "nurseId": "68f6766dcce5186a1040e17a",
+          "nurseName": "nurse37",
+          "hours": 8,
+          "specialization": "staff_nurse",
+          "isFloating": false,
+          "overtime": false,
+          "preference": "AVAILABLE"
+        }
+      ],
+      "requiredNurses": 3,
+      "actualNurses": 3,
+      "coverage": 100
+    },
+    "evening": {
+      "assignedNurses": [
+        {
+          "nurseId": "68f676d6cce5186a1040e17f",
+          "nurseName": "nurse38",
+          "hours": 8,
+          "specialization": "staff_nurse",
+          "isFloating": false,
+          "overtime": false,
+          "preference": "AVAILABLE"
+        },
+        {
+          "nurseId": "68f676f7cce5186a1040e184",
+          "nurseName": "nurse39",
+          "hours": 8,
+          "specialization": "staff_nurse",
+          "isFloating": false,
+          "overtime": false,
+          "preference": "AVAILABLE"
+        },
+        {
+          "nurseId": "68f67717cce5186a1040e189",
+          "nurseName": "nurse40",
+          "hours": 8,
+          "specialization": "staff_nurse",
+          "isFloating": false,
+          "overtime": false,
+          "preference": "AVAILABLE"
+        }
+      ],
+      "requiredNurses": 3,
+      "actualNurses": 3,
+      "coverage": 100
+    },
+    "night": {
+      "assignedNurses": [
+        {
+          "nurseId": "68f67744cce5186a1040e18e",
+          "nurseName": "nurse41",
+          "hours": 8,
+          "specialization": "staff_nurse",
+          "isFloating": false,
+          "overtime": false,
+          "preference": "AVAILABLE"
+        },
+        {
+          "nurseId": "68f67773cce5186a1040e193",
+          "nurseName": "nurse42",
+          "hours": 8,
+          "specialization": "staff_nurse",
+          "isFloating": false,
+          "overtime": false,
+          "preference": "AVAILABLE"
+        },
+        {
+          "nurseId": "68f6779acce5186a1040e198",
+          "nurseName": "nurse43",
+          "hours": 8,
+          "specialization": "staff_nurse",
+          "isFloating": false,
+          "overtime": false,
+          "preference": "AVAILABLE"
+        }
+      ],
+      "requiredNurses": 3,
+      "actualNurses": 3,
+      "coverage": 100
+    }
+  },
+  "totalCoverage": 9,
+  "coveragePercentage": 100
+}
+[0mPOST /api/schedules/generate [32m201[0m 636.004 ms - 18926[0m

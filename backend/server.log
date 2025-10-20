@@ -1,0 +1,303 @@
+🚀 Server running on port 5000
+📱 Frontend URL: http://localhost:3000
+🌍 Environment: development
+🔗 API Base URL: http://localhost:5000/api
+✅ MongoDB Connected: localhost
+[0mGET /api/wards [32m200[0m 51.662 ms - 5387[0m
+📥 Received schedule generation request
+🔍 DEBUG: Starting schedule generation process
+🔍 DEBUG: Setting useGeneticAlgorithm to false
+🔍 DEBUG: useGeneticAlgorithm = false
+🧬 Starting Basic schedule generation for 1 ward(s) from 2024-12-16 to 2024-12-17
+🔍 Finding qualified nurses for wards: [ 'Trauma' ]
+📋 Checking nurses for ward: Trauma
+📋 Required qualifications: RN,BLS,NREMT
+📋 Min hierarchy level: 1
+✅ Found 21 qualified nurses for Trauma ward
+📋 Found 21 nurses for schedule generation
+👩‍⚕️ Nurse details: [
+  {
+    id: new ObjectId('68ef95ea1c95f3ffde8738dd'),
+    name: 'nurse14',
+    role: 'charge_nurse',
+    qualifications: [ 'RN', 'BLS', 'NREMT' ]
+  },
+  {
+    id: new ObjectId('68ef96231c95f3ffde8738e6'),
+    name: 'nurse15',
+    role: 'charge_nurse',
+    qualifications: [ 'RN', 'BLS', 'NREMT' ]
+  },
+  {
+    id: new ObjectId('68ef964f1c95f3ffde8738eb'),
+    name: 'nurse16',
+    role: 'charge_nurse',
+    qualifications: [ 'RN', 'BLS', 'NREMT' ]
+  },
+  {
+    id: new ObjectId('68ef96811c95f3ffde8738f0'),
+    name: 'nurse17',
+    role: 'charge_nurse',
+    qualifications: [ 'RN', 'BLS', 'NREMT' ]
+  },
+  {
+    id: new ObjectId('68ef96a91c95f3ffde8738f5'),
+    name: 'nurse18',
+    role: 'charge_nurse',
+    qualifications: [ 'RN', 'BLS', 'NREMT' ]
+  },
+  {
+    id: new ObjectId('68ef96c61c95f3ffde8738fa'),
+    name: 'nurse19',
+    role: 'charge_nurse',
+    qualifications: [ 'RN', 'BLS', 'NREMT' ]
+  },
+  {
+    id: new ObjectId('68ef96f21c95f3ffde8738ff'),
+    name: 'nurse20',
+    role: 'charge_nurse',
+    qualifications: [ 'RN', 'BLS', 'NREMT' ]
+  },
+  {
+    id: new ObjectId('68ef97131c95f3ffde873904'),
+    name: 'nurse21',
+    role: 'charge_nurse',
+    qualifications: [ 'RN', 'BLS', 'NREMT' ]
+  },
+  {
+    id: new ObjectId('68ef972f1c95f3ffde873909'),
+    name: 'nurse22',
+    role: 'charge_nurse',
+    qualifications: [ 'RN', 'BLS', 'NREMT' ]
+  },
+  {
+    id: new ObjectId('68ef974d1c95f3ffde87390e'),
+    name: 'nurse23',
+    role: 'charge_nurse',
+    qualifications: [ 'RN', 'BLS', 'NREMT' ]
+  },
+  {
+    id: new ObjectId('68ef97771c95f3ffde873913'),
+    name: 'nurse24',
+    role: 'charge_nurse',
+    qualifications: [ 'RN', 'BLS', 'NREMT' ]
+  },
+  {
+    id: new ObjectId('68ef97981c95f3ffde873918'),
+    name: 'nurse25',
+    role: 'charge_nurse',
+    qualifications: [ 'RN', 'BLS', 'NREMT' ]
+  },
+  {
+    id: new ObjectId('68ef97c31c95f3ffde873920'),
+    name: 'nurse26',
+    role: 'staff_nurse',
+    qualifications: [ 'RN', 'BLS', 'NREMT' ]
+  },
+  {
+    id: new ObjectId('68ef97e41c95f3ffde873925'),
+    name: 'nurse27',
+    role: 'staff_nurse',
+    qualifications: [ 'RN', 'BLS', 'NREMT' ]
+  },
+  {
+    id: new ObjectId('68ef98001c95f3ffde87392a'),
+    name: 'nurse28',
+    role: 'staff_nurse',
+    qualifications: [ 'RN', 'BLS', 'NREMT' ]
+  },
+  {
+    id: new ObjectId('68ef98181c95f3ffde87392f'),
+    name: 'nurse29',
+    role: 'staff_nurse',
+    qualifications: [ 'RN', 'BLS', 'NREMT' ]
+  },
+  {
+    id: new ObjectId('68ef98301c95f3ffde873934'),
+    name: 'nurse30',
+    role: 'staff_nurse',
+    qualifications: [ 'RN', 'BLS', 'NREMT' ]
+  },
+  {
+    id: new ObjectId('68ef98451c95f3ffde873939'),
+    name: 'nurse31',
+    role: 'staff_nurse',
+    qualifications: [ 'RN', 'BLS', 'NREMT' ]
+  },
+  {
+    id: new ObjectId('68ef985f1c95f3ffde87393e'),
+    name: 'nurse32',
+    role: 'staff_nurse',
+    qualifications: [ 'RN', 'BLS', 'NREMT' ]
+  },
+  {
+    id: new ObjectId('68ef987c1c95f3ffde873943'),
+    name: 'nurse33',
+    role: 'staff_nurse',
+    qualifications: [ 'RN', 'BLS', 'NREMT' ]
+  },
+  {
+    id: new ObjectId('68ef98991c95f3ffde873948'),
+    name: 'nurse34',
+    role: 'staff_nurse',
+    qualifications: [ 'RN', 'BLS', 'NREMT' ]
+  }
+]
+🔍 DEBUG: About to check algorithm condition - useGeneticAlgorithm: false nurses.length: 21
+📊 Using Basic Constraint-Based Algorithm...
+🔍 DEBUG: Entering basic algorithm branch
+📊 Basic Algorithm completed successfully
+✅ Basic Algorithm schedule generated successfully
+📊 Sample day data: {
+  "date": "2024-12-16",
+  "dayOfWeek": "Monday",
+  "shifts": {
+    "day": {
+      "assignedNurses": [
+        {
+          "nurseId": "68ef95ea1c95f3ffde8738dd",
+          "nurseName": "nurse14",
+          "hours": 8,
+          "specialization": "charge_nurse",
+          "isFloating": false,
+          "overtime": false,
+          "preference": "AVAILABLE"
+        },
+        {
+          "nurseId": "68ef96231c95f3ffde8738e6",
+          "nurseName": "nurse15",
+          "hours": 8,
+          "specialization": "charge_nurse",
+          "isFloating": false,
+          "overtime": false,
+          "preference": "AVAILABLE"
+        },
+        {
+          "nurseId": "68ef964f1c95f3ffde8738eb",
+          "nurseName": "nurse16",
+          "hours": 8,
+          "specialization": "charge_nurse",
+          "isFloating": false,
+          "overtime": false,
+          "preference": "AVAILABLE"
+        },
+        {
+          "nurseId": "68ef96811c95f3ffde8738f0",
+          "nurseName": "nurse17",
+          "hours": 8,
+          "specialization": "charge_nurse",
+          "isFloating": false,
+          "overtime": false,
+          "preference": "AVAILABLE"
+        }
+      ],
+      "requiredNurses": 4,
+      "actualNurses": 4,
+      "coverage": 100
+    },
+    "evening": {
+      "assignedNurses": [
+        {
+          "nurseId": "68ef96a91c95f3ffde8738f5",
+          "nurseName": "nurse18",
+          "hours": 8,
+          "specialization": "charge_nurse",
+          "isFloating": false,
+          "overtime": false,
+          "preference": "AVAILABLE"
+        },
+        {
+          "nurseId": "68ef96c61c95f3ffde8738fa",
+          "nurseName": "nurse19",
+          "hours": 8,
+          "specialization": "charge_nurse",
+          "isFloating": false,
+          "overtime": false,
+          "preference": "AVAILABLE"
+        },
+        {
+          "nurseId": "68ef96f21c95f3ffde8738ff",
+          "nurseName": "nurse20",
+          "hours": 8,
+          "specialization": "charge_nurse",
+          "isFloating": false,
+          "overtime": false,
+          "preference": "AVAILABLE"
+        },
+        {
+          "nurseId": "68ef97131c95f3ffde873904",
+          "nurseName": "nurse21",
+          "hours": 8,
+          "specialization": "charge_nurse",
+          "isFloating": false,
+          "overtime": false,
+          "preference": "AVAILABLE"
+        }
+      ],
+      "requiredNurses": 4,
+      "actualNurses": 4,
+      "coverage": 100
+    },
+    "night": {
+      "assignedNurses": [
+        {
+          "nurseId": "68ef972f1c95f3ffde873909",
+          "nurseName": "nurse22",
+          "hours": 8,
+          "specialization": "charge_nurse",
+          "isFloating": false,
+          "overtime": false,
+          "preference": "AVAILABLE"
+        },
+        {
+          "nurseId": "68ef974d1c95f3ffde87390e",
+          "nurseName": "nurse23",
+          "hours": 8,
+          "specialization": "charge_nurse",
+          "isFloating": false,
+          "overtime": false,
+          "preference": "AVAILABLE"
+        },
+        {
+          "nurseId": "68ef97771c95f3ffde873913",
+          "nurseName": "nurse24",
+          "hours": 8,
+          "specialization": "charge_nurse",
+          "isFloating": false,
+          "overtime": false,
+          "preference": "AVAILABLE"
+        },
+        {
+          "nurseId": "68ef97981c95f3ffde873918",
+          "nurseName": "nurse25",
+          "hours": 8,
+          "specialization": "charge_nurse",
+          "isFloating": false,
+          "overtime": false,
+          "preference": "AVAILABLE"
+        }
+      ],
+      "requiredNurses": 4,
+      "actualNurses": 4,
+      "coverage": 100
+    }
+  },
+  "totalCoverage": 12,
+  "coveragePercentage": 100
+}
+[0mPOST /api/schedules/generate [32m201[0m 194.368 ms - 13851[0m
+📥 Received schedule generation request
+🔍 DEBUG: Starting schedule generation process
+🔍 DEBUG: Setting useGeneticAlgorithm to false
+🔍 DEBUG: useGeneticAlgorithm = false
+[0mPOST /api/schedules/generate [33m400[0m 1.746 ms - 64[0m
+📥 Received schedule generation request
+🔍 DEBUG: Starting schedule generation process
+🔍 DEBUG: Setting useGeneticAlgorithm to false
+🔍 DEBUG: useGeneticAlgorithm = false
+[0mPOST /api/schedules/generate [33m400[0m 1.260 ms - 64[0m
+📥 Received schedule generation request
+🔍 DEBUG: Starting schedule generation process
+🔍 DEBUG: Setting useGeneticAlgorithm to false
+🔍 DEBUG: useGeneticAlgorithm = false
+[0mPOST /api/schedules/generate [33m400[0m 1.227 ms - 64[0m
