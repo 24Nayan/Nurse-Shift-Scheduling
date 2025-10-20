@@ -8,6 +8,96 @@ import Nurse from '../models/Nurse.js';
 
 const router = express.Router();
 
+// Helper function to get qualified nurses for specific wards
+const getQualifiedNursesForWards = async (wards) => {
+  console.log('🔍 Finding qualified nurses for wards:', wards.map(w => w.name));
+  
+  let qualifiedNurses = [];
+  
+  for (const ward of wards) {
+    console.log(`📋 Checking nurses for ward: ${ward.name}`);
+    console.log(`📋 Required qualifications: ${ward.qualifications}`);
+    console.log(`📋 Min hierarchy level: ${ward.minHierarchyLevel}`);
+    
+    // Find nurses with proper ward access AND qualifications
+    const wardNurses = await Nurse.find({
+      isActive: true,
+      wardAccess: { $in: [ward.name] }, // Nurse must have access to this specific ward
+      hierarchyLevel: { $gte: ward.minHierarchyLevel || 1 }, // Meet minimum hierarchy level
+      // Check if nurse has at least one of the required qualifications
+      qualifications: { $in: ward.qualifications || [] }
+    });
+    
+    console.log(`✅ Found ${wardNurses.length} qualified nurses for ${ward.name} ward`);
+    
+    // Add to qualified nurses list (avoid duplicates)
+    wardNurses.forEach(nurse => {
+      if (!qualifiedNurses.some(qn => qn._id.toString() === nurse._id.toString())) {
+        qualifiedNurses.push(nurse);
+      }
+    });
+  }
+  
+  // If no qualified nurses found, try fallback approach
+  if (qualifiedNurses.length === 0) {
+    console.log('⚠️ No perfectly qualified nurses found, trying fallback approaches...');
+    
+    // Fallback 1: Find nurses with ward access but maybe missing some qualifications
+    for (const ward of wards) {
+      const fallbackNurses = await Nurse.find({
+        isActive: true,
+        wardAccess: { $in: [ward.name] },
+        hierarchyLevel: { $gte: ward.minHierarchyLevel || 1 }
+      });
+      
+      console.log(`🔄 Fallback: Found ${fallbackNurses.length} nurses with ward access for ${ward.name}`);
+      
+      fallbackNurses.forEach(nurse => {
+        if (!qualifiedNurses.some(qn => qn._id.toString() === nurse._id.toString())) {
+          qualifiedNurses.push(nurse);
+        }
+      });
+    }
+  }
+  
+  // Final fallback: Find nurses with overlapping qualifications from other wards
+  if (qualifiedNurses.length === 0) {
+    console.log('⚠️ Still no nurses found, trying qualification overlap approach...');
+    
+    const allRequiredQualifications = wards.reduce((acc, ward) => {
+      return acc.concat(ward.qualifications || []);
+    }, []);
+    
+    const overlapNurses = await Nurse.find({
+      isActive: true,
+      qualifications: { $in: allRequiredQualifications }
+    });
+    
+    console.log(`🔄 Found ${overlapNurses.length} nurses with overlapping qualifications`);
+    qualifiedNurses = overlapNurses;
+  }
+  
+  return qualifiedNurses;
+};
+
+// Helper function to filter eligible nurses from a given list for a specific ward
+const filterEligibleNurses = (nurses, ward) => {
+  return nurses.filter(nurse => {
+    // Check if nurse has access to this ward
+    const hasWardAccess = nurse.wardAccess && nurse.wardAccess.includes(ward.name);
+    
+    // Check if nurse meets minimum hierarchy level
+    const meetsHierarchy = (nurse.hierarchyLevel || 1) >= (ward.minHierarchyLevel || 1);
+    
+    // Check if nurse has required qualifications
+    const hasQualifications = ward.qualifications && ward.qualifications.length > 0 
+      ? ward.qualifications.some(qual => nurse.qualifications && nurse.qualifications.includes(qual))
+      : true; // If no qualifications required, any nurse is eligible
+    
+    return hasWardAccess && meetsHierarchy && hasQualifications;
+  });
+};
+
 // POST /api/schedules/generate - Generate a new schedule using genetic algorithm
 router.post('/generate', async (req, res) => {
   console.log('📥 Received schedule generation request');
@@ -66,53 +156,22 @@ router.post('/generate', async (req, res) => {
 
     console.log(`🧬 Starting ${useGeneticAlgorithm ? 'Genetic Algorithm' : 'Basic'} schedule generation for ${foundWards.length} ward(s) from ${startDate} to ${endDate}`);
     
-    // Get all nurses available for the ward(s)
-    let nurses = [];
+    // Get qualified nurses for the specific wards using our helper function
+    let nurses = await getQualifiedNursesForWards(foundWards);
     
-    // First, try to find nurses assigned to these specific wards
-    nurses = await Nurse.find({ 
-      wardAccess: { $in: wards },
-      isActive: { $ne: false }
-    });
-    
-    // If no ward-specific nurses, try to find any active nurses
+    // Validate that we have enough qualified nurses
     if (nurses.length === 0) {
-      console.log('No ward-specific nurses found, looking for any active nurses...');
-      nurses = await Nurse.find({ isActive: true });
-    }
-    
-    // If still no nurses, try to find any nurses at all
-    if (nurses.length === 0) {
-      console.log('No active nurses found, looking for any nurses...');
-      nurses = await Nurse.find({});
-    }
-    
-    // If no nurses exist in database, create real nurses and save them
-    if (nurses.length === 0) {
-      console.log('No nurses found in database, creating and saving real nurses...');
-      
-      const nurseData = [
-        { name: 'Dr. Sarah Johnson', role: 'charge_nurse', qualifications: ['BSN', 'MSN', 'Critical Care'], isActive: true, wardAccess: wards },
-        { name: 'Michael Chen', role: 'staff_nurse', qualifications: ['BSN', 'CCRN', 'BLS'], isActive: true, wardAccess: wards },
-        { name: 'Emily Davis', role: 'staff_nurse', qualifications: ['BSN', 'BLS', 'ACLS'], isActive: true, wardAccess: wards },
-        { name: 'James Wilson', role: 'staff_nurse', qualifications: ['BSN', 'NRP', 'PALS'], isActive: true, wardAccess: wards },
-        { name: 'Lisa Martinez', role: 'senior_nurse', qualifications: ['BSN', 'ACLS', 'Emergency'], isActive: true, wardAccess: wards },
-        { name: 'Robert Brown', role: 'staff_nurse', qualifications: ['BSN', 'Medical-Surgical'], isActive: true, wardAccess: wards },
-        { name: 'Jessica White', role: 'staff_nurse', qualifications: ['BSN', 'PALS', 'Pediatric'], isActive: true, wardAccess: wards },
-        { name: 'Amanda Rodriguez', role: 'staff_nurse', qualifications: ['BSN', 'CEN', 'Emergency'], isActive: true, wardAccess: wards },
-        { name: 'David Thompson', role: 'staff_nurse', qualifications: ['BSN', 'TNCC', 'Trauma'], isActive: true, wardAccess: wards },
-        { name: 'Jennifer Kim', role: 'senior_nurse', qualifications: ['BSN', 'MSN', 'CCRN', 'ICU'], isActive: true, wardAccess: wards },
-        { name: 'Matthew Lee', role: 'staff_nurse', qualifications: ['BSN', 'Oncology'], isActive: true, wardAccess: wards },
-        { name: 'Rachel Green', role: 'charge_nurse', qualifications: ['BSN', 'MSN', 'Leadership'], isActive: true, wardAccess: wards },
-        { name: 'Thomas Anderson', role: 'staff_nurse', qualifications: ['BSN', 'Cardiac'], isActive: true, wardAccess: wards },
-        { name: 'Maria Garcia', role: 'staff_nurse', qualifications: ['BSN', 'Maternity'], isActive: true, wardAccess: wards },
-        { name: 'Kevin Wang', role: 'senior_nurse', qualifications: ['BSN', 'MSN', 'Surgical'], isActive: true, wardAccess: wards }
-      ];
-      
-      // Create and save nurses to database
-      const createdNurses = await Nurse.insertMany(nurseData);
-      nurses = createdNurses;
-      console.log(`✅ Created ${nurses.length} new nurses in database`);
+      return res.status(400).json({
+        success: false,
+        message: `No qualified nurses found for the specified ward(s). Please ensure nurses have proper ward access and qualifications.`,
+        details: {
+          wards: foundWards.map(w => ({ 
+            name: w.name, 
+            requiredQualifications: w.qualifications,
+            minHierarchyLevel: w.minHierarchyLevel 
+          }))
+        }
+      });
     }
     
     console.log(`📋 Found ${nurses.length} nurses for schedule generation`);
@@ -178,11 +237,14 @@ router.post('/generate', async (req, res) => {
         const requiredEvening = primaryWard.shiftRequirements?.evening?.nurses || 2;
         const requiredNight = primaryWard.shiftRequirements?.night?.nurses || 1;
         
-        // Smart nurse assignment function that prevents consecutive shifts
+        // Smart nurse assignment function that prevents consecutive shifts and filters by ward eligibility
         const assignNursesToShift = (shiftType, required, shiftHours) => {
           const availableNurses = [];
           
-          nurses.forEach(nurse => {
+          // Filter nurses eligible for this ward first
+          const eligibleNurses = filterEligibleNurses(nurses, primaryWard);
+          
+          eligibleNurses.forEach(nurse => {
             const assignment = nurseAssignments.get(nurse._id.toString());
             let isAvailable = true;
             
