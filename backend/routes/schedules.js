@@ -311,18 +311,72 @@ router.post('/generate', async (req, res) => {
       let currentDate = new Date(start);
       const primaryWard = foundWards[0]; // Use first ward for basic algorithm
       
+      console.log('🔍 PRIMARY WARD DEBUG:', {
+        name: primaryWard.name,
+        id: primaryWard._id,
+        shiftRequirements: primaryWard.shiftRequirements
+      });
+      
+      // ADDITIONAL DEBUG: Show detailed shift requirement breakdown
+      console.log('📋 DETAILED WARD SHIFT REQUIREMENTS:', {
+        day: {
+          nurses: primaryWard.shiftRequirements?.day?.nurses,
+          chargeNurses: primaryWard.shiftRequirements?.day?.chargeNurses,
+          total: (primaryWard.shiftRequirements?.day?.nurses || 0) + (primaryWard.shiftRequirements?.day?.chargeNurses || 0)
+        },
+        evening: {
+          nurses: primaryWard.shiftRequirements?.evening?.nurses,
+          chargeNurses: primaryWard.shiftRequirements?.evening?.chargeNurses,
+          total: (primaryWard.shiftRequirements?.evening?.nurses || 0) + (primaryWard.shiftRequirements?.evening?.chargeNurses || 0)
+        },
+        night: {
+          nurses: primaryWard.shiftRequirements?.night?.nurses,
+          chargeNurses: primaryWard.shiftRequirements?.night?.chargeNurses,
+          total: (primaryWard.shiftRequirements?.night?.nurses || 0) + (primaryWard.shiftRequirements?.night?.chargeNurses || 0)
+        }
+      });
+      
       while (currentDate <= end) {
         const dateKey = currentDate.toISOString().split('T')[0];
         const dayOfWeek = currentDate.getDay();
         const dayName = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][dayOfWeek];
         
-        const requiredDay = primaryWard.shiftRequirements?.day?.nurses || 2;
-        const requiredEvening = primaryWard.shiftRequirements?.evening?.nurses || 2;
-        const requiredNight = primaryWard.shiftRequirements?.night?.nurses || 1;
+        // Get COMPLETE shift requirements - both staff and charge nurses
+        const dayRequirements = {
+          staffNurses: primaryWard.shiftRequirements?.day?.nurses || 2,
+          chargeNurses: primaryWard.shiftRequirements?.day?.chargeNurses || 2, // Updated default to 2
+          total: (primaryWard.shiftRequirements?.day?.nurses || 2) + (primaryWard.shiftRequirements?.day?.chargeNurses || 2)
+        };
         
-        // Smart nurse assignment function that prevents consecutive shifts and filters by ward eligibility
-        const assignNursesToShift = (shiftType, required, shiftHours) => {
-          const availableNurses = [];
+        const eveningRequirements = {
+          staffNurses: primaryWard.shiftRequirements?.evening?.nurses || 2,
+          chargeNurses: primaryWard.shiftRequirements?.evening?.chargeNurses || 2, // Updated default to 2
+          total: (primaryWard.shiftRequirements?.evening?.nurses || 2) + (primaryWard.shiftRequirements?.evening?.chargeNurses || 2)
+        };
+        
+        const nightRequirements = {
+          staffNurses: primaryWard.shiftRequirements?.night?.nurses || 2,     // Updated default to 2
+          chargeNurses: primaryWard.shiftRequirements?.night?.chargeNurses || 2, // Updated default to 2
+          total: (primaryWard.shiftRequirements?.night?.nurses || 2) + (primaryWard.shiftRequirements?.night?.chargeNurses || 2)
+        };
+        
+        console.log(`📋 Shift Requirements for ${dateKey}:`, {
+          day: dayRequirements,
+          evening: eveningRequirements,
+          night: nightRequirements
+        });
+        
+        // Enhanced nurse assignment function that assigns by role (staff vs charge)
+        const assignNursesToShift = (shiftType, requirements, shiftHours) => {
+          // Safety check for requirements parameter
+          if (!requirements || typeof requirements !== 'object') {
+            console.error(`❌ Invalid requirements passed to assignNursesToShift:`, requirements);
+            return { staffNurses: [], chargeNurses: [], total: [] };
+          }
+          
+          const { staffNurses: reqStaff, chargeNurses: reqCharge, total: reqTotal } = requirements;
+          
+          console.log(`\n🔍 Assigning ${shiftType} shift: ${reqStaff} staff + ${reqCharge} charge = ${reqTotal} total nurses`);
           
           // Filter nurses eligible for this ward first
           const eligibleNurses = filterEligibleNurses(nurses, primaryWard);
@@ -330,8 +384,12 @@ router.post('/generate', async (req, res) => {
           
           if (eligibleNurses.length === 0) {
             console.log('❌ No eligible nurses found for this ward!');
-            return [];
+            return { staffNurses: [], chargeNurses: [], total: [] };
           }
+          
+          // Separate nurses by hierarchy level (charge vs staff)
+          const availableChargeNurses = [];
+          const availableStaffNurses = [];
           
           eligibleNurses.forEach(nurse => {
             const assignment = nurseAssignments.get(nurse._id.toString());
@@ -353,87 +411,167 @@ router.post('/generate', async (req, res) => {
             }
             
             if (isAvailable) {
-              availableNurses.push({
+              const nurseHierarchy = nurse.hierarchyLevel || 1;
+              const nurseData = {
                 nurse,
-                priority: assignment.totalShiftsAssigned
-              });
+                priority: assignment.totalShiftsAssigned,
+                hierarchyLevel: nurseHierarchy
+              };
+              
+              // Classify based on hierarchy level - ADJUSTED for your data
+              // Level 2+ = Potential Charge Nurses, Level 1 = Staff Nurses
+              if (nurseHierarchy >= 2) {
+                availableChargeNurses.push(nurseData);
+              } 
+              // Also add Level 2 nurses to staff pool as backup
+              if (nurseHierarchy <= 2) {
+                availableStaffNurses.push(nurseData);
+              }
             }
           });
           
-          // Sort by priority (fairness)
-          availableNurses.sort((a, b) => a.priority - b.priority);
+          console.log(`👥 Available nurses: ${availableChargeNurses.length} charge, ${availableStaffNurses.length} staff`);
           
-          // Select required nurses
-          const selectedNurses = availableNurses.slice(0, required).map(item => item.nurse);
+          // Debug: Show hierarchy levels of available nurses
+          console.log(`🔍 Charge nurse candidates (Level 2+):`, availableChargeNurses.map(n => `${n.nurse.name}(L${n.hierarchyLevel})`));
+          console.log(`🔍 Staff nurse candidates (L1-2):`, availableStaffNurses.map(n => `${n.nurse.name}(L${n.hierarchyLevel})`));
+          
+          // Sort by priority (fairness)
+          availableChargeNurses.sort((a, b) => a.priority - b.priority);
+          availableStaffNurses.sort((a, b) => a.priority - b.priority);
+          
+          // Select charge nurses first
+          const selectedChargeNurses = availableChargeNurses.slice(0, reqCharge).map(item => item.nurse);
+          
+          // If not enough charge nurses, fill from available staff
+          let additionalChargeFromStaff = [];
+          if (selectedChargeNurses.length < reqCharge && availableStaffNurses.length > 0) {
+            const shortage = reqCharge - selectedChargeNurses.length;
+            console.log(`⚠️ Only ${selectedChargeNurses.length}/${reqCharge} charge nurses available, promoting ${shortage} staff nurses`);
+            additionalChargeFromStaff = availableStaffNurses.slice(0, shortage).map(item => item.nurse);
+            availableStaffNurses.splice(0, shortage); // Remove from staff pool
+          }
+          
+          // Select staff nurses
+          const selectedStaffNurses = availableStaffNurses.slice(0, reqStaff).map(item => item.nurse);
+          
+          const allSelectedNurses = [...selectedChargeNurses, ...additionalChargeFromStaff, ...selectedStaffNurses];
+          
+          console.log(`✅ Final assignment: ${selectedChargeNurses.length + additionalChargeFromStaff.length} charge + ${selectedStaffNurses.length} staff = ${allSelectedNurses.length} total`);
+          console.log(`🎯 Requirements vs Actual: Need ${reqTotal} total (${reqStaff} staff + ${reqCharge} charge), Got ${allSelectedNurses.length} total`);
+          
+          // WARNING: Ensure we meet minimum requirements
+          if (allSelectedNurses.length < reqTotal) {
+            console.log(`⚠️ WARNING: Assigned ${allSelectedNurses.length} but need ${reqTotal} nurses! This is a constraint issue.`);
+          }
           
           // Update assignments
-          selectedNurses.forEach(nurse => {
+          allSelectedNurses.forEach(nurse => {
             const assignment = nurseAssignments.get(nurse._id.toString());
             assignment.lastShift = shiftType;
             assignment.lastDate = dateKey;
             assignment.totalShiftsAssigned++;
           });
           
-          return selectedNurses.map(nurse => ({
+          // Create assignment objects with role distinction
+          const staffAssignments = selectedStaffNurses.map(nurse => ({
             nurseId: nurse._id,
             nurseName: nurse.name,
             hours: shiftHours,
-            specialization: nurse.role || 'staff_nurse',
+            specialization: 'staff_nurse',
+            role: 'Staff Nurse',
             isFloating: false,
             overtime: false,
             preference: 'AVAILABLE'
           }));
+          
+          const chargeAssignments = [...selectedChargeNurses, ...additionalChargeFromStaff].map(nurse => ({
+            nurseId: nurse._id,
+            nurseName: nurse.name,
+            hours: shiftHours,
+            specialization: 'charge_nurse',
+            role: 'Charge Nurse',
+            isFloating: false,
+            overtime: false,
+            preference: 'AVAILABLE'
+          }));
+          
+          return {
+            staffNurses: staffAssignments,
+            chargeNurses: chargeAssignments,
+            total: [...staffAssignments, ...chargeAssignments]
+          };
         };
         
-        // Assign nurses to each shift with constraints
+        // Assign nurses to each shift with proper role distinction
+        const dayAssignment = assignNursesToShift('DAY', dayRequirements, 8);
+        const eveningAssignment = assignNursesToShift('EVENING', eveningRequirements, 8);
+        const nightAssignment = assignNursesToShift('NIGHT', nightRequirements, 8);
+        
         const dayShifts = {
           DAY: {
-            nurses: assignNursesToShift('DAY', requiredDay, 8),
-            requiredNurses: requiredDay,
-            actualNurses: 0,
-            coverage: 0
+            nurses: dayAssignment.total,
+            staffNurses: dayAssignment.staffNurses,
+            chargeNurses: dayAssignment.chargeNurses,
+            requiredNurses: dayRequirements.total,
+            requiredStaffNurses: dayRequirements.staffNurses,
+            requiredChargeNurses: dayRequirements.chargeNurses,
+            actualNurses: dayAssignment.total.length,
+            actualStaffNurses: dayAssignment.staffNurses.length,
+            actualChargeNurses: dayAssignment.chargeNurses.length,
+            coverage: dayAssignment.total.length > 0 ? (dayAssignment.total.length / dayRequirements.total) * 100 : 0
           },
           EVENING: {
-            nurses: assignNursesToShift('EVENING', requiredEvening, 8),
-            requiredNurses: requiredEvening,
-            actualNurses: 0,
-            coverage: 0
+            nurses: eveningAssignment.total,
+            staffNurses: eveningAssignment.staffNurses,
+            chargeNurses: eveningAssignment.chargeNurses,
+            requiredNurses: eveningRequirements.total,
+            requiredStaffNurses: eveningRequirements.staffNurses,
+            requiredChargeNurses: eveningRequirements.chargeNurses,
+            actualNurses: eveningAssignment.total.length,
+            actualStaffNurses: eveningAssignment.staffNurses.length,
+            actualChargeNurses: eveningAssignment.chargeNurses.length,
+            coverage: eveningAssignment.total.length > 0 ? (eveningAssignment.total.length / eveningRequirements.total) * 100 : 0
           },
           NIGHT: {
-            nurses: assignNursesToShift('NIGHT', requiredNight, 8),
-            requiredNurses: requiredNight,
-            actualNurses: 0,
-            coverage: 0
+            nurses: nightAssignment.total,
+            staffNurses: nightAssignment.staffNurses,
+            chargeNurses: nightAssignment.chargeNurses,
+            requiredNurses: nightRequirements.total,
+            requiredStaffNurses: nightRequirements.staffNurses,
+            requiredChargeNurses: nightRequirements.chargeNurses,
+            actualNurses: nightAssignment.total.length,
+            actualStaffNurses: nightAssignment.staffNurses.length,
+            actualChargeNurses: nightAssignment.chargeNurses.length,
+            coverage: nightAssignment.total.length > 0 ? (nightAssignment.total.length / nightRequirements.total) * 100 : 0
           }
         };
-        
-        // Update actual counts and coverage
-        dayShifts.DAY.actualNurses = dayShifts.DAY.nurses.length;
-        dayShifts.DAY.coverage = dayShifts.DAY.actualNurses > 0 ? (dayShifts.DAY.actualNurses / requiredDay) * 100 : 0;
-        
-        dayShifts.EVENING.actualNurses = dayShifts.EVENING.nurses.length;
-        dayShifts.EVENING.coverage = dayShifts.EVENING.actualNurses > 0 ? (dayShifts.EVENING.actualNurses / requiredEvening) * 100 : 0;
-        
-        dayShifts.NIGHT.actualNurses = dayShifts.NIGHT.nurses.length;
-        dayShifts.NIGHT.coverage = dayShifts.NIGHT.actualNurses > 0 ? (dayShifts.NIGHT.actualNurses / requiredNight) * 100 : 0;
         
         scheduleData.set(dateKey, {
           date: dateKey,
           dayOfWeek: dayName,
           shifts: dayShifts,
           totalCoverage: (dayShifts.DAY.nurses.length + dayShifts.EVENING.nurses.length + dayShifts.NIGHT.nurses.length),
-          coveragePercentage: Math.min(100, (dayShifts.DAY.coverage + dayShifts.EVENING.coverage + dayShifts.NIGHT.coverage) / 3)
+          coveragePercentage: Math.min(100, (dayShifts.DAY.coverage + dayShifts.EVENING.coverage + dayShifts.NIGHT.coverage) / 3),
+          summary: {
+            totalRequired: dayRequirements.total + eveningRequirements.total + nightRequirements.total,
+            totalAssigned: dayShifts.DAY.actualNurses + dayShifts.EVENING.actualNurses + dayShifts.NIGHT.actualNurses,
+            staffRequired: dayRequirements.staffNurses + eveningRequirements.staffNurses + nightRequirements.staffNurses,
+            staffAssigned: dayShifts.DAY.actualStaffNurses + dayShifts.EVENING.actualStaffNurses + dayShifts.NIGHT.actualStaffNurses,
+            chargeRequired: dayRequirements.chargeNurses + eveningRequirements.chargeNurses + nightRequirements.chargeNurses,
+            chargeAssigned: dayShifts.DAY.actualChargeNurses + dayShifts.EVENING.actualChargeNurses + dayShifts.NIGHT.actualChargeNurses
+          }
         });
         
-        // Update nurse stats
+        // Update nurse stats with new structure
         const shifts = [
-          { key: 'DAY', type: 'dayShifts', hours: 8 },
-          { key: 'EVENING', type: 'eveningShifts', hours: 8 },
-          { key: 'NIGHT', type: 'nightShifts', hours: 8 }
+          { key: 'DAY', type: 'dayShifts', hours: 8, assignments: dayShifts.DAY.nurses },
+          { key: 'EVENING', type: 'eveningShifts', hours: 8, assignments: dayShifts.EVENING.nurses },
+          { key: 'NIGHT', type: 'nightShifts', hours: 8, assignments: dayShifts.NIGHT.nurses }
         ];
         
-        shifts.forEach(({ key, type, hours }) => {
-          dayShifts[key].nurses.forEach(assignment => {
+        shifts.forEach(({ key, type, hours, assignments }) => {
+          assignments.forEach(assignment => {
             const stats = nurseStats.get(assignment.nurseId.toString());
             if (stats) {
               stats.totalShifts++;

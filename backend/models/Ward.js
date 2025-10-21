@@ -68,6 +68,12 @@ const wardSchema = new mongoose.Schema({
         min: [0, 'Day shift nurses cannot be negative'],
         max: [50, 'Day shift nurses cannot exceed 50']
       },
+      chargeNurses: {
+        type: Number,
+        required: [true, 'Day shift charge nurses requirement is required'],
+        min: [0, 'Day shift charge nurses cannot be negative'],
+        max: [10, 'Day shift charge nurses cannot exceed 10']
+      },
       doctors: {
         type: Number,
         required: [true, 'Day shift doctors requirement is required'],
@@ -88,6 +94,12 @@ const wardSchema = new mongoose.Schema({
         min: [0, 'Evening shift nurses cannot be negative'],
         max: [50, 'Evening shift nurses cannot exceed 50']
       },
+      chargeNurses: {
+        type: Number,
+        required: [true, 'Evening shift charge nurses requirement is required'],
+        min: [0, 'Evening shift charge nurses cannot be negative'],
+        max: [10, 'Evening shift charge nurses cannot exceed 10']
+      },
       doctors: {
         type: Number,
         required: [true, 'Evening shift doctors requirement is required'],
@@ -107,6 +119,12 @@ const wardSchema = new mongoose.Schema({
         required: [true, 'Night shift nurses requirement is required'],
         min: [0, 'Night shift nurses cannot be negative'],
         max: [50, 'Night shift nurses cannot exceed 50']
+      },
+      chargeNurses: {
+        type: Number,
+        required: [true, 'Night shift charge nurses requirement is required'],
+        min: [0, 'Night shift charge nurses cannot be negative'],
+        max: [10, 'Night shift charge nurses cannot exceed 10']
       },
       doctors: {
         type: Number,
