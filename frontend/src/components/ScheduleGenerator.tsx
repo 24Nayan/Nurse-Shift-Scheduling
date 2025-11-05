@@ -7,6 +7,7 @@ import { Alert, AlertDescription } from './ui/alert';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
 import { Calendar, Settings, Zap, CheckCircle, AlertCircle, Building } from 'lucide-react';
 import { apiService, Ward } from '../utils/api';
+import { useAuth } from '../contexts/AuthContext';
 
 interface User {
   id: string;
@@ -22,6 +23,7 @@ interface ScheduleGeneratorProps {
 }
 
 export function ScheduleGenerator({ onScheduleGenerated }: ScheduleGeneratorProps) {
+  const { apiCall, token } = useAuth();
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [selectedWard, setSelectedWard] = useState<string>('');
@@ -47,7 +49,7 @@ export function ScheduleGenerator({ onScheduleGenerated }: ScheduleGeneratorProp
   const loadWards = async () => {
     try {
       setWardsLoading(true);
-      const response = await apiService.getWards();
+      const response = await apiCall('/wards');
       if (response.success && response.data && Array.isArray(response.data)) {
         setWards(response.data);
         // Auto-select first ward if available
@@ -94,15 +96,11 @@ export function ScheduleGenerator({ onScheduleGenerated }: ScheduleGeneratorProp
     console.log('API Service base URL:', apiService);
 
     try {
-      console.log('About to call direct fetch to backend...');
-      
-      // Direct fetch call to bypass any potential apiService issues
-      const response = await fetch('http://localhost:5000/api/schedules/generate', {
+      console.log('Sending schedule generation request to backend...');
+      // Use authenticated apiCall to include Authorization header
+      const responseData = await apiCall('/schedules/generate', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
+        body: {
           wardId: selectedWard,
           startDate,
           endDate,
@@ -113,14 +111,39 @@ export function ScheduleGenerator({ onScheduleGenerated }: ScheduleGeneratorProp
             generations: 200,
             populationSize: 50
           }
-        })
+        }
       });
-      
-      console.log('Raw response:', response);
-      const responseData = await response.json();
-      console.log('Response data:', responseData);
-      
-      // Convert to expected format
+
+      console.log('Received response from backend:', responseData);
+
+      // Log debug info about unavailability constraints
+      if (responseData.debug) {
+        console.log('\n🔍 UNAVAILABILITY CONSTRAINT DEBUG INFO:');
+        console.log('================================================');
+        console.log(`Total unavailability requests: ${responseData.debug.unavailabilityConstraints?.unavailabilityRequests || 0}`);
+        console.log(`Nurses affected: ${responseData.debug.unavailabilityConstraints?.affectedNurses || 0}`);
+        
+        if (responseData.debug.unavailabilityConstraints?.blockedShiftsByNurse) {
+          console.log('\n📋 Blocked shifts by nurse:');
+          Object.entries(responseData.debug.unavailabilityConstraints.blockedShiftsByNurse).forEach(([nurseId, shifts]) => {
+            console.log(`  Nurse ${nurseId}: ${(shifts as string[]).join(', ')}`);
+          });
+        }
+        
+        console.log('\n📊 Assignment checks:');
+        console.log(`  Total checks: ${responseData.debug.unavailabilityConstraints?.assignmentChecks?.totalChecks || 0}`);
+        console.log(`  Blocked: ${responseData.debug.unavailabilityConstraints?.assignmentChecks?.blocked || 0}`);
+        console.log(`  Allowed: ${responseData.debug.unavailabilityConstraints?.assignmentChecks?.allowed || 0}`);
+        
+        if (responseData.debug.unavailabilityConstraints?.constraintViolations?.length > 0) {
+          console.error('\n🚨 CONSTRAINT VIOLATIONS DETECTED:');
+          console.error(responseData.debug.unavailabilityConstraints.constraintViolations);
+        } else {
+          console.log('\n✅ No constraint violations - all unavailability requests respected!');
+        }
+        console.log('================================================\n');
+      }
+
       const apiResponse = {
         success: responseData.success,
         data: responseData.data,
@@ -128,10 +151,12 @@ export function ScheduleGenerator({ onScheduleGenerated }: ScheduleGeneratorProp
         error: responseData.error,
         generationStats: responseData.generationStats
       };
-
-      console.log('API Response:', apiResponse);
       
       if (apiResponse.success && apiResponse.data) {
+        console.log('Schedule generation successful, data:', apiResponse.data);
+        // Publish and activate the schedule so nurses can see it on their dashboards
+        // Optional: we can publish/activate later; dashboard now reads DRAFT too
+
         setLastGenerated(apiResponse.data);
         const selectedWardName = wards.find(w => w._id === selectedWard)?.name || 'Selected Ward';
         setSuccess(`Schedule generated successfully for ${selectedWardName}! Quality Score: ${(apiResponse as any).generationStats?.qualityScore?.toFixed(1) || 'N/A'}%`);
@@ -143,13 +168,21 @@ export function ScheduleGenerator({ onScheduleGenerated }: ScheduleGeneratorProp
         //   onScheduleGenerated();
         // }
       } else {
-        console.log('Schedule generation failed:', apiResponse);
+        console.error('Schedule generation failed - API returned failure:', apiResponse);
         setError(apiResponse.error || apiResponse.message || 'Failed to generate schedule');
       }
     } catch (error: any) {
-      console.error('Schedule generation error:', error);
-      console.error('Error details:', error);
-      setError(error.message || 'Failed to generate schedule. Please try again.');
+      console.error('Schedule generation exception:', error);
+      console.error('Error type:', typeof error);
+      console.error('Error message:', error?.message);
+      console.error('Error stack:', error?.stack);
+      
+      // Try to extract more details from the error
+      const errorMessage = error?.message || 
+                          error?.error?.message || 
+                          error?.response?.data?.message ||
+                          'Failed to generate schedule. Please check backend logs.';
+      setError(errorMessage);
     } finally {
       console.log('Setting loading to false');
       setLoading(false);
@@ -409,9 +442,15 @@ export function ScheduleGenerator({ onScheduleGenerated }: ScheduleGeneratorProp
                           </tr>
                         </thead>
                         <tbody className="divide-y divide-gray-200">
-                          {Object.entries(lastGenerated.scheduleData).map(([date, dayData]: [string, any]) => (
-                            <tr key={date} className="hover:bg-blue-50 transition-colors">
-                              <td className="px-3 py-3 text-sm font-medium text-gray-900">{new Date(date).toLocaleDateString()}</td>
+                          {Array.isArray(lastGenerated.scheduleData) ? lastGenerated.scheduleData.map((dayData: any) => (
+                            <tr key={dayData.date} className="hover:bg-blue-50 transition-colors">
+                              <td className="px-3 py-3 text-sm font-medium text-gray-900">
+                                {new Date(dayData.date + 'T12:00:00').toLocaleDateString('en-US', { 
+                                  year: 'numeric', 
+                                  month: 'numeric', 
+                                  day: 'numeric' 
+                                })}
+                              </td>
                               <td className="px-3 py-3 text-sm text-gray-600 font-medium">{dayData.dayOfWeek}</td>
                               <td className="px-3 py-3 text-sm">
                                 <div className="text-sm space-y-1">
@@ -455,7 +494,13 @@ export function ScheduleGenerator({ onScheduleGenerated }: ScheduleGeneratorProp
                                 </span>
                               </td>
                             </tr>
-                          ))}
+                          )) : (
+                            <tr>
+                              <td colSpan={6} className="px-3 py-3 text-center text-gray-500">
+                                No schedule data available
+                              </td>
+                            </tr>
+                          )}
                         </tbody>
                       </table>
                     </div>

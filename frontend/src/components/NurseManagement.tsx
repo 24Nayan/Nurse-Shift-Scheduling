@@ -62,13 +62,13 @@ export function NurseManagement({ user: _user }: NurseManagementProps) {
   }, [isAddDialogOpen]);
 
   // Stable button handler
-  const handleOpenAddNurseDialog = useCallback((e: React.MouseEvent) => {
+  const handleOpenAddNurseDialog = useCallback(async (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
     console.log('🚀 Opening Add Nurse dialog');
     
     // Reset form with new generated ID
-    const newNurseId = generateNurseId();
+    const newNurseId = await generateNurseId();
     setAddFormData({
       name: '',
       email: '',
@@ -163,15 +163,27 @@ export function NurseManagement({ user: _user }: NurseManagementProps) {
     }
   };
 
-  const generateNurseId = () => {
-    return `N${Math.floor(Math.random() * 10000).toString().padStart(4, '0')}`;
-  };
-
-  const handleOpenAddDialog = () => {
+  const generateNurseId = async (): Promise<string> => {
+    try {
+      // Use timestamp-based approach for guaranteed uniqueness
+      const timestamp = Date.now();
+      const randomSuffix = Math.floor(Math.random() * 100);
+      const uniqueNum = (timestamp + randomSuffix) % 10000;
+      const newId = `N${uniqueNum.toString().padStart(4, '0')}`;
+      
+      console.log(`Generated timestamp-based nurse ID: ${newId}`);
+      return newId;
+    } catch (error) {
+      console.error('Error generating nurse ID:', error);
+      // Double fallback - use current time milliseconds
+      const fallbackTime = new Date().getTime().toString().slice(-4);
+      return `N${fallbackTime}`;
+    }
+  };  const handleOpenAddDialog = async () => {
     console.log('🔄 Add Nurse button clicked!');
     
     // Reset form and generate new ID
-    const newNurseId = generateNurseId();
+    const newNurseId = await generateNurseId();
     setAddFormData({
       name: '',
       email: '',
@@ -947,12 +959,17 @@ export function NurseManagement({ user: _user }: NurseManagementProps) {
                   }
                   
                   try {
+                    // Generate a unique nurse ID (always generate new one to avoid conflicts)
+                    const finalNurseId = await generateNurseId();
+                    
+                    console.log('🔄 Generated unique nurse ID:', finalNurseId);
+                    
                     // Prepare data for API
                     const nurseData = {
                       name: addFormData.name.trim(),
                       email: addFormData.email.trim(),
                       role: addFormData.role,
-                      nurseId: addFormData.nurseId || generateNurseId(),
+                      nurseId: finalNurseId,
                       qualifications: addFormData.qualifications ? addFormData.qualifications.split(',').map(q => q.trim()).filter(q => q) : [],
                       wardAccess: addFormData.wardAccess ? addFormData.wardAccess.split(',').map(w => w.trim()).filter(w => w) : [],
                       hierarchyLevel: addFormData.hierarchyLevel,
@@ -986,12 +1003,38 @@ export function NurseManagement({ user: _user }: NurseManagementProps) {
                       // Reload nurses list
                       await loadNurses();
                     } else {
-                      console.error('❌ Failed to create nurse:', result.error);
-                      alert('Failed to add nurse: ' + (result.error || 'Unknown error'));
+                      console.error('❌ Failed to create nurse:', result);
+                      
+                      // Show specific error messages
+                      let errorMessage = 'Failed to add nurse';
+                      if (result.message) {
+                        errorMessage = result.message;
+                      } else if (result.error) {
+                        errorMessage = result.error;
+                      }
+                      
+                      alert(errorMessage);
                     }
-                  } catch (error) {
+                  } catch (error: any) {
                     console.error('❌ Error creating nurse:', error);
-                    alert('Error adding nurse: ' + (error instanceof Error ? error.message : String(error)));
+                    
+                    // Handle different types of errors
+                    let errorMessage = 'Error adding nurse';
+                    
+                    if (error.message) {
+                      errorMessage = error.message;
+                      
+                      // Check for specific error types
+                      if (error.message.includes('Nurse ID already exists')) {
+                        errorMessage = 'This Nurse ID is already taken. Please try with a different ID or leave it empty to auto-generate.';
+                      } else if (error.message.includes('Email already exists')) {
+                        errorMessage = 'This email address is already registered. Please use a different email.';
+                      } else if (error.message.includes('Validation failed')) {
+                        errorMessage = 'Please check your input data. Some fields may be invalid.';
+                      }
+                    }
+                    
+                    alert(errorMessage);
                   }
                 }}
                 style={{

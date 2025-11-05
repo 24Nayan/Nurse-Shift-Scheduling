@@ -12,6 +12,10 @@ import shiftRoutes from './routes/shifts.js';
 import scheduleRoutes from './routes/schedules.js';
 import wardRoutes from './routes/wards.js';
 import debugRoutes from './routes/debug.js';
+import authRoutes from './routes/auth.js';
+import notificationRoutes from './routes/notifications.js';
+import dashboardRoutes from './routes/dashboard.js';
+import unavailabilityRoutes from './routes/unavailability.js';
 
 // Load environment variables
 dotenv.config();
@@ -87,11 +91,56 @@ const connectDB = async () => {
 // Connect to database
 connectDB();
 
+// Seed a default admin if missing
+import Nurse from './models/Nurse.js';
+const seedDefaultAdmin = async () => {
+  try {
+    const existing = await Nurse.findOne({ email: 'admin@hospital.com' });
+    if (!existing) {
+      const admin = new Nurse({
+        nurseId: 'N9999',
+        name: 'System Admin',
+        email: 'admin@hospital.com',
+        role: 'admin',
+        qualifications: ['Admin'],
+        wardAccess: ['all'],
+        yearsOfExperience: 10,
+        password: process.env.ADMIN_PASSWORD || 'admin123',
+        isEmailVerified: true
+      });
+      await admin.save();
+      console.log('👤 Default admin created: admin@hospital.com / admin123');
+    } else {
+      // Ensure admin role and active
+      if (existing.role !== 'admin') {
+        existing.role = 'admin';
+        existing.hierarchyLevel = 3;
+      }
+      if (!existing.password) {
+        existing.password = process.env.ADMIN_PASSWORD || 'admin123';
+      }
+      if (!existing.wardAccess || existing.wardAccess.length === 0) {
+        existing.wardAccess = ['all'];
+      }
+      await existing.save();
+    }
+  } catch (e) {
+    console.error('Failed to ensure default admin:', e.message);
+  }
+};
+
+// Kick off seeding after a short delay to ensure DB is connected
+setTimeout(seedDefaultAdmin, 500);
+
 // API Routes
+app.use('/api/auth', authRoutes);
 app.use('/api/nurses', nurseRoutes);
 app.use('/api/shifts', shiftRoutes);
 app.use('/api/schedules', scheduleRoutes);
 app.use('/api/wards', wardRoutes);
+app.use('/api/notifications', notificationRoutes);
+app.use('/api/dashboard', dashboardRoutes);
+app.use('/api/unavailability', unavailabilityRoutes);
 app.use('/api/debug', debugRoutes);
 
 // Health check endpoint

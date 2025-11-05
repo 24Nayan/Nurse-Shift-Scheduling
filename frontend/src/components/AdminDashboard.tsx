@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useAuth } from '../contexts/AuthContext';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
 import { Button } from './ui/button';
@@ -8,6 +9,7 @@ import { NurseManagement } from './NurseManagement';
 import { ScheduleGenerator } from './ScheduleGenerator';
 import ScheduleViewer from './ScheduleViewer';
 import WardManagement from './WardManagement';
+import RequestManagement from './RequestManagement';
 import { projectId } from '../utils/supabase/info';
 
 interface User {
@@ -30,6 +32,7 @@ interface DashboardStats {
 }
 
 export function AdminDashboard({ user }: AdminDashboardProps) {
+  const { logout, apiCall } = useAuth() as any;
   const [stats, setStats] = useState<DashboardStats>({
     totalNurses: 0,
     activeSchedules: 0,
@@ -63,58 +66,61 @@ export function AdminDashboard({ user }: AdminDashboardProps) {
   const loadDashboardData = async () => {
     try {
       setLoading(true);
-      console.log('Skipping Supabase data loading - using local backend');
+      setError('');
+      console.log('Loading dashboard data from backend API...');
       
-      // Temporarily disable Supabase calls to prevent CORS issues
-      setNurses([]);
-      setWards([]);
-      setCurrentWeekSchedule([]);
-      setLoading(false);
-      return;
+      // Load nurses count
+      const nursesResponse = await apiCall('/nurses', { method: 'GET' });
+      const nursesCount = nursesResponse.success ? nursesResponse.data.length : 0;
       
-      // Load nurses
-      const nursesResponse = await fetch(`https://${projectId}.supabase.co/functions/v1/make-server-c76fcf04/nurses`, {
-        headers: {
-          'Authorization': `Bearer ${user.access_token}`,
-        },
-      });
+      // Load wards count
+      const wardsResponse = await apiCall('/wards', { method: 'GET' });
+      const wardsCount = wardsResponse.success ? wardsResponse.data.length : 0;
       
-      const nurses = nursesResponse.ok ? await nursesResponse.json() : [];
-
-      // Load wards
-      const wardsResponse = await fetch(`https://${projectId}.supabase.co/functions/v1/make-server-c76fcf04/wards`, {
-        headers: {
-          'Authorization': `Bearer ${user.access_token}`,
-        },
-      });
+      // Load active schedules count
+      const schedulesResponse = await apiCall('/schedules/status/active', { method: 'GET' });
+      const activeSchedulesCount = schedulesResponse.success ? schedulesResponse.count : 0;
       
-      const wards = wardsResponse.ok ? await wardsResponse.json() : [];
-
-      // Load current week schedule
-      const today = new Date();
-      const startOfWeek = new Date(today.setDate(today.getDate() - today.getDay()));
-      const endOfWeek = new Date(today.setDate(today.getDate() - today.getDay() + 6));
-      
-      const scheduleResponse = await fetch(
-        `https://${projectId}.supabase.co/functions/v1/make-server-c76fcf04/schedule?startDate=${startOfWeek.toISOString().split('T')[0]}&endDate=${endOfWeek.toISOString().split('T')[0]}`,
-        {
-          headers: {
-            'Authorization': `Bearer ${user.access_token}`,
-          },
+      // Calculate upcoming shifts from active schedule
+      let upcomingShiftsCount = 0;
+      if (schedulesResponse.success && schedulesResponse.data && schedulesResponse.data.length > 0) {
+        const activeSchedule = schedulesResponse.data[0];
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        
+        if (activeSchedule.scheduleData && Array.isArray(activeSchedule.scheduleData)) {
+          activeSchedule.scheduleData.forEach((dayData: any) => {
+            const dayDate = new Date(dayData.date);
+            dayDate.setHours(0, 0, 0, 0);
+            
+            // Count shifts from today onwards
+            if (dayDate >= today) {
+              ['day', 'evening', 'night'].forEach(shiftType => {
+                const assignedNurses = dayData.shifts?.[shiftType]?.assignedNurses || [];
+                upcomingShiftsCount += assignedNurses.length;
+              });
+            }
+          });
         }
-      );
+      }
       
-      const scheduleData = scheduleResponse.ok ? await scheduleResponse.json() : { schedule: [] };
-
       setStats({
-        totalNurses: nurses.length,
-        activeSchedules: scheduleData.schedule ? 1 : 0,
-        totalWards: wards.length,
-        upcomingShifts: scheduleData.schedule ? scheduleData.schedule.length : 0,
+        totalNurses: nursesCount,
+        activeSchedules: activeSchedulesCount,
+        totalWards: wardsCount,
+        upcomingShifts: upcomingShiftsCount,
       });
-    } catch (error) {
+      
+      console.log('Dashboard stats loaded:', {
+        totalNurses: nursesCount,
+        activeSchedules: activeSchedulesCount,
+        totalWards: wardsCount,
+        upcomingShifts: upcomingShiftsCount,
+      });
+      
+    } catch (error: any) {
       console.error('Dashboard data loading error:', error);
-      setError('Failed to load dashboard data');
+      setError(error.message || 'Failed to load dashboard data');
     } finally {
       setLoading(false);
     }
@@ -143,12 +149,31 @@ export function AdminDashboard({ user }: AdminDashboardProps) {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900">
-          {user.role === 'admin' ? 'Administrator' : 'Charge Nurse'} Dashboard
-        </h1>
-        <p className="text-gray-600 mt-2">Manage nurses, schedules, and ward assignments</p>
+      {/* Header with Logout */}
+      <div className="flex items-center justify-between mb-6">
+        <div>
+          <h1 className="text-3xl font-bold text-gray-900">
+            {user.role === 'admin' ? 'Administrator' : 'Charge Nurse'} Dashboard
+          </h1>
+          <p className="text-gray-600 mt-2">Manage nurses, schedules, and ward assignments</p>
+        </div>
+        <div className="flex space-x-3">
+          <Button
+            onClick={loadDashboardData}
+            disabled={loading}
+            variant="outline"
+          >
+            {loading ? 'Refreshing...' : 'Refresh Stats'}
+          </Button>
+          <button
+            onClick={async () => { try { await logout(); } catch (e) { console.error(e); } }}
+            className="px-4 py-2 rounded-md border text-sm hover:bg-gray-50"
+          >
+            Logout
+          </button>
+        </div>
       </div>
+      
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
@@ -193,8 +218,8 @@ export function AdminDashboard({ user }: AdminDashboardProps) {
           <TabsTrigger value="overview">Overview</TabsTrigger>
           <TabsTrigger value="nurses">Nurses</TabsTrigger>
           <TabsTrigger value="wards">Wards</TabsTrigger>
+          <TabsTrigger value="requests">Requests</TabsTrigger>
           <TabsTrigger value="generate">Generate Schedule</TabsTrigger>
-          <TabsTrigger value="schedule">View Schedule</TabsTrigger>
         </TabsList>
 
         <TabsContent value="overview" className="space-y-6">
@@ -317,15 +342,15 @@ export function AdminDashboard({ user }: AdminDashboardProps) {
           <WardManagement />
         </TabsContent>
 
+        <TabsContent value="requests">
+          <RequestManagement />
+        </TabsContent>
+
         <TabsContent value="generate">
           <ScheduleGenerator user={user} onScheduleGenerated={() => {
             console.log('Schedule generated successfully!');
             // Don't navigate away or reload data - just stay on the generator tab
           }} />
-        </TabsContent>
-
-        <TabsContent value="schedule">
-          <ScheduleViewer />
         </TabsContent>
       </Tabs>
     </div>

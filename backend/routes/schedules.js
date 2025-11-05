@@ -3,6 +3,9 @@ import mongoose from 'mongoose';
 import Schedule from '../models/Schedule.js';
 import Ward from '../models/Ward.js';
 import Nurse from '../models/Nurse.js';
+import Notification from '../models/Notification.js';
+import UnavailabilityRequest from '../models/UnavailabilityRequest.js';
+import { protect, restrictTo } from './auth.js';
 // import GeneticSchedulingAlgorithm from '../services/GeneticSchedulingAlgorithm.js';
 // import TestGeneticAlgorithm from '../services/TestGeneticAlgorithm.js';
 
@@ -82,8 +85,8 @@ const getQualifiedNursesForWards = async (wards) => {
 
 // Helper function to filter eligible nurses from a given list for a specific ward
 const filterEligibleNurses = (nurses, ward) => {
-  console.log(`🔍 === FILTERING NURSES FOR WARD: ${ward.name} ===`);
-  console.log(`🔍 Ward details:`, {
+  console.log(`FILTERING NURSES FOR WARD: ${ward.name}`);
+  console.log(`Ward details:`, {
     name: ward.name,
     qualifications: ward.qualifications,
     patientTypes: ward.patientTypes,
@@ -91,47 +94,30 @@ const filterEligibleNurses = (nurses, ward) => {
   });
   
   const eligible = nurses.filter(nurse => {
-    console.log(`\n🔍 Checking nurse: ${nurse.name}`);
-    console.log(`👤 Nurse details:`, {
-      wardAccess: nurse.wardAccess,
-      qualifications: nurse.qualifications, 
-      hierarchyLevel: nurse.hierarchyLevel
-    });
-    
     // Step 1: Check ward access
     let hasWardAccess = false;
     
     if (!nurse.wardAccess || nurse.wardAccess.length === 0) {
-      console.log(`✅ Ward Access: No restrictions (can work anywhere)`);
       hasWardAccess = true;
     } else if (nurse.wardAccess.includes(ward.name)) {
-      console.log(`✅ Ward Access: Direct access to ${ward.name}`);
       hasWardAccess = true;
     } else {
       // Check for compatible patient types
       const patientTypes = ward.patientTypes || [];
-      console.log(`🔍 Checking patient type compatibility: ward types ${JSON.stringify(patientTypes)} vs nurse access ${JSON.stringify(nurse.wardAccess)}`);
       
       for (const patientType of patientTypes) {
         if (patientType === "pediatric" && (nurse.wardAccess.includes("pediatric") || nurse.wardAccess.includes("general"))) {
-          console.log(`✅ Ward Access: Compatible via pediatric/general access`);
           hasWardAccess = true;
           break;
         }
         if (patientType === "general" && nurse.wardAccess.includes("general")) {
-          console.log(`✅ Ward Access: Compatible via general access`);
           hasWardAccess = true;
           break;
         }
         if (patientType === "trauma" && nurse.wardAccess.includes("Trauma")) {
-          console.log(`✅ Ward Access: Compatible via trauma access`);
           hasWardAccess = true;
           break;
         }
-      }
-      
-      if (!hasWardAccess) {
-        console.log(`❌ Ward Access: No compatible access found`);
       }
     }
     
@@ -139,7 +125,6 @@ const filterEligibleNurses = (nurses, ward) => {
     const nurseLevel = nurse.hierarchyLevel || 1;
     const requiredLevel = ward.minHierarchyLevel || 1;
     const meetsHierarchy = nurseLevel >= requiredLevel;
-    console.log(`🏢 Hierarchy: ${nurseLevel} >= ${requiredLevel} = ${meetsHierarchy}`);
     
     // Step 3: Check qualifications
     let hasQualifications = true;
@@ -147,24 +132,17 @@ const filterEligibleNurses = (nurses, ward) => {
       hasQualifications = ward.qualifications.some(qual => 
         nurse.qualifications && nurse.qualifications.includes(qual)
       );
-      const matchingQuals = ward.qualifications.filter(qual => 
-        nurse.qualifications && nurse.qualifications.includes(qual)
-      );
-      console.log(`🎓 Qualifications: Has ${matchingQuals.length}/${ward.qualifications.length} required (${JSON.stringify(matchingQuals)}) = ${hasQualifications}`);
-    } else {
-      console.log(`🎓 Qualifications: No requirements = ${hasQualifications}`);
     }
     
     const isEligible = hasWardAccess && meetsHierarchy && hasQualifications;
-    console.log(`🏆 FINAL RESULT: ${isEligible} (Access: ${hasWardAccess}, Hierarchy: ${meetsHierarchy}, Qualifications: ${hasQualifications})`);
     
     return isEligible;
   });
   
-  console.log(`\n🔍 === SUMMARY: Found ${eligible.length} eligible nurses out of ${nurses.length} total ===`);
+  console.log(`SUMMARY: Found ${eligible.length} eligible nurses out of ${nurses.length} total`);
   
   if (eligible.length === 0) {
-    console.log('⚠️ No eligible nurses found! Using fallback logic...');
+    console.log('WARNING: No eligible nurses found! Using fallback logic...');
     
     // More lenient fallback - just check qualifications
     const fallbackEligible = nurses.filter(nurse => {
@@ -182,10 +160,10 @@ const filterEligibleNurses = (nurses, ward) => {
 };
 
 // POST /api/schedules/generate - Generate a new schedule using genetic algorithm
-router.post('/generate', async (req, res) => {
-  console.log('📥 Received schedule generation request');
-  try {
-    console.log('🔍 DEBUG: Starting schedule generation process');
+router.post('/generate', protect, restrictTo('admin', 'charge_nurse'), async (req, res) => {
+    console.log('Received schedule generation request');
+    try {
+      console.log('DEBUG: Starting schedule generation process');
     const {
       wardId,
       wardIds, // Support multiple wards
@@ -196,10 +174,10 @@ router.post('/generate', async (req, res) => {
     } = req.body;
     
     // Determine algorithm type (temporarily force basic algorithm)
-    console.log('🔍 DEBUG: Setting useGeneticAlgorithm to false');
+    console.log('DEBUG: Setting useGeneticAlgorithm to false');
     let useGeneticAlgorithm = false; // Force to false until const assignment issue is fixed
     // let useGeneticAlgorithm = req.body.useGeneticAlgorithm !== false;
-    console.log('🔍 DEBUG: useGeneticAlgorithm =', useGeneticAlgorithm);
+    console.log('DEBUG: useGeneticAlgorithm =', useGeneticAlgorithm);
 
     // Validation
     const wards = wardIds ? wardIds : (wardId ? [wardId] : []);
@@ -237,7 +215,39 @@ router.post('/generate', async (req, res) => {
       });
     }
 
-    console.log(`🧬 Starting ${useGeneticAlgorithm ? 'Genetic Algorithm' : 'Basic'} schedule generation for ${foundWards.length} ward(s) from ${startDate} to ${endDate}`);
+    // Check if a schedule already exists for this exact ward and date range
+    // If it exists and user wants to regenerate, delete the old one first
+    const existingSchedule = await Schedule.findOne({
+      ward: wards[0],
+      startDate: start,
+      endDate: end
+    }).sort({ createdAt: -1 });
+
+    if (existingSchedule) {
+      // Delete existing schedule to allow regeneration
+      await Schedule.findByIdAndDelete(existingSchedule._id);
+      console.log(`Deleted existing schedule ${existingSchedule._id} to allow regeneration`);
+    }
+    
+    // Also mark all other ACTIVE schedules for this ward as COMPLETED
+    // This ensures only the newest schedule is active
+    const deactivatedCount = await Schedule.updateMany(
+      { 
+        ward: wards[0],
+        status: 'ACTIVE'
+      },
+      { 
+        $set: { status: 'COMPLETED' }
+      }
+    );
+    
+    if (deactivatedCount.modifiedCount > 0) {
+      console.log(`Deactivated ${deactivatedCount.modifiedCount} old active schedule(s) for this ward`);
+    }
+
+    console.log(`Proceeding with schedule generation for ward ${foundWards[0].name} from ${startDate} to ${endDate}`);
+
+    console.log(`Starting ${useGeneticAlgorithm ? 'Genetic Algorithm' : 'Basic'} schedule generation for ${foundWards.length} ward(s) from ${startDate} to ${endDate}`);
     
     // Get qualified nurses for the specific wards using our helper function
     let nurses = await getQualifiedNursesForWards(foundWards);
@@ -257,8 +267,8 @@ router.post('/generate', async (req, res) => {
       });
     }
     
-    console.log(`📋 Found ${nurses.length} nurses for schedule generation`);
-    console.log('👩‍⚕️ Nurse details:', nurses.map(n => ({ id: n._id, name: n.name, role: n.role, qualifications: n.qualifications })));
+    console.log(`Found ${nurses.length} nurses for schedule generation`);
+    console.log('Nurse details:', nurses.map(n => ({ id: n._id, name: n.name, role: n.role, qualifications: n.qualifications })));
     
     let scheduleResult;
     let qualityMetrics;
@@ -288,11 +298,24 @@ router.post('/generate', async (req, res) => {
     //   // ... genetic algorithm code commented out due to const assignment error
     // }
     
+    // Initialize debug info at the top level (accessible in response)
+    const debugInfo = {
+      unavailabilityRequests: 0,
+      affectedNurses: 0,
+      blockedShiftsByNurse: {},
+      constraintViolations: [],
+      assignmentChecks: {
+        totalChecks: 0,
+        blocked: 0,
+        allowed: 0
+      }
+    };
+    
     // Fallback to basic constraint-based assignment if genetic algorithm is disabled or failed
-    console.log('🔍 DEBUG: About to check algorithm condition - useGeneticAlgorithm:', useGeneticAlgorithm, 'nurses.length:', nurses.length);
+    console.log('DEBUG: About to check algorithm condition - useGeneticAlgorithm:', useGeneticAlgorithm, 'nurses.length:', nurses.length);
     if (!useGeneticAlgorithm || nurses.length < 5) {
-      console.log('📊 Using Basic Constraint-Based Algorithm...');
-      console.log('🔍 DEBUG: Entering basic algorithm branch');
+      console.log('Using Basic Constraint-Based Algorithm...');
+      console.log('DEBUG: Entering basic algorithm branch');
       
       // Generate schedule using basic algorithm logic
       const scheduleData = new Map();
@@ -336,6 +359,55 @@ router.post('/generate', async (req, res) => {
         }
       });
       
+      // Pre-fetch all approved unavailability requests for the schedule period
+      const unavailabilityRequests = await UnavailabilityRequest.find({
+        status: 'approved',
+        validFrom: { $lte: end },
+        validUntil: { $gte: start }
+      });
+      
+      console.log(`\n${'='.repeat(80)}`);
+      console.log(`🔒 UNAVAILABILITY CONSTRAINTS: Found ${unavailabilityRequests.length} approved requests`);
+      console.log(`${'='.repeat(80)}\n`);
+      
+      // Create a map for quick lookup: nurseId -> Set of unavailable date+shift combinations
+      const unavailabilityMap = new Map();
+      unavailabilityRequests.forEach(req => {
+        const nurseIdStr = req.nurseId.toString();
+        if (!unavailabilityMap.has(nurseIdStr)) {
+          unavailabilityMap.set(nurseIdStr, new Set());
+        }
+        
+        console.log(`  📋 Request ${req.requestId}: ${req.nurseName} (ID: ${nurseIdStr})`);
+        
+        req.unavailableDates.forEach(dateItem => {
+          // Ensure dateString is set (it should be from the model, but let's be safe)
+          const dateString = dateItem.dateString || new Date(dateItem.date).toISOString().split('T')[0];
+          
+          dateItem.shifts.forEach(shift => {
+            const key = `${dateString}-${shift}`;
+            unavailabilityMap.get(nurseIdStr).add(key);
+            console.log(`     ❌ BLOCKED: ${key}`);
+          });
+        });
+        console.log('');
+      });
+      
+      console.log(`✅ Loaded ${unavailabilityRequests.length} approved unavailability requests affecting ${unavailabilityMap.size} nurses`);
+      
+      // Update debug info with actual data
+      debugInfo.unavailabilityRequests = unavailabilityRequests.length;
+      debugInfo.affectedNurses = unavailabilityMap.size;
+      
+      if (unavailabilityMap.size > 0) {
+        console.log('📊 Unavailability Map Summary:');
+        unavailabilityMap.forEach((blockedShifts, nurseId) => {
+          const blockedArray = Array.from(blockedShifts);
+          console.log(`   Nurse ${nurseId}: ${blockedShifts.size} blocked shifts - ${blockedArray.join(', ')}`);
+          debugInfo.blockedShiftsByNurse[nurseId] = blockedArray;
+        });
+      }
+      
       while (currentDate <= end) {
         const dateKey = currentDate.toISOString().split('T')[0];
         const dayOfWeek = currentDate.getDay();
@@ -360,7 +432,7 @@ router.post('/generate', async (req, res) => {
           total: (primaryWard.shiftRequirements?.night?.nurses || 2) + (primaryWard.shiftRequirements?.night?.chargeNurses || 2)
         };
         
-        console.log(`📋 Shift Requirements for ${dateKey}:`, {
+        console.log(`Shift Requirements for ${dateKey}:`, {
           day: dayRequirements,
           evening: eveningRequirements,
           night: nightRequirements
@@ -368,37 +440,90 @@ router.post('/generate', async (req, res) => {
         
         // Enhanced nurse assignment function that assigns by role (staff vs charge)
         const assignNursesToShift = (shiftType, requirements, shiftHours) => {
+          console.log(`\n🎯 ==================== ASSIGNING ${dateKey} ${shiftType} SHIFT ====================`);
+          console.log(`📅 Date: ${dateKey}, Shift: ${shiftType}`);
+          console.log(`👥 Unavailability Map has ${unavailabilityMap.size} nurses with constraints`);
+          
           // Safety check for requirements parameter
           if (!requirements || typeof requirements !== 'object') {
-            console.error(`❌ Invalid requirements passed to assignNursesToShift:`, requirements);
+            console.error(`Invalid requirements passed to assignNursesToShift:`, requirements);
             return { staffNurses: [], chargeNurses: [], total: [] };
           }
           
           const { staffNurses: reqStaff, chargeNurses: reqCharge, total: reqTotal } = requirements;
           
-          console.log(`\n🔍 Assigning ${shiftType} shift: ${reqStaff} staff + ${reqCharge} charge = ${reqTotal} total nurses`);
+          console.log(`📊 Requirements: ${reqStaff} staff + ${reqCharge} charge = ${reqTotal} total nurses`);
           
           // Filter nurses eligible for this ward first
           const eligibleNurses = filterEligibleNurses(nurses, primaryWard);
-          console.log(`🔍 For ${shiftType} shift: ${eligibleNurses.length} eligible nurses found`);
+          console.log(`For ${shiftType} shift: ${eligibleNurses.length} eligible nurses found`);
           
           if (eligibleNurses.length === 0) {
-            console.log('❌ No eligible nurses found for this ward!');
-            return { staffNurses: [], chargeNurses: [], total: [] };
+            console.log('WARNING: No eligible nurses found for this ward! Check ward access and qualifications.');
+            // Don't return empty - try to use any available nurses as fallback
+            console.log(`Attempting fallback: using all ${nurses.length} nurses regardless of ward restrictions`);
+            if (nurses.length === 0) {
+              return { staffNurses: [], chargeNurses: [], total: [] };
+            }
           }
+          
+          // Use eligible nurses, or fallback to all nurses if none eligible
+          const nursesToUse = eligibleNurses.length > 0 ? eligibleNurses : nurses;
           
           // Separate nurses by hierarchy level (charge vs staff)
           const availableChargeNurses = [];
           const availableStaffNurses = [];
           
-          eligibleNurses.forEach(nurse => {
+          nursesToUse.forEach(nurse => {
             const assignment = nurseAssignments.get(nurse._id.toString());
             let isAvailable = true;
             
-            // Check constraints
-            if (assignment.lastDate === dateKey) {
+            // Check unavailability requests first (HARD CONSTRAINT)
+            const nurseIdStr = nurse._id.toString();
+            const checkKey = `${dateKey}-${shiftType}`;
+            
+            // SPECIAL DEBUG FOR NURSE30
+            if (nurse.name === 'nurse30') {
+              console.log(`\n🚨 SPECIAL CHECK FOR NURSE30 🚨`);
+              console.log(`   Date: ${dateKey}, Shift: ${shiftType}`);
+              console.log(`   Check Key: ${checkKey}`);
+              console.log(`   Nurse ID: ${nurseIdStr}`);
+              console.log(`   Is in unavailability map: ${unavailabilityMap.has(nurseIdStr)}`);
+              if (unavailabilityMap.has(nurseIdStr)) {
+                const unavailableShifts = unavailabilityMap.get(nurseIdStr);
+                console.log(`   Blocked shifts: ${Array.from(unavailableShifts).join(', ')}`);
+                console.log(`   Contains ${checkKey}?: ${unavailableShifts.has(checkKey)}`);
+              }
+            }
+            
+            debugInfo.assignmentChecks.totalChecks++;
+            if (unavailabilityMap.has(nurseIdStr)) {
+              const unavailableShifts = unavailabilityMap.get(nurseIdStr);
+              
+              if (unavailableShifts.has(checkKey)) {
+                isAvailable = false;
+                debugInfo.assignmentChecks.blocked++;
+                console.log(`    ❌ BLOCKED: ${nurse.name} - has approved unavailability request for ${dateKey} ${shiftType}`);
+                
+                // Track if they still get assigned (VIOLATION)
+                debugInfo.constraintViolations.push({
+                  nurseId: nurseIdStr,
+                  nurseName: nurse.name,
+                  date: dateKey,
+                  shift: shiftType,
+                  reason: 'Approved unavailability request'
+                });
+              } else {
+                debugInfo.assignmentChecks.allowed++;
+              }
+            } else {
+              debugInfo.assignmentChecks.allowed++;
+            }
+            
+            // Check constraints (only if still available)
+            if (isAvailable && assignment.lastDate === dateKey) {
               isAvailable = false; // Already worked today
-            } else if (assignment.lastDate) {
+            } else if (isAvailable && assignment.lastDate) {
               const lastDate = new Date(assignment.lastDate);
               const dayBefore = new Date(currentDate);
               dayBefore.setDate(dayBefore.getDate() - 1);
@@ -418,6 +543,11 @@ router.post('/generate', async (req, res) => {
                 hierarchyLevel: nurseHierarchy
               };
               
+              // Debug: Log when nurse30 is added to available pools
+              if (nurse.name === 'nurse30') {
+                console.log(`✅ nurse30 ADDED to available pools for ${dateKey} ${shiftType} - isAvailable was TRUE`);
+              }
+              
               // Classify based on hierarchy level - ADJUSTED for your data
               // Level 2+ = Potential Charge Nurses, Level 1 = Staff Nurses
               if (nurseHierarchy >= 2) {
@@ -427,14 +557,23 @@ router.post('/generate', async (req, res) => {
               if (nurseHierarchy <= 2) {
                 availableStaffNurses.push(nurseData);
               }
+            } else {
+              // Debug: Log when nurse30 is blocked
+              if (nurse.name === 'nurse30') {
+                console.log(`❌ nurse30 BLOCKED from ${dateKey} ${shiftType} - isAvailable was FALSE`);
+              }
             }
           });
           
-          console.log(`👥 Available nurses: ${availableChargeNurses.length} charge, ${availableStaffNurses.length} staff`);
+          console.log(`Available nurses: ${availableChargeNurses.length} charge, ${availableStaffNurses.length} staff`);
           
           // Debug: Show hierarchy levels of available nurses
-          console.log(`🔍 Charge nurse candidates (Level 2+):`, availableChargeNurses.map(n => `${n.nurse.name}(L${n.hierarchyLevel})`));
-          console.log(`🔍 Staff nurse candidates (L1-2):`, availableStaffNurses.map(n => `${n.nurse.name}(L${n.hierarchyLevel})`));
+          if (availableChargeNurses.length > 0) {
+            console.log(`Charge nurse candidates (Level 2+):`, availableChargeNurses.map(n => `${n.nurse.name}(L${n.hierarchyLevel})`));
+          }
+          if (availableStaffNurses.length > 0) {
+            console.log(`Staff nurse candidates (L1-2):`, availableStaffNurses.map(n => `${n.nurse.name}(L${n.hierarchyLevel})`));
+          }
           
           // Sort by priority (fairness)
           availableChargeNurses.sort((a, b) => a.priority - b.priority);
@@ -447,34 +586,79 @@ router.post('/generate', async (req, res) => {
           let additionalChargeFromStaff = [];
           if (selectedChargeNurses.length < reqCharge && availableStaffNurses.length > 0) {
             const shortage = reqCharge - selectedChargeNurses.length;
-            console.log(`⚠️ Only ${selectedChargeNurses.length}/${reqCharge} charge nurses available, promoting ${shortage} staff nurses`);
+            console.log(`Only ${selectedChargeNurses.length}/${reqCharge} charge nurses available, promoting ${shortage} staff nurses`);
             additionalChargeFromStaff = availableStaffNurses.slice(0, shortage).map(item => item.nurse);
             availableStaffNurses.splice(0, shortage); // Remove from staff pool
           }
           
-          // Select staff nurses
+          // Select staff nurses - use all available if not enough to meet requirement
           const selectedStaffNurses = availableStaffNurses.slice(0, reqStaff).map(item => item.nurse);
           
+          // If still not enough total, use any remaining nurses from either pool
+          let additionalNurses = [];
           const allSelectedNurses = [...selectedChargeNurses, ...additionalChargeFromStaff, ...selectedStaffNurses];
-          
-          console.log(`✅ Final assignment: ${selectedChargeNurses.length + additionalChargeFromStaff.length} charge + ${selectedStaffNurses.length} staff = ${allSelectedNurses.length} total`);
-          console.log(`🎯 Requirements vs Actual: Need ${reqTotal} total (${reqStaff} staff + ${reqCharge} charge), Got ${allSelectedNurses.length} total`);
-          
-          // WARNING: Ensure we meet minimum requirements
           if (allSelectedNurses.length < reqTotal) {
-            console.log(`⚠️ WARNING: Assigned ${allSelectedNurses.length} but need ${reqTotal} nurses! This is a constraint issue.`);
+            const stillNeeded = reqTotal - allSelectedNurses.length;
+            const remainingStaff = availableStaffNurses.slice(selectedStaffNurses.length);
+            const remainingCharge = availableChargeNurses.slice(selectedChargeNurses.length);
+            additionalNurses = [...remainingCharge, ...remainingStaff].slice(0, stillNeeded).map(item => item.nurse);
           }
           
-          // Update assignments
-          allSelectedNurses.forEach(nurse => {
+          const finalNurses = [...allSelectedNurses, ...additionalNurses];
+          
+          console.log(`Final assignment: ${selectedChargeNurses.length + additionalChargeFromStaff.length} charge + ${selectedStaffNurses.length} staff + ${additionalNurses.length} additional = ${finalNurses.length} total`);
+          console.log(`Requirements vs Actual: Need ${reqTotal} total (${reqStaff} staff + ${reqCharge} charge), Got ${finalNurses.length} total`);
+          
+          // WARNING: Ensure we meet minimum requirements
+          if (finalNurses.length < reqTotal) {
+            console.log(`WARNING: Only assigned ${finalNurses.length} but need ${reqTotal} nurses. May need more nurses or adjust requirements.`);
+          }
+          
+          // VERIFY: Check if any assigned nurses violate unavailability constraints
+          finalNurses.forEach(nurse => {
+            const nurseIdStr = nurse._id.toString();
+            const checkKey = `${dateKey}-${shiftType}`;
+            
+            if (unavailabilityMap.has(nurseIdStr)) {
+              const unavailableShifts = unavailabilityMap.get(nurseIdStr);
+              if (unavailableShifts.has(checkKey)) {
+                console.error(`\n🚨🚨🚨 CONSTRAINT VIOLATION DETECTED! 🚨🚨🚨`);
+                console.error(`Assigned ${nurse.name} (${nurseIdStr}) to ${dateKey} ${shiftType}`);
+                console.error(`But they have an APPROVED unavailability request for this shift!`);
+                console.error(`This should NOT have happened!\n`);
+                
+                debugInfo.constraintViolations.push({
+                  nurseId: nurseIdStr,
+                  nurseName: nurse.name,
+                  nurseCode: nurse.nurseCode,
+                  date: dateKey,
+                  shift: shiftType,
+                  reason: 'Assigned despite approved unavailability request',
+                  severity: 'CRITICAL'
+                });
+              }
+            }
+            
             const assignment = nurseAssignments.get(nurse._id.toString());
-            assignment.lastShift = shiftType;
-            assignment.lastDate = dateKey;
-            assignment.totalShiftsAssigned++;
+            if (assignment) {
+              assignment.lastShift = shiftType;
+              assignment.lastDate = dateKey;
+              assignment.totalShiftsAssigned++;
+            }
           });
           
+          // Separate final nurses by role for assignment objects
+          const finalStaffNurses = [...selectedStaffNurses, ...additionalNurses.filter(n => {
+            const nurseData = [...availableStaffNurses, ...availableChargeNurses].find(nd => nd.nurse._id.toString() === n._id.toString());
+            return nurseData && nurseData.hierarchyLevel <= 2;
+          })];
+          const finalChargeNurses = [...selectedChargeNurses, ...additionalChargeFromStaff, ...additionalNurses.filter(n => {
+            const nurseData = [...availableStaffNurses, ...availableChargeNurses].find(nd => nd.nurse._id.toString() === n._id.toString());
+            return nurseData && nurseData.hierarchyLevel >= 2;
+          })];
+          
           // Create assignment objects with role distinction
-          const staffAssignments = selectedStaffNurses.map(nurse => ({
+          const staffAssignments = finalStaffNurses.map(nurse => ({
             nurseId: nurse._id,
             nurseName: nurse.name,
             hours: shiftHours,
@@ -485,7 +669,7 @@ router.post('/generate', async (req, res) => {
             preference: 'AVAILABLE'
           }));
           
-          const chargeAssignments = [...selectedChargeNurses, ...additionalChargeFromStaff].map(nurse => ({
+          const chargeAssignments = finalChargeNurses.map(nurse => ({
             nurseId: nurse._id,
             nurseName: nurse.name,
             hours: shiftHours,
@@ -496,10 +680,13 @@ router.post('/generate', async (req, res) => {
             preference: 'AVAILABLE'
           }));
           
+          const totalAssignments = [...staffAssignments, ...chargeAssignments];
+          console.log(`Created ${totalAssignments.length} assignment objects (${staffAssignments.length} staff, ${chargeAssignments.length} charge)`);
+          
           return {
             staffNurses: staffAssignments,
             chargeNurses: chargeAssignments,
-            total: [...staffAssignments, ...chargeAssignments]
+            total: totalAssignments
           };
         };
         
@@ -546,6 +733,16 @@ router.post('/generate', async (req, res) => {
             coverage: nightAssignment.total.length > 0 ? (nightAssignment.total.length / nightRequirements.total) * 100 : 0
           }
         };
+        
+        // Verify assignments before storing
+        const dayNursesCount = dayAssignment.total.length;
+        const eveningNursesCount = eveningAssignment.total.length;
+        const nightNursesCount = nightAssignment.total.length;
+        console.log(`Date ${dateKey} assignments: DAY=${dayNursesCount}, EVENING=${eveningNursesCount}, NIGHT=${nightNursesCount}`);
+        
+        if (dayNursesCount === 0 && eveningNursesCount === 0 && nightNursesCount === 0) {
+          console.log(`WARNING: No nurses assigned for ${dateKey}! Check ward requirements and nurse availability.`);
+        }
         
         scheduleData.set(dateKey, {
           date: dateKey,
@@ -614,7 +811,9 @@ router.post('/generate', async (req, res) => {
         algorithmIterations: 1
       };
       
-      console.log('📊 Basic Algorithm completed successfully');
+      console.log('Basic Algorithm completed successfully');
+      console.log(`Total schedule entries created: ${scheduleData.size} days`);
+      console.log(`Total nurses involved: ${nurses.length}`);
     }
     
     // Create optimized schedule document
@@ -627,7 +826,7 @@ router.post('/generate', async (req, res) => {
       endDate: end,
       scheduleData: scheduleResult,
       nurseStats: nurseStats,
-      status: 'DRAFT',
+      status: 'ACTIVE',
       generatedBy: useGeneticAlgorithm ? 'genetic-algorithm' : 'constraint-based-algorithm',
       algorithmType: useGeneticAlgorithm ? 'GENETIC' : 'BASIC',
       qualityMetrics: qualityMetrics,
@@ -641,8 +840,77 @@ router.post('/generate', async (req, res) => {
       }
     });
 
+    // Verify scheduleData before saving
+    console.log(`Schedule data prepared: ${scheduleResult instanceof Map ? scheduleResult.size : Object.keys(scheduleResult).length} days`);
+    if (scheduleResult instanceof Map) {
+      let totalNursesInSchedule = 0;
+      for (const [dateKey, dayData] of scheduleResult) {
+        const dayCount = dayData.shifts?.DAY?.nurses?.length || 0;
+        const eveningCount = dayData.shifts?.EVENING?.nurses?.length || 0;
+        const nightCount = dayData.shifts?.NIGHT?.nurses?.length || 0;
+        totalNursesInSchedule += dayCount + eveningCount + nightCount;
+      }
+      console.log(`Total nurse assignments in schedule: ${totalNursesInSchedule}`);
+    }
+    
     // Save the optimized schedule
+    console.log(`Saving schedule to database...`);
     const savedSchedule = await optimizedSchedule.save();
+    console.log(`Schedule saved successfully with ID: ${savedSchedule._id}`);
+    
+    // Verify saved schedule has assignments
+    const savedData = savedSchedule.toSafeObject();
+    if (savedData.scheduleData) {
+      const dataEntries = savedData.scheduleData instanceof Map ? 
+        Array.from(savedData.scheduleData.entries()) : 
+        Object.entries(savedData.scheduleData);
+      console.log(`Verifying saved schedule: ${dataEntries.length} days in scheduleData`);
+      let totalSavedAssignments = 0;
+      dataEntries.forEach(([dateKey, dayData]) => {
+        if (dayData.shifts) {
+          totalSavedAssignments += (dayData.shifts.DAY?.nurses?.length || 0) +
+                                   (dayData.shifts.EVENING?.nurses?.length || 0) +
+                                   (dayData.shifts.NIGHT?.nurses?.length || 0);
+        }
+      });
+      console.log(`Total assignments saved: ${totalSavedAssignments}`);
+    }
+    
+    // Create notifications for all assigned nurses
+    try {
+      const assignedNurseIds = new Set();
+      
+      // Extract all assigned nurse IDs from the schedule
+      if (savedSchedule.scheduleData && savedSchedule.scheduleData instanceof Map) {
+        for (const [dateKey, dayData] of savedSchedule.scheduleData) {
+          if (dayData && dayData.shifts) {
+            ['DAY', 'EVENING', 'NIGHT'].forEach(shiftType => {
+              if (dayData.shifts[shiftType] && dayData.shifts[shiftType].nurses) {
+                dayData.shifts[shiftType].nurses.forEach(nurse => {
+                  if (nurse.nurseId) {
+                    assignedNurseIds.add(nurse.nurseId.toString());
+                  }
+                });
+              }
+            });
+          }
+        }
+      }
+      
+      // Create schedule notifications for assigned nurses
+      if (assignedNurseIds.size > 0) {
+        const wardNames = foundWards.map(w => w.name).join(', ');
+        await Notification.createScheduleNotification(
+          savedSchedule._id.toString(),
+          Array.from(assignedNurseIds),
+          wardNames
+        );
+        console.log(`📬 Created notifications for ${assignedNurseIds.size} nurses`);
+      }
+    } catch (notificationError) {
+      console.warn('⚠️ Failed to create notifications:', notificationError.message);
+      // Don't fail the entire request if notifications fail
+    }
 
     // Convert the schedule data to a plain object for frontend consumption
     const responseData = savedSchedule.toSafeObject();
@@ -775,20 +1043,27 @@ router.post('/generate', async (req, res) => {
         constraintScore: savedSchedule.qualityMetrics.constraintScore,
         issues: savedSchedule.issues?.length || 0,
         convergenceData: savedSchedule.qualityMetrics.convergenceHistory || []
+      },
+      debug: {
+        unavailabilityConstraints: debugInfo,
+        message: debugInfo.constraintViolations.length > 0 
+          ? `⚠️ WARNING: ${debugInfo.constraintViolations.length} constraint violations detected!`
+          : '✅ All unavailability constraints respected'
       }
     });
 
   } catch (error) {
-    console.error('❌ Schedule generation failed:', error.message);
-    console.error('🔍 DEBUG: Error type:', typeof error);
-    console.error('🔍 DEBUG: Error constructor:', error.constructor.name);
+    console.error('Schedule generation failed:', error.message);
+    console.error('DEBUG: Error type:', typeof error);
+    console.error('DEBUG: Error constructor:', error.constructor.name);
     console.error('Full error:', error);
     console.error('Stack trace:', error.stack);
     
     res.status(500).json({
       success: false,
       message: 'Failed to generate schedule',
-      error: error.message
+      error: error.message,
+      stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
     });
   }
 });
@@ -1123,10 +1398,10 @@ router.get('/ward/:wardName', async (req, res) => {
 // GET /api/schedules/active - Get active schedules
 router.get('/status/active', async (req, res) => {
   try {
-    const schedules = await Schedule.findActive()
-      .populate('createdBy', 'name nurseId')
-      .populate('assignments.nurse', 'name nurseId')
-      .select('-__v');
+    const schedules = await Schedule.find({ status: 'ACTIVE' })
+      .sort({ createdAt: -1 })
+      .select('-__v')
+      .lean();
     
     res.json({
       success: true,
@@ -1138,6 +1413,112 @@ router.get('/status/active', async (req, res) => {
     res.status(500).json({
       success: false,
       message: 'Failed to fetch active schedules',
+      error: error.message
+    });
+  }
+});
+
+// GET /api/schedules/my-schedule - Get logged-in nurse's personal schedule
+router.get('/my-schedule', protect, async (req, res) => {
+  try {
+    const nurseId = req.user._id;
+    console.log(`\n${'='.repeat(80)}`);
+    console.log(`📅 Fetching schedule for nurse: ${nurseId} (${req.user.name})`);
+    
+    // Get ALL active schedules to see what we have
+    const allActiveSchedules = await Schedule.find({ status: 'ACTIVE' })
+      .sort({ createdAt: -1 })
+      .select('_id startDate endDate generatedAt createdAt wardName')
+      .lean();
+    
+    console.log(`Found ${allActiveSchedules.length} active schedule(s):`);
+    allActiveSchedules.forEach((sched, idx) => {
+      console.log(`  ${idx + 1}. ID: ${sched._id}, Generated: ${sched.generatedAt}, Created: ${sched.createdAt}`);
+    });
+    
+    // Get the most recent ACTIVE schedule (by generatedAt, not createdAt)
+    const activeSchedule = await Schedule.findOne({ status: 'ACTIVE' })
+      .sort({ generatedAt: -1, createdAt: -1 })
+      .lean();
+    
+    if (!activeSchedule) {
+      console.log('❌ No active schedule found');
+      return res.json({
+        success: true,
+        message: 'No active schedule found',
+        schedule: []
+      });
+    }
+    
+    console.log(`✅ Using schedule: ${activeSchedule._id}`);
+    console.log(`   Ward: ${activeSchedule.wardName}`);
+    console.log(`   Period: ${activeSchedule.startDate} to ${activeSchedule.endDate}`);
+    console.log(`   Generated: ${activeSchedule.generatedAt}`);
+    
+    // Extract this nurse's shifts from the schedule
+    const myShifts = [];
+    
+    console.log(`\n📋 Extracting shifts for nurse ${req.user.name} (ID: ${nurseId})`);
+    console.log(`   Schedule has ${activeSchedule.scheduleData?.length || 0} days of data`);
+    
+    if (activeSchedule.scheduleData && Array.isArray(activeSchedule.scheduleData)) {
+      activeSchedule.scheduleData.forEach((dayData, dayIndex) => {
+        const date = dayData.date;
+        
+        // Check each shift type (DAY, EVENING, NIGHT)
+        ['day', 'evening', 'night'].forEach(shiftType => {
+          const shiftData = dayData.shifts?.[shiftType];
+          if (shiftData?.assignedNurses) {
+            shiftData.assignedNurses.forEach(assignment => {
+              // Match by nurseId (handle both string and ObjectId)
+              const assignmentNurseId = assignment.nurseId?.toString();
+              const matchesNurse = assignmentNurseId === nurseId.toString();
+              
+              if (matchesNurse) {
+                console.log(`   ✅ Found shift: ${date} ${shiftType.toUpperCase()} - ${assignment.nurseName}`);
+                myShifts.push({
+                  date: date,
+                  shift: shiftType.toUpperCase(),
+                  shiftType: shiftType,
+                  wardId: activeSchedule.ward,
+                  wardName: activeSchedule.wardName,
+                  nurseId: assignment.nurseId,
+                  nurseName: assignment.nurseName,
+                  role: assignment.role || 'Staff Nurse',
+                  assignedAt: activeSchedule.generatedAt,
+                  scheduleId: activeSchedule._id,
+                  dayOfWeek: dayData.dayOfWeek
+                });
+              }
+            });
+          }
+        });
+      });
+    }
+    
+    console.log(`\n✅ Total shifts found: ${myShifts.length}`);
+    myShifts.forEach(shift => {
+      console.log(`   - ${shift.date} (${shift.dayOfWeek}) ${shift.shift}`);
+    });
+    console.log(`${'='.repeat(80)}\n`);
+    
+    res.json({
+      success: true,
+      schedule: myShifts,
+      scheduleInfo: {
+        id: activeSchedule._id,
+        startDate: activeSchedule.startDate,
+        endDate: activeSchedule.endDate,
+        wardName: activeSchedule.wardName,
+        generatedAt: activeSchedule.generatedAt
+      }
+    });
+    
+  } catch (error) {
+    console.error('Get my schedule error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to fetch your schedule',
       error: error.message
     });
   }

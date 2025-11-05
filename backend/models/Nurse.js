@@ -1,5 +1,8 @@
 import mongoose from 'mongoose';
 import validator from 'validator';
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
+import crypto from 'crypto';
 
 const nurseSchema = new mongoose.Schema({
   nurseId: {
@@ -77,6 +80,52 @@ const nurseSchema = new mongoose.Schema({
     type: Boolean,
     default: true
   },
+  
+  // AUTHENTICATION FIELDS
+  password: {
+    type: String,
+    required: [true, 'Password is required'],
+    minlength: [6, 'Password must be at least 6 characters'],
+    select: false // Don't include password in queries by default
+  },
+  passwordChangedAt: {
+    type: Date
+    // No default - only set when password is actually changed
+  },
+  isEmailVerified: {
+    type: Boolean,
+    default: false
+  },
+  emailVerificationToken: {
+    type: String,
+    select: false
+  },
+  passwordResetToken: {
+    type: String,
+    select: false
+  },
+  passwordResetExpires: {
+    type: Date,
+    select: false
+  },
+  loginAttempts: {
+    type: Number,
+    default: 0
+  },
+  lockUntil: {
+    type: Date
+  },
+  lastLogin: {
+    type: Date
+  },
+  refreshTokens: [{
+    token: String,
+    createdAt: {
+      type: Date,
+      default: Date.now
+    },
+    expiresAt: Date
+  }],
   // ENHANCED SCHEDULING CONSTRAINTS AND PREFERENCES
   workingConstraints: {
     // Maximum consecutive night shifts (GROUND RULE)
@@ -313,10 +362,15 @@ nurseSchema.virtual('roleDisplay').get(function() {
 
 // Pre-save middleware to auto-generate nurseId
 nurseSchema.pre('save', async function(next) {
-  // Generate nurseId if not provided
-  if (!this.nurseId || this.isNew) {
-    const count = await mongoose.models.Nurse.countDocuments();
-    this.nurseId = `N${String(count + 1001).padStart(4, '0')}`;
+  // Generate nurseId ONLY if not provided (respect manually set IDs)
+  if (!this.nurseId || this.nurseId.trim() === '') {
+    // Generate unique ID based on timestamp to avoid collisions
+    const timestamp = Date.now();
+    const uniqueNum = (timestamp + Math.floor(Math.random() * 1000)) % 10000;
+    this.nurseId = `N${String(uniqueNum).padStart(4, '0')}`;
+    console.log('Pre-save middleware generated nurse ID:', this.nurseId);
+  } else {
+    console.log('Pre-save middleware keeping provided nurse ID:', this.nurseId);
   }
   
   // Auto-set hierarchy level based on role
@@ -511,6 +565,146 @@ nurseSchema.statics.getStatistics = async function() {
       return acc;
     }, {})
   };
+};
+
+// AUTHENTICATION METHODS
+
+// Hash password before saving
+nurseSchema.pre('save', async function(next) {
+  // Only run if password was actually modified
+  if (!this.isModified('password')) return next();
+  
+  // Hash password with cost of 12
+  this.password = await bcrypt.hash(this.password, 12);
+  
+  // Update passwordChangedAt
+  if (!this.isNew) {
+    this.passwordChangedAt = Date.now() - 1000; // Subtract 1 second to account for timing
+  }
+  
+  next();
+});
+
+// Clean up expired refresh tokens before saving
+nurseSchema.pre('save', function(next) {
+  if (this.refreshTokens && this.refreshTokens.length > 0) {
+    this.refreshTokens = this.refreshTokens.filter(tokenObj => 
+      tokenObj.expiresAt > new Date()
+    );
+  }
+  next();
+});
+
+// Instance method to check password
+nurseSchema.methods.correctPassword = async function(candidatePassword, userPassword) {
+  return await bcrypt.compare(candidatePassword, userPassword);
+};
+
+// Instance method to check if password changed after JWT was issued
+nurseSchema.methods.changedPasswordAfter = function(JWTTimestamp) {
+  if (this.passwordChangedAt) {
+    const changedTimestamp = parseInt(this.passwordChangedAt.getTime() / 1000, 10);
+    return JWTTimestamp < changedTimestamp;
+  }
+  
+  return false; // False means password not changed
+};
+
+// Instance method to generate JWT token
+nurseSchema.methods.generateJWTToken = function() {
+  return jwt.sign(
+    { 
+      id: this._id, 
+      nurseId: this.nurseId,
+      role: this.role,
+      hierarchyLevel: this.hierarchyLevel 
+    },
+    process.env.JWT_SECRET,
+    { expiresIn: process.env.JWT_EXPIRES_IN || '7d' }
+  );
+};
+
+// Instance method to generate refresh token
+nurseSchema.methods.generateRefreshToken = function() {
+  const refreshToken = crypto.randomBytes(32).toString('hex');
+  const expiresAt = new Date();
+  expiresAt.setDate(expiresAt.getDate() + 30); // 30 days
+  
+  this.refreshTokens.push({
+    token: refreshToken,
+    expiresAt
+  });
+  
+  return refreshToken;
+};
+
+// Instance method to validate refresh token
+nurseSchema.methods.validateRefreshToken = function(token) {
+  return this.refreshTokens.some(tokenObj => 
+    tokenObj.token === token && tokenObj.expiresAt > new Date()
+  );
+};
+
+// Instance method to revoke refresh token
+nurseSchema.methods.revokeRefreshToken = function(token) {
+  this.refreshTokens = this.refreshTokens.filter(tokenObj => tokenObj.token !== token);
+};
+
+// Instance method to create password reset token
+nurseSchema.methods.createPasswordResetToken = function() {
+  const resetToken = crypto.randomBytes(32).toString('hex');
+  
+  this.passwordResetToken = crypto
+    .createHash('sha256')
+    .update(resetToken)
+    .digest('hex');
+    
+  this.passwordResetExpires = Date.now() + 10 * 60 * 1000; // 10 minutes
+  
+  return resetToken;
+};
+
+// Static method to find by credentials
+nurseSchema.statics.findByCredentials = async function(nurseId, password) {
+  const nurse = await this.findOne({ 
+    nurseId,
+    isActive: true 
+  }).select('+password');
+  
+  if (!nurse) {
+    throw new Error('Invalid login credentials');
+  }
+  
+  // Check if account is locked
+  if (nurse.lockUntil && nurse.lockUntil > Date.now()) {
+    throw new Error('Account is temporarily locked. Please try again later.');
+  }
+  
+  const isMatch = await nurse.correctPassword(password, nurse.password);
+  
+  if (!isMatch) {
+    // Increment login attempts
+    nurse.loginAttempts += 1;
+    
+    // Lock account after 5 failed attempts for 30 minutes
+    if (nurse.loginAttempts >= 5) {
+      nurse.lockUntil = Date.now() + 30 * 60 * 1000; // 30 minutes
+    }
+    
+    await nurse.save();
+    throw new Error('Invalid login credentials');
+  }
+  
+  // Reset login attempts on successful login
+  if (nurse.loginAttempts > 0) {
+    nurse.loginAttempts = 0;
+    nurse.lockUntil = undefined;
+  }
+  
+  nurse.lastLogin = new Date();
+  await nurse.save();
+  
+  return nurse;
 };
 
 export default mongoose.model('Nurse', nurseSchema);

@@ -2,10 +2,33 @@ import mongoose from 'mongoose';
 import Ward from '../models/Ward.js';
 import Nurse from '../models/Nurse.js';
 import Schedule from '../models/Schedule.js';
+import UnavailabilityRequest from '../models/UnavailabilityRequest.js';
 
 /**
  * Genetic Algorithm for Nurse Scheduling
  * Generates optimized schedules considering constraints and preferences
+ * 
+ * UNAVAILABILITY REQUEST CONSTRAINTS:
+ * ===================================
+ * This algorithm treats approved unavailability requests as HARD CONSTRAINTS.
+ * 
+ * 1. When initializing, all approved requests for nurses in the ward are loaded
+ * 2. Before assigning any nurse to a shift, the algorithm checks:
+ *    - Does the nurse have an approved unavailability request for this date/shift?
+ *    - If YES: The nurse is EXCLUDED from available candidates (cannot be assigned)
+ *    - If NO: The nurse can be considered for assignment
+ * 
+ * 3. During schedule evaluation, any violation of an unavailability request is marked
+ *    as CRITICAL severity and heavily penalizes the fitness score
+ * 
+ * 4. This ensures nurses are NEVER scheduled on dates/shifts they requested off
+ *    (assuming their request was approved by admin)
+ * 
+ * HOW IT WORKS:
+ * - Approved requests are loaded into this.unavailabilityRequests Map
+ * - isNurseUnavailableDueToRequest() checks if a nurse has a blocking request
+ * - getAvailableNurses() filters out unavailable nurses BEFORE selection
+ * - Constraint violations are tracked and reported in schedule quality metrics
  */
 class NurseSchedulingAlgorithm {
   constructor(wardId, startDate, endDate, settings = {}) {
@@ -40,6 +63,7 @@ class NurseSchedulingAlgorithm {
     this.nurses = [];
     this.dateRange = [];
     this.shifts = ['DAY', 'EVENING', 'NIGHT'];
+    this.unavailabilityRequests = new Map(); // Map of nurseId -> approved requests
     
     // Algorithm state
     this.population = [];
@@ -71,14 +95,66 @@ class NurseSchedulingAlgorithm {
       // Generate date range
       this.dateRange = this.generateDateRange(this.startDate, this.endDate);
 
+      // Load approved unavailability requests for all nurses
+      await this.loadUnavailabilityRequests();
+
       console.log(`Initialized scheduling algorithm for ward: ${this.ward.name}`);
       console.log(`Nurses: ${this.nurses.length}, Days: ${this.dateRange.length}`);
+      console.log(`Unavailability constraints loaded for ${this.unavailabilityRequests.size} nurses`);
       
       return true;
     } catch (error) {
       console.error('Failed to initialize scheduling algorithm:', error);
       throw error;
     }
+  }
+
+  /**
+   * Load approved unavailability requests for the scheduling period
+   */
+  async loadUnavailabilityRequests() {
+    try {
+      const nurseIds = this.nurses.map(n => n._id);
+      
+      // Get all approved requests that overlap with our scheduling period
+      const requests = await UnavailabilityRequest.find({
+        nurseId: { $in: nurseIds },
+        status: 'approved',
+        validFrom: { $lte: this.endDate },
+        validUntil: { $gte: this.startDate }
+      });
+
+      // Organize by nurse ID for quick lookup
+      requests.forEach(request => {
+        const nurseId = request.nurseId.toString();
+        if (!this.unavailabilityRequests.has(nurseId)) {
+          this.unavailabilityRequests.set(nurseId, []);
+        }
+        this.unavailabilityRequests.get(nurseId).push(request);
+      });
+
+      console.log(`Loaded ${requests.length} approved unavailability requests as hard constraints`);
+    } catch (error) {
+      console.error('Error loading unavailability requests:', error);
+      // Don't fail the entire scheduling if this fails
+    }
+  }
+
+  /**
+   * Check if a nurse is unavailable due to an approved request
+   */
+  isNurseUnavailableDueToRequest(nurse, dateStr, shift) {
+    const nurseId = nurse._id.toString();
+    const requests = this.unavailabilityRequests.get(nurseId);
+    
+    if (!requests || requests.length === 0) {
+      return false;
+    }
+
+    // Check if any request blocks this date/shift combination
+    return requests.some(request => {
+      return request.isValidForDate(dateStr, shift);
+    });
   }
 
   /**
@@ -207,6 +283,11 @@ class NurseSchedulingAlgorithm {
     const dayName = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'][dayOfWeek];
     
     return this.nurses.filter(nurse => {
+      // HARD CONSTRAINT: Check approved unavailability requests first
+      if (this.isNurseUnavailableDueToRequest(nurse, dateStr, shift)) {
+        return false; // Nurse has an approved unavailability request - cannot be assigned
+      }
+
       // Check if nurse is available on this day and shift
       if (this.settings.enforceAvailability && nurse.availability) {
         const dayAvailability = nurse.availability.weekly[dayName];
@@ -528,11 +609,25 @@ class NurseSchedulingAlgorithm {
   checkAvailabilityViolations(nurseSchedule, nurse) {
     const violations = [];
     
-    if (!nurse.availability || !nurse.availability.weekly) {
-      return violations;
-    }
-    
     nurseSchedule.forEach(entry => {
+      // CRITICAL: Check for approved unavailability request violations
+      if (this.isNurseUnavailableDueToRequest(nurse, entry.date, entry.shift)) {
+        violations.push({
+          type: 'UNAVAILABILITY_REQUEST_VIOLATION',
+          nurseId: nurse._id,
+          nurseName: nurse.name,
+          description: `CRITICAL: Nurse assigned to ${entry.shift} shift on ${entry.date} despite approved unavailability request`,
+          severity: 'CRITICAL',
+          date: entry.date,
+          shift: entry.shift
+        });
+      }
+
+      // Check general availability preferences
+      if (!nurse.availability || !nurse.availability.weekly) {
+        return;
+      }
+      
       const date = new Date(entry.date);
       const dayOfWeek = date.getDay();
       const dayName = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'][dayOfWeek];
@@ -546,7 +641,7 @@ class NurseSchedulingAlgorithm {
             nurseId: nurse._id,
             nurseName: nurse.name,
             description: `Nurse assigned to ${entry.shift} shift on ${entry.date} but marked as unavailable`,
-            severity: 'CRITICAL',
+            severity: 'HIGH',
             date: entry.date
           });
         }

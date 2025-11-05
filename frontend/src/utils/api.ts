@@ -108,6 +108,17 @@ class ApiService {
     return this.request<Nurse>(`/nurses/${id}`);
   }
 
+  async checkNurseAvailability(nurseId?: string, email?: string) {
+    const params = new URLSearchParams();
+    if (nurseId) params.append('nurseId', nurseId);
+    if (email) params.append('email', email);
+    
+    return this.request<{
+      nurseId?: { available: boolean; exists: boolean };
+      email?: { available: boolean; exists: boolean };
+    }>(`/nurses/check-availability?${params.toString()}`);
+  }
+
   async createNurse(nurseData: {
     name: string;
     email: string;

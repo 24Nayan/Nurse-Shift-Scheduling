@@ -65,6 +65,47 @@ router.get('/', async (req, res) => {
   }
 });
 
+// GET /api/nurses/check-availability - Check if nurse ID or email exists
+router.get('/check-availability', async (req, res) => {
+  try {
+    const { nurseId, email } = req.query;
+    
+    const checks = {};
+    
+    if (nurseId) {
+      const existingNurseById = await Nurse.findOne({ 
+        nurseId: nurseId.trim() 
+      }).select('nurseId');
+      checks.nurseId = {
+        available: !existingNurseById,
+        exists: !!existingNurseById
+      };
+    }
+    
+    if (email) {
+      const existingNurseByEmail = await Nurse.findOne({ 
+        email: email.toLowerCase().trim() 
+      }).select('email');
+      checks.email = {
+        available: !existingNurseByEmail,
+        exists: !!existingNurseByEmail
+      };
+    }
+    
+    res.json({
+      success: true,
+      data: checks
+    });
+  } catch (error) {
+    console.error('Check availability error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to check availability',
+      error: error.message
+    });
+  }
+});
+
 // GET /api/nurses/statistics - Get nurse statistics
 router.get('/statistics', async (req, res) => {
   try {
@@ -115,6 +156,45 @@ router.post('/', async (req, res) => {
   try {
     const nurseData = req.body;
     
+    console.log('Creating nurse with data:', nurseData);
+    
+    // AUTO-GENERATE UNIQUE ID IF NOT PROVIDED OR IF CONFLICTS EXIST
+    if (!nurseData.nurseId || nurseData.nurseId.trim() === '') {
+      // Generate a unique ID based on timestamp
+      const timestamp = Date.now();
+      const uniqueNum = timestamp % 10000;
+      nurseData.nurseId = `N${uniqueNum.toString().padStart(4, '0')}`;
+      console.log('Auto-generated nurse ID:', nurseData.nurseId);
+    } else {
+      // Check if provided ID already exists and auto-generate if it does
+      const existingNurseById = await Nurse.findOne({ 
+        nurseId: nurseData.nurseId.trim() 
+      });
+      if (existingNurseById) {
+        console.log(`Provided nurse ID ${nurseData.nurseId} already exists, generating new one...`);
+        const timestamp = Date.now();
+        const uniqueNum = timestamp % 10000;
+        nurseData.nurseId = `N${uniqueNum.toString().padStart(4, '0')}`;
+        console.log('Auto-generated nurse ID to avoid conflict:', nurseData.nurseId);
+      }
+    }
+    
+    // Check if email already exists
+    if (nurseData.email) {
+      const existingNurseByEmail = await Nurse.findOne({ 
+        email: nurseData.email.toLowerCase().trim() 
+      });
+      if (existingNurseByEmail) {
+        console.log(`Email ${nurseData.email} already exists`);
+        return res.status(400).json({
+          success: false,
+          message: 'Email already exists',
+          field: 'email',
+          value: nurseData.email
+        });
+      }
+    }
+    
     // Convert comma-separated strings to arrays if they exist
     if (typeof nurseData.qualifications === 'string') {
       nurseData.qualifications = nurseData.qualifications
@@ -130,9 +210,18 @@ router.post('/', async (req, res) => {
         .filter(w => w.length > 0);
     }
     
+    // Trim and normalize data
+    if (nurseData.nurseId) nurseData.nurseId = nurseData.nurseId.trim();
+    if (nurseData.email) nurseData.email = nurseData.email.toLowerCase().trim();
+    if (nurseData.name) nurseData.name = nurseData.name.trim();
+    
+    console.log('Processed nurse data:', nurseData);
+    
     // Create new nurse
     const nurse = new Nurse(nurseData);
     const savedNurse = await nurse.save();
+    
+    console.log('Nurse created successfully:', savedNurse.nurseId);
     
     res.status(201).json({
       success: true,
@@ -142,26 +231,42 @@ router.post('/', async (req, res) => {
   } catch (error) {
     console.error('Create nurse error:', error);
     
-    // Handle duplicate key errors
+    // Handle duplicate key errors (fallback)
     if (error.code === 11000) {
-      const field = Object.keys(error.keyPattern)[0];
-      const fieldName = field === 'email' ? 'Email' : 'Nurse ID';
+      const field = Object.keys(error.keyPattern || {})[0];
+      let fieldName = 'Field';
+      let message = 'Duplicate value exists';
+      
+      if (field === 'email') {
+        fieldName = 'Email';
+        message = 'Email already exists';
+      } else if (field === 'nurseId') {
+        fieldName = 'Nurse ID';
+        message = 'Nurse ID already exists';
+      }
+      
+      console.log(`Duplicate key error: ${fieldName} - ${message}`);
       return res.status(400).json({
         success: false,
-        message: `${fieldName} already exists`
+        message: message,
+        field: field,
+        error: 'DUPLICATE_KEY'
       });
     }
     
     // Handle validation errors
     if (error.name === 'ValidationError') {
       const messages = Object.values(error.errors).map(err => err.message);
+      console.log('Validation errors:', messages);
       return res.status(400).json({
         success: false,
         message: 'Validation failed',
-        errors: messages
+        errors: messages,
+        error: 'VALIDATION_ERROR'
       });
     }
     
+    console.log('Unknown error creating nurse:', error.message);
     res.status(400).json({
       success: false,
       message: 'Failed to create nurse',

@@ -3,7 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/
 import { Badge } from './ui/badge';
 import { Button } from './ui/button';
 import { Calendar, Clock, MapPin, User, AlertCircle } from 'lucide-react';
-import { projectId } from '../utils/supabase/info';
+import { useAuth } from '../contexts/AuthContext';
 
 interface User {
   id: string;
@@ -29,9 +29,11 @@ interface ShiftEntry {
 }
 
 export function NurseDashboard({ user }: NurseDashboardProps) {
+  const { apiCall } = useAuth();
   const [schedule, setSchedule] = useState<ShiftEntry[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [scheduleInfo, setScheduleInfo] = useState<any>(null);
 
   useEffect(() => {
     loadPersonalSchedule();
@@ -40,39 +42,35 @@ export function NurseDashboard({ user }: NurseDashboardProps) {
   const loadPersonalSchedule = async () => {
     try {
       setLoading(true);
+      setError('');
       
-      // Get current week
-      const today = new Date();
-      const startOfWeek = new Date(today.setDate(today.getDate() - today.getDay()));
-      const endOfWeek = new Date(today.setDate(today.getDate() - today.getDay() + 6));
+      console.log('Fetching personal schedule from backend...');
       
-      const response = await fetch(
-        `https://${projectId}.supabase.co/functions/v1/make-server-c76fcf04/schedule?startDate=${startOfWeek.toISOString().split('T')[0]}&endDate=${endOfWeek.toISOString().split('T')[0]}`,
-        {
-          headers: {
-            'Authorization': `Bearer ${user.access_token}`,
-          },
-        }
-      );
+      const response = await apiCall('/schedules/my-schedule', {
+        method: 'GET'
+      });
 
-      if (response.ok) {
-        const data = await response.json();
-        setSchedule(data.schedule || []);
+      console.log('Personal schedule response:', response);
+
+      if (response.success) {
+        setSchedule(response.schedule || []);
+        setScheduleInfo(response.scheduleInfo);
+        console.log(`Loaded ${response.schedule?.length || 0} shifts for nurse`);
       } else {
-        const errorText = await response.text();
-        console.error('Schedule fetch error:', errorText);
-        setError('Failed to load schedule');
+        console.error('Failed to load schedule:', response.message);
+        setError(response.message || 'Failed to load schedule');
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Schedule loading error:', error);
-      setError('Failed to load schedule');
+      setError(error.message || 'Failed to load schedule');
     } finally {
       setLoading(false);
     }
   };
 
   const getShiftBadgeColor = (shift: string) => {
-    switch (shift) {
+    const shiftLower = shift.toLowerCase();
+    switch (shiftLower) {
       case 'day': return 'bg-yellow-100 text-yellow-800';
       case 'evening': return 'bg-orange-100 text-orange-800';
       case 'night': return 'bg-purple-100 text-purple-800';
@@ -81,8 +79,9 @@ export function NurseDashboard({ user }: NurseDashboardProps) {
   };
 
   const getShiftTime = (shift: string) => {
-    switch (shift) {
-      case 'day': return '7:00 AM - 7:00 PM';
+    const shiftLower = shift.toLowerCase();
+    switch (shiftLower) {
+      case 'day': return '7:00 AM - 3:00 PM';
       case 'evening': return '3:00 PM - 11:00 PM';
       case 'night': return '11:00 PM - 7:00 AM';
       default: return 'Unknown';
@@ -123,8 +122,27 @@ export function NurseDashboard({ user }: NurseDashboardProps) {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900">My Schedule</h1>
-        <p className="text-gray-600 mt-2">Welcome back, {user.name}</p>
+        <div className="flex justify-between items-center">
+          <div>
+            <h1 className="text-3xl font-bold text-gray-900">My Schedule</h1>
+            <p className="text-gray-600 mt-2">Welcome back, {user.name}</p>
+            {scheduleInfo && (
+              <p className="text-sm text-gray-500 mt-1">
+                Schedule for {scheduleInfo.wardName} • 
+                Generated on {new Date(scheduleInfo.generatedAt).toLocaleDateString('en-US', { 
+                  month: 'short', 
+                  day: 'numeric', 
+                  year: 'numeric',
+                  hour: '2-digit',
+                  minute: '2-digit'
+                })}
+              </p>
+            )}
+          </div>
+          <Button onClick={loadPersonalSchedule} disabled={loading}>
+            {loading ? 'Loading...' : 'Refresh'}
+          </Button>
+        </div>
       </div>
 
       {error && (

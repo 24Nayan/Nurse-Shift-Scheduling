@@ -346,6 +346,107 @@ scheduleSchema.methods.archive = function() {
   return this.save();
 };
 
+// Method to get assignments for a specific nurse
+scheduleSchema.methods.getAssignmentsForNurse = function(nurseId) {
+  const nurseAssignments = {};
+  
+  console.log(`\n=== getAssignmentsForNurse called ===`);
+  console.log(`Nurse ID: ${nurseId} (type: ${nurseId?.constructor?.name})`);
+  console.log(`Schedule ID: ${this._id}`);
+  console.log(`scheduleData exists: ${!!this.scheduleData}`);
+  console.log(`scheduleData type: ${this.scheduleData?.constructor?.name || typeof this.scheduleData}`);
+  console.log(`scheduleData size/length: ${this.scheduleData instanceof Map ? this.scheduleData.size : this.scheduleData ? (Array.isArray(this.scheduleData) ? this.scheduleData.length : Object.keys(this.scheduleData).length) : 0}`);
+  
+  if (!this.scheduleData) {
+    console.log(`getAssignmentsForNurse: No scheduleData for nurse ${nurseId}`);
+    return nurseAssignments;
+  }
+  
+  if ((this.scheduleData instanceof Map && this.scheduleData.size === 0) || 
+      (typeof this.scheduleData === 'object' && !Array.isArray(this.scheduleData) && Object.keys(this.scheduleData).length === 0) ||
+      (Array.isArray(this.scheduleData) && this.scheduleData.length === 0)) {
+    console.log(`getAssignmentsForNurse: Empty scheduleData for nurse ${nurseId}`);
+    return nurseAssignments;
+  }
+  
+  // Normalize nurseId to string for comparison
+  const targetNurseIdStr = nurseId.toString();
+  
+  // Convert Map to entries for iteration
+  let scheduleEntries;
+  if (this.scheduleData instanceof Map) {
+    scheduleEntries = Array.from(this.scheduleData.entries());
+    console.log(`scheduleData is a Map with ${scheduleEntries.length} entries`);
+  } else if (Array.isArray(this.scheduleData)) {
+    // If it's an array, convert it to key-value pairs (assuming it's an array of [key, value] tuples or array of objects)
+    console.log(`WARNING: scheduleData is an array, not a Map! Converting...`);
+    scheduleEntries = this.scheduleData.map((item, idx) => {
+      if (Array.isArray(item) && item.length >= 2) {
+        return [item[0], item[1]];
+      } else if (typeof item === 'object' && item.date) {
+        return [item.date, item];
+      } else {
+        return [`date_${idx}`, item];
+      }
+    });
+  } else {
+    scheduleEntries = Object.entries(this.scheduleData);
+    console.log(`scheduleData is a plain object with ${scheduleEntries.length} entries`);
+  }
+  
+  console.log(`getAssignmentsForNurse: Checking ${scheduleEntries.length} days for nurse ${targetNurseIdStr}`);
+  
+  for (const [dateKey, dayData] of scheduleEntries) {
+    if (!dayData || !dayData.shifts) {
+      continue;
+    }
+    
+    const shifts = {};
+    
+    // Check each shift type
+    ['DAY', 'EVENING', 'NIGHT'].forEach(shiftType => {
+      const shiftData = dayData.shifts[shiftType];
+      if (!shiftData || !shiftData.nurses || !Array.isArray(shiftData.nurses)) {
+        return;
+      }
+      
+      // Find nurse assignment - handle both ObjectId and string nurseId
+      const assignment = shiftData.nurses.find(nurse => {
+        if (!nurse || !nurse.nurseId) return false;
+        
+        // Normalize nurseId to string
+        const nurseIdStr = typeof nurse.nurseId === 'object' && nurse.nurseId.toString ? 
+          nurse.nurseId.toString() : 
+          String(nurse.nurseId);
+        
+        return nurseIdStr === targetNurseIdStr;
+      });
+      
+      if (assignment) {
+        shifts[shiftType] = assignment;
+        console.log(`Found ${shiftType} assignment for nurse ${targetNurseIdStr} on ${dateKey}`);
+        console.log(`  Assignment object keys:`, Object.keys(assignment));
+        console.log(`  Assignment has nurses array?:`, Array.isArray(assignment.nurses));
+        // Verify assignment is not the full shiftData object
+        if (Array.isArray(assignment.nurses)) {
+          console.log(`  ERROR: Assignment object contains nurses array! This should be the individual assignment only.`);
+        }
+      }
+    });
+    
+    if (Object.keys(shifts).length > 0) {
+      nurseAssignments[dateKey] = {
+        date: dayData.date || dateKey,
+        shifts
+      };
+    }
+  }
+  
+  console.log(`getAssignmentsForNurse: Returning ${Object.keys(nurseAssignments).length} days with assignments for nurse ${targetNurseIdStr}`);
+  
+  return nurseAssignments;
+};
+
 // Static Methods
 scheduleSchema.statics.findActiveSchedules = function(wardId) {
   return this.find({ 
