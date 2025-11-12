@@ -9,6 +9,11 @@ Before you begin, make sure you have the following installed:
 - npm or yarn
 - MongoDB (local installation or MongoDB Atlas account)
 
+
+### ADMIN CREDENTIALS:
+userid : admin@hospital.com
+password: admin123
+
 ## MongoDB Installation
 
 ### Option 1: Local MongoDB Installation

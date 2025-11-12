@@ -517,7 +517,7 @@ export default function WardManagement() {
                         <Button 
                           variant="destructive" 
                           size="sm" 
-                          className="flex-1"
+                          className="flex-1 text-white"
                           onClick={(e: React.MouseEvent) => {
                             e.stopPropagation();
                             handleDeleteWard(ward._id, ward.name);

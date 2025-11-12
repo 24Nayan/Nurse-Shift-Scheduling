@@ -396,10 +396,10 @@ const RequestManagement = () => {
                         <Button
                           onClick={() => handleApprove(request._id)}
                           disabled={actionLoading === request._id}
-                          className="flex-1 bg-green-600 hover:bg-green-700"
+                          className="flex-1 bg-green-600 hover:bg-green-700 text-black dark:text-white disabled:bg-green-400 disabled:text-black dark:disabled:text-white"
                         >
                           {actionLoading === request._id ? (
-                            <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent mr-2" />
+                            <div className="animate-spin rounded-full h-4 w-4 border-2 border-black dark:border-white border-t-transparent mr-2" />
                           ) : (
                             <CheckCircle className="h-4 w-4 mr-2" />
                           )}
@@ -409,10 +409,10 @@ const RequestManagement = () => {
                           onClick={() => handleReject(request._id)}
                           disabled={actionLoading === request._id}
                           variant="destructive"
-                          className="flex-1"
+                          className="flex-1 text-black dark:text-white disabled:text-black dark:disabled:text-white"
                         >
                           {actionLoading === request._id ? (
-                            <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent mr-2" />
+                            <div className="animate-spin rounded-full h-4 w-4 border-2 border-black dark:border-white border-t-transparent mr-2" />
                           ) : (
                             <XCircle className="h-4 w-4 mr-2" />
                           )}

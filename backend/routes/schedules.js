@@ -1106,12 +1106,8 @@ router.get('/', async (req, res) => {
     // Calculate pagination
     const skip = (parseInt(page) - 1) * parseInt(limit);
     
-    // Execute query with population
+    // Execute query without population (scheduleData contains all nurse info already)
     const schedules = await Schedule.find(filter)
-      .populate('createdBy', 'name nurseId')
-      .populate('approvedBy', 'name nurseId')
-      .populate('assignments.nurse', 'name nurseId role')
-      .populate('assignments.shift', 'name startTime endTime type')
       .sort(sort)
       .limit(parseInt(limit))
       .skip(skip)
@@ -1142,10 +1138,6 @@ router.get('/', async (req, res) => {
 router.get('/:id', async (req, res) => {
   try {
     const schedule = await Schedule.findById(req.params.id)
-      .populate('createdBy', 'name nurseId role')
-      .populate('approvedBy', 'name nurseId role')
-      .populate('assignments.nurse', 'name nurseId role qualifications')
-      .populate('assignments.shift', 'name startTime endTime type duration ward')
       .select('-__v');
     
     if (!schedule) {
@@ -1174,9 +1166,6 @@ router.post('/', async (req, res) => {
   try {
     const schedule = new Schedule(req.body);
     const savedSchedule = await schedule.save();
-    
-    // Populate the response
-    await savedSchedule.populate('createdBy', 'name nurseId');
     
     res.status(201).json({
       success: true,
@@ -1221,11 +1210,7 @@ router.put('/:id', async (req, res) => {
         runValidators: true,
         select: '-__v'
       }
-    )
-    .populate('createdBy', 'name nurseId')
-    .populate('approvedBy', 'name nurseId')
-    .populate('assignments.nurse', 'name nurseId role')
-    .populate('assignments.shift', 'name startTime endTime type');
+    );
     
     if (!schedule) {
       return res.status(404).json({
@@ -1377,7 +1362,6 @@ router.delete('/:id', async (req, res) => {
 router.get('/ward/:wardName', async (req, res) => {
   try {
     const schedules = await Schedule.findByWard(req.params.wardName)
-      .populate('createdBy', 'name nurseId')
       .select('-__v');
     
     res.json({

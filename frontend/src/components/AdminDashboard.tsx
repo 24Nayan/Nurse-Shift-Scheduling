@@ -10,6 +10,7 @@ import { ScheduleGenerator } from './ScheduleGenerator';
 import ScheduleViewer from './ScheduleViewer';
 import WardManagement from './WardManagement';
 import RequestManagement from './RequestManagement';
+import ManualScheduleEditor from './ManualScheduleEditor';
 import { projectId } from '../utils/supabase/info';
 
 interface User {
@@ -214,12 +215,13 @@ export function AdminDashboard({ user }: AdminDashboardProps) {
 
       {/* Main Content Tabs */}
       <Tabs defaultValue="overview" className="w-full">
-        <TabsList className="grid w-full grid-cols-5">
+        <TabsList className="flex flex-wrap w-full">
           <TabsTrigger value="overview">Overview</TabsTrigger>
           <TabsTrigger value="nurses">Nurses</TabsTrigger>
           <TabsTrigger value="wards">Wards</TabsTrigger>
           <TabsTrigger value="requests">Requests</TabsTrigger>
           <TabsTrigger value="generate">Generate Schedule</TabsTrigger>
+          <TabsTrigger value="manual-edit">Manual Adjustments</TabsTrigger>
         </TabsList>
 
         <TabsContent value="overview" className="space-y-6">
@@ -351,6 +353,10 @@ export function AdminDashboard({ user }: AdminDashboardProps) {
             console.log('Schedule generated successfully!');
             // Don't navigate away or reload data - just stay on the generator tab
           }} />
+        </TabsContent>
+
+        <TabsContent value="manual-edit">
+          <ManualScheduleEditor />
         </TabsContent>
       </Tabs>
     </div>

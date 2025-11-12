@@ -13,6 +13,7 @@ router.get('/', async (req, res) => {
       page = 1, 
       limit = 50,
       search,
+      nurseId,
       sortBy = 'createdAt',
       sortOrder = 'desc'
     } = req.query;
@@ -22,7 +23,10 @@ router.get('/', async (req, res) => {
     
     if (role) filter.role = role;
     if (ward) filter.wardAccess = { $in: [ward] };
-    if (search) {
+    if (nurseId) {
+      // Exact match for nurseId
+      filter.nurseId = nurseId;
+    } else if (search) {
       filter.$or = [
         { name: { $regex: search, $options: 'i' } },
         { email: { $regex: search, $options: 'i' } },
