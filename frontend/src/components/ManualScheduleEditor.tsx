@@ -664,7 +664,7 @@ const ManualScheduleEditor = () => {
                             
                             {/* Add Nurse Button */}
                             <Button
-                              onClick={(e) => {
+                              onClick={(e: React.MouseEvent) => {
                                 e.stopPropagation();
                                 // If a nurse is selected, add them directly to this shift
                                 if (selectedNurse) {

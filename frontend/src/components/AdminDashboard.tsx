@@ -6,11 +6,10 @@ import { Button } from './ui/button';
 import { Badge } from './ui/badge';
 import { Users, Calendar, Building2, AlertCircle, Clock, UserCheck } from 'lucide-react';
 import { NurseManagement } from './NurseManagement';
-import { ScheduleGenerator } from './ScheduleGenerator';
 import ScheduleViewer from './ScheduleViewer';
 import WardManagement from './WardManagement';
 import RequestManagement from './RequestManagement';
-import ManualScheduleEditor from './ManualScheduleEditor';
+import UnifiedScheduleManager from './UnifiedScheduleManager';
 import { projectId } from '../utils/supabase/info';
 
 interface User {
@@ -220,8 +219,7 @@ export function AdminDashboard({ user }: AdminDashboardProps) {
           <TabsTrigger value="nurses">Nurses</TabsTrigger>
           <TabsTrigger value="wards">Wards</TabsTrigger>
           <TabsTrigger value="requests">Requests</TabsTrigger>
-          <TabsTrigger value="generate">Generate Schedule</TabsTrigger>
-          <TabsTrigger value="manual-edit">Manual Adjustments</TabsTrigger>
+          <TabsTrigger value="schedule">Schedule Manager</TabsTrigger>
         </TabsList>
 
         <TabsContent value="overview" className="space-y-6">
@@ -348,15 +346,8 @@ export function AdminDashboard({ user }: AdminDashboardProps) {
           <RequestManagement />
         </TabsContent>
 
-        <TabsContent value="generate">
-          <ScheduleGenerator user={user} onScheduleGenerated={() => {
-            console.log('Schedule generated successfully!');
-            // Don't navigate away or reload data - just stay on the generator tab
-          }} />
-        </TabsContent>
-
-        <TabsContent value="manual-edit">
-          <ManualScheduleEditor />
+        <TabsContent value="schedule">
+          <UnifiedScheduleManager />
         </TabsContent>
       </Tabs>
     </div>
