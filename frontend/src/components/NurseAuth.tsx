@@ -318,6 +318,35 @@ const NurseAuth = () => {
           </Tabs>
         </Card>
 
+        {/* Demo Admin Credentials */}
+        <Card className="bg-gradient-to-r from-blue-50 to-indigo-50 border-2 border-blue-300">
+          <CardHeader className="pb-3">
+            <CardTitle className="text-base text-blue-900 flex items-center gap-2">
+              <Shield className="h-5 w-5" />
+              Demo Admin Credentials
+            </CardTitle>
+            <CardDescription className="text-sm">
+              Use these credentials to access the admin dashboard
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="bg-white p-4 rounded-lg shadow-sm border border-blue-200 space-y-2">
+              <div className="flex items-center justify-between">
+                <span className="text-sm font-medium text-gray-700">Email:</span>
+                <code className="bg-blue-100 px-3 py-1 rounded text-blue-700 font-mono text-sm">
+                  admin@hospital.com
+                </code>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-sm font-medium text-gray-700">Password:</span>
+                <code className="bg-blue-100 px-3 py-1 rounded text-blue-700 font-mono text-sm">
+                  admin123
+                </code>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
         <div className="text-center">
           <p className="text-xs text-gray-500">
             Having trouble? Contact your administrator for assistance.

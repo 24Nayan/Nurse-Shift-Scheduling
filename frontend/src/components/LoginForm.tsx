@@ -430,31 +430,93 @@ export function LoginForm({ onLogin }: LoginFormProps) {
           </TabsContent>
         </Tabs>
 
-        <div className="text-center text-sm text-gray-500">
-          <p>Demo Credentials:</p>
-          <p>Admin: admin@hospital.com / admin123</p>
-          <p>Nurse: nurse@hospital.com / nurse123</p>
-          <div className="mt-2 p-2 bg-blue-50 rounded text-xs">
-            <p>
-              ⚡ First-time setup: Demo users are created
-              automatically.
-            </p>
-            <p>If login fails, wait a moment and try again.</p>
-          </div>
-          <div className="mt-3">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={initializeDemoData}
-              disabled={initLoading}
-              className="text-xs"
-            >
-              {initLoading
-                ? "Initializing..."
-                : "Initialize Demo Data"}
-            </Button>
-          </div>
-        </div>
+        <Card className="bg-gradient-to-r from-blue-50 to-indigo-50 border-2 border-blue-200">
+          <CardHeader className="pb-3">
+            <CardTitle className="text-lg text-blue-900 flex items-center gap-2">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-5 w-5"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M18 8a6 6 0 01-7.743 5.743L10 14l-1 1-1 1H6v2H2v-4l4.257-4.257A6 6 0 1118 8zm-6-4a1 1 0 100 2 2 2 0 012 2 1 1 0 102 0 4 4 0 00-4-4z"
+                  clipRule="evenodd"
+                />
+              </svg>
+              Demo Login Credentials
+            </CardTitle>
+            <CardDescription className="text-sm text-gray-700">
+              Use these credentials to explore the system
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            <div className="bg-white p-3 rounded-lg shadow-sm border border-blue-100">
+              <p className="font-semibold text-gray-700 mb-2 flex items-center gap-2">
+                <span className="inline-block w-2 h-2 bg-red-500 rounded-full"></span>
+                Admin Dashboard Access
+              </p>
+              <div className="space-y-1 text-sm">
+                <p className="text-gray-600">
+                  <span className="font-medium">Email:</span>{" "}
+                  <code className="bg-gray-100 px-2 py-1 rounded text-blue-600">
+                    admin@hospital.com
+                  </code>
+                </p>
+                <p className="text-gray-600">
+                  <span className="font-medium">Password:</span>{" "}
+                  <code className="bg-gray-100 px-2 py-1 rounded text-blue-600">
+                    admin123
+                  </code>
+                </p>
+              </div>
+            </div>
+
+            <div className="bg-white p-3 rounded-lg shadow-sm border border-blue-100">
+              <p className="font-semibold text-gray-700 mb-2 flex items-center gap-2">
+                <span className="inline-block w-2 h-2 bg-green-500 rounded-full"></span>
+                Nurse Account Access
+              </p>
+              <div className="space-y-1 text-sm">
+                <p className="text-gray-600">
+                  <span className="font-medium">Email:</span>{" "}
+                  <code className="bg-gray-100 px-2 py-1 rounded text-blue-600">
+                    nurse@hospital.com
+                  </code>
+                </p>
+                <p className="text-gray-600">
+                  <span className="font-medium">Password:</span>{" "}
+                  <code className="bg-gray-100 px-2 py-1 rounded text-blue-600">
+                    nurse123
+                  </code>
+                </p>
+              </div>
+            </div>
+
+            <div className="mt-3 p-2 bg-blue-100 rounded text-xs text-blue-800">
+              <p className="font-medium">
+                ⚡ First-time setup: Demo users are created
+                automatically.
+              </p>
+              <p>If login fails, wait a moment and try again.</p>
+            </div>
+
+            <div className="mt-3">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={initializeDemoData}
+                disabled={initLoading}
+                className="w-full text-xs"
+              >
+                {initLoading
+                  ? "Initializing..."
+                  : "Initialize Demo Data"}
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );
