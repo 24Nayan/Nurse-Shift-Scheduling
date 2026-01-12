@@ -14,8 +14,9 @@ export function SimpleAddNurseTest() {
 
   const handleApiTest = async () => {
     console.log('Testing API connection...');
+    const API_URL = import.meta.env.PROD ? 'https://nurse-shift-scheduling-1.onrender.com/api' : 'http://localhost:5000/api';
     try {
-      const response = await fetch('http://localhost:5000/api/nurses');
+      const response = await fetch(`${API_URL}/nurses`);
       const data = await response.json();
       console.log('API Response:', data);
       alert(`API Test Success! Found ${data.length} nurses`);
@@ -27,6 +28,7 @@ export function SimpleAddNurseTest() {
 
   const handleAddNurseTest = async () => {
     console.log('Testing Add Nurse API...');
+    const API_URL = import.meta.env.PROD ? 'https://nurse-shift-scheduling-1.onrender.com/api' : 'http://localhost:5000/api';
     try {
       const testNurse = {
         name: 'Test Nurse',
@@ -37,7 +39,7 @@ export function SimpleAddNurseTest() {
         role: 'Junior Nurse'
       };
       
-      const response = await fetch('http://localhost:5000/api/nurses', {
+      const response = await fetch(`${API_URL}/nurses`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
