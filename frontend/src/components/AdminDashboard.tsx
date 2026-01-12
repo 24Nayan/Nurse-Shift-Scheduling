@@ -274,8 +274,9 @@ export function AdminDashboard({ user }: AdminDashboardProps) {
                   variant="secondary" 
                   className="w-full justify-start"
                   onClick={async () => {
+                    const API_URL = import.meta.env.PROD ? 'https://nurse-shift-scheduling-1.onrender.com/api' : 'http://localhost:5000/api';
                     try {
-                      const response = await fetch('http://localhost:5000/api/nurses');
+                      const response = await fetch(`${API_URL}/nurses`);
                       const data = await response.json();
                       alert(`API Test Success! Found ${data.length} nurses in database`);
                     } catch (error) {
