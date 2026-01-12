@@ -116,7 +116,9 @@ const authReducer = (state: AuthState, action: { type: string; payload?: any }):
 
 // API Base URL
 // Note: Backend defaults to port 5000 (see backend/server.js)
-const API_BASE_URL = 'http://localhost:5000/api';
+const API_BASE_URL = import.meta.env.PROD 
+  ? 'https://nurse-shift-scheduling-1.onrender.com/api'
+  : 'http://localhost:5000/api';
 
 // Auth Provider Component
 import { ReactNode, FC } from 'react';
